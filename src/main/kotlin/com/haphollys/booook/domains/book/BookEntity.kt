@@ -1,9 +1,9 @@
 package com.haphollys.booook.domains.book
 
-import com.haphollys.booook.domains.room.NoSeatsException
 import com.haphollys.booook.domains.room.Seat
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Table(name = "books")
@@ -15,18 +15,48 @@ class BookEntity(
     @OneToOne
     val user: UserEntity,
     @OneToOne
-    val screenEntity: ScreenEntity,
+    val screen: ScreenEntity,
     @ElementCollection
     val seats: List<Seat>
 ) {
 
     init {
-        verifyProps()
+        verifyBook()
     }
 
-    private fun verifyProps() {
-        if(seats.isEmpty())
-            throw NoSeatsException()
+    private fun verifyBook() {
+        verifyAvailableDate()
+        verifyAvailableSeat()
     }
 
+    private fun verifyAvailableDate() {
+        val deadline = LocalDateTime.now().minusMinutes(10)
+
+        if (deadline.isAfter(screen.date))
+            throw RuntimeException("예약 가능한 시간이 지났습니다.")
+    }
+
+    private fun verifyAvailableSeat() {
+        seats.forEach { bookedSeat ->
+            screen.room.seats
+                .forEach { seat ->
+                    if (seat.equals(bookedSeat) && seat.status == Seat.SeatStatus.BOOKED) {
+                        throw RuntimeException("이미 예약된 좌석입니다.")
+                    }
+                }
+        }
+    }
+
+    companion object {
+        fun of(
+            user: UserEntity,
+            screen: ScreenEntity,
+            seats: List<Seat>
+        ): BookEntity{
+            return BookEntity(
+                user = user,
+                screen = screen,
+                seats = seats)
+        }
+    }
 }

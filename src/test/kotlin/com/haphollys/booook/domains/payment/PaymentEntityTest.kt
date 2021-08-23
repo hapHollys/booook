@@ -4,11 +4,11 @@ import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.movie.MovieEntity
 import com.haphollys.booook.domains.room.RoomEntity
 import com.haphollys.booook.domains.room.RoomEntity.RoomType
-import com.haphollys.booook.domains.room.RoomEntity.RoomType.TWO_D
+import com.haphollys.booook.domains.room.RoomEntity.RoomType.*
 import com.haphollys.booook.domains.room.Seat
 import com.haphollys.booook.domains.room.Seat.SeatStatus
 import com.haphollys.booook.domains.room.Seat.SeatType
-import com.haphollys.booook.domains.room.Seat.SeatType.FRONT
+import com.haphollys.booook.domains.room.Seat.SeatType.*
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -23,8 +23,10 @@ internal class PaymentEntityTest {
     fun setUp() {
         priceList = mapOf(
             TWO_D to mapOf(
-                FRONT to 1000
-            )
+                FRONT to 1000,
+                MIDDLE to 2000,
+                BACK to 3000
+            ),
         )
     }
 
@@ -35,32 +37,10 @@ internal class PaymentEntityTest {
             name = "Harry Porter"
         )
 
-        val seats = listOf(
-            Seat(
-                row = 1,
-                col = 1,
-                status = SeatStatus.FREE,
-                seatType = FRONT
-            ),
-            Seat(
-                row = 1,
-                col = 1,
-                status = SeatStatus.FREE,
-                seatType = FRONT
-            ),
-            Seat(
-                row = 1,
-                col = 1,
-                status = SeatStatus.FREE,
-                seatType = FRONT
-            )
-        )
-
-        val room = RoomEntity(
+        val room = RoomEntity.of(
             numRow = 10,
             numCol = 20,
             roomType = TWO_D,
-            seats = seats
         )
 
         val screen = ScreenEntity(
@@ -75,8 +55,8 @@ internal class PaymentEntityTest {
         val book = BookEntity(
             id = 1L,
             user,
-            screenEntity = screen,
-            seats = seats
+            screen = screen,
+            seats = room.seats
         )
 
         // when
@@ -86,6 +66,6 @@ internal class PaymentEntityTest {
         payment.setTotalAmount(priceList)
 
         // then
-        assertEquals(payment.totalAmount, 3000)
+        assertEquals(payment.totalAmount, 504000)
     }
 }

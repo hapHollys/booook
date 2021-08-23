@@ -18,8 +18,6 @@ class PaymentEntity(
 
     internal fun setTotalAmount(priceList: Map<RoomType, Map<SeatType, Int>>) {
         this.totalAmount = book.seats
-            .stream()
-            .mapToInt { priceList[it.room!!.roomType]!![it.seatType]!! }
-            .sum()
+            .sumOf { priceList[it.room.roomType]!![it.seatType]!! }
     }
 }
