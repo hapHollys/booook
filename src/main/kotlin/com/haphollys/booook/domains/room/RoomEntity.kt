@@ -22,6 +22,12 @@ class RoomEntity(
         TWO_D, THREE_D, FOUR_D
     }
 
+    fun getSeat(col: Int, row: Int): Seat {
+        return this.seats.first{
+            it.col == col && it.row == row
+        }
+    }
+
     // TODO casting
     override fun equals(other: Any?): Boolean {
         return id == (other as RoomEntity).id

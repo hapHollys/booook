@@ -8,6 +8,7 @@ import com.haphollys.booook.repository.PaymentRepository
 import com.haphollys.booook.repository.ScreenRepository
 import com.haphollys.booook.repository.UserRepository
 import com.haphollys.booook.service.dto.BookDto
+import com.haphollys.booook.service.dto.SeatDto
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.lang.RuntimeException
@@ -27,6 +28,17 @@ class BookService(
         val foundScreen = screenRepository.findById(request.screenId)
             .orElseThrow { RuntimeException("없는 상영 입니다.") }
 
+        foundScreen.room.seats.forEach{
+            request.seats.forEach{
+                it2: SeatDto ->
+                run {
+                    if (it.row == it2.row && it.col == it2.col) {
+                        it.book()
+                    }
+                }
+            }
+        }
+
         val bookEntity = BookEntity.of(
             user = foundUser,
             screen = foundScreen,
@@ -37,7 +49,7 @@ class BookService(
                         row = it.row,
                         col = it.col,
                         status = BOOKED,
-                        seatType = it.type  // TODO 프론트에서 넘겨주는게 맞는지?
+                        seatType = it.type
                     )
                 }
         )

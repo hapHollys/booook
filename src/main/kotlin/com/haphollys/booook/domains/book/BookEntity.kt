@@ -26,7 +26,6 @@ class BookEntity(
 
     private fun verifyBook() {
         verifyAvailableDate()
-        verifyAvailableSeat()
     }
 
     private fun verifyAvailableDate() {
@@ -34,17 +33,6 @@ class BookEntity(
 
         if (deadline.isAfter(screen.date))
             throw RuntimeException("예약 가능한 시간이 지났습니다.")
-    }
-
-    private fun verifyAvailableSeat() {
-        seats.forEach { bookedSeat ->
-            screen.room.seats
-                .forEach { seat ->
-                    if (seat.equals(bookedSeat) && seat.status == Seat.SeatStatus.BOOKED) {
-                        throw RuntimeException("이미 예약된 좌석입니다.")
-                    }
-                }
-        }
     }
 
     companion object {
