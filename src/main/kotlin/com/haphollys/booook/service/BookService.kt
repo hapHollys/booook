@@ -27,7 +27,7 @@ class BookService(
         val foundScreen = screenRepository.findById(request.screenId)
             .orElseThrow { RuntimeException("없는 상영 입니다.") }
 
-        val bookEntity = BookEntity(
+        val bookEntity = BookEntity.of(
             user = foundUser,
             screen = foundScreen,
             seats = request.seats
@@ -37,7 +37,7 @@ class BookService(
                         row = it.row,
                         col = it.col,
                         status = BOOKED,
-                        seatType = it.type
+                        seatType = it.type  // TODO 프론트에서 넘겨주는게 맞는지?
                     )
                 }
         )

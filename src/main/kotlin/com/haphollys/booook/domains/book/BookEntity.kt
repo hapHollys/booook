@@ -49,14 +49,17 @@ class BookEntity(
 
     companion object {
         fun of(
+            id: Long? = null,
             user: UserEntity,
             screen: ScreenEntity,
             seats: List<Seat>
         ): BookEntity{
             return BookEntity(
+                id = id,
                 user = user,
                 screen = screen,
-                seats = seats)
+                seats = seats
+            )
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.book.BookEntity
+import com.haphollys.booook.domains.room.Seat
 import com.haphollys.booook.domains.room.Seat.SeatType.FRONT
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
@@ -15,6 +16,7 @@ import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.slot
+import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -57,16 +59,29 @@ internal class BookServiceTest {
     @Test
     fun `예약 시 예약 엔티티가 생성된다`() {
         // given
-        val bookEntitySlot = slot<BookEntity>()
+        val bookedSeats = listOf(
+            Seat(
+                room = testScreen.room,
+                row = 0,
+                col = 0,
+                seatType = FRONT
+            )
+        )
+
+        val bookEntity = BookEntity.of(
+            id = 1L,
+            user = testUser,
+            screen = testScreen,
+            seats = bookedSeats
+        )
 
         every {
-            bookRepository.save(capture(bookEntitySlot))
-        } returns bookEntitySlot.captured
-        bookEntitySlot.captured.id = 1L
+            bookRepository.save(any())
+        } returns bookEntity
 
         every {
             bookRepository.findById(any())
-        } returns Optional.of(bookEntitySlot.captured)
+        } returns Optional.of(bookEntity)
 
         val userId = 0L
         val screenId = 0L
@@ -83,7 +98,9 @@ internal class BookServiceTest {
         val response = bookService.book(bookRequest)
 
         // then
-        val foundBook = bookRepository.findById(response.bookId)
-        assertNotNull(foundBook)
+//        val foundBook = bookRepository.findById(response.bookId) // TODO 이것은 repository에 의존을 가지는 테스트인듯
+//        assertNotNull(foundBook)
+
+        verify (atLeast = 1) { bookRepository.save(any()) }
     }
 }
