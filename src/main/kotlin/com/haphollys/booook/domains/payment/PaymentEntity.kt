@@ -15,9 +15,16 @@ class PaymentEntity(
     val book: BookEntity,
     var totalAmount: Int? = null
 ) {
-
     internal fun setTotalAmount(priceList: Map<RoomType, Map<SeatType, Int>>) {
         this.totalAmount = book.seats
             .sumOf { priceList[it.room.roomType]!![it.seatType]!! }
+    }
+
+    companion object {
+        fun of(book: BookEntity): PaymentEntity {
+            return PaymentEntity(
+                book = book
+            )
+        }
     }
 }

@@ -85,10 +85,6 @@ internal class BookServiceTest {
             bookRepository.save(any())
         } returns bookEntity
 
-        every {
-            bookRepository.findById(any())
-        } returns Optional.of(bookEntity)
-
         val userId = 0L
         val screenId = 0L
         val bookRequest = BookDto.BookRequest(
@@ -101,7 +97,7 @@ internal class BookServiceTest {
         )
 
         // when
-        val response = bookService.book(bookRequest)
+        bookService.book(bookRequest)
 
         // then
         verify (atLeast = 1) { bookRepository.save(any()) }
