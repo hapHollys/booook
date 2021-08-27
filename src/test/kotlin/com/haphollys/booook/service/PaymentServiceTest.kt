@@ -1,6 +1,7 @@
 package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.book.BookEntity
+import com.haphollys.booook.domains.book.BookEntity.BookStatus.CANCEL
 import com.haphollys.booook.domains.payment.PaymentEntity
 import com.haphollys.booook.domains.room.Seat
 import com.haphollys.booook.domains.room.Seat.SeatType.FRONT
@@ -10,20 +11,15 @@ import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
 import com.haphollys.booook.repository.UserRepository
-import com.haphollys.booook.service.dto.BookDto
-import com.haphollys.booook.service.dto.PaymentDto
-import com.haphollys.booook.service.dto.PaymentDto.*
+import com.haphollys.booook.service.dto.PaymentDto.PaymentRequest
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verify
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
-
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import java.lang.IllegalArgumentException
-import java.lang.RuntimeException
 import java.util.*
 
 @ExtendWith(MockKExtension::class)
@@ -145,6 +141,33 @@ internal class PaymentServiceTest {
         // then
         verify (atLeast = 1) {
             paymentRepository.save(any())
+        }
+    }
+
+    @Test
+    fun `결제 가능한 상태가 아니면 결제할 수 없다`() {
+        // given
+        val notPayableId = 1234L
+
+        val notPayableRequest = PaymentRequest(
+            bookId = notPayableId,
+        )
+
+        val notPayableEntity = BookEntity.of(
+            user = me,
+            screen = testScreen,
+            seats = listOf(),
+            status = CANCEL
+        )
+
+        // when
+        assertThrows(
+            IllegalArgumentException::class.java
+        ) {
+            paymentService.pay(
+                loginUser = me,
+                paymentRequest = notPayableRequest,
+            )
         }
     }
 }

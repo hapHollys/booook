@@ -1,5 +1,6 @@
 package com.haphollys.booook.domains.book
 
+import com.haphollys.booook.domains.book.BookEntity.BookStatus.BOOKED
 import com.haphollys.booook.domains.room.Seat
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
@@ -17,7 +18,8 @@ class BookEntity(
     @OneToOne
     val screen: ScreenEntity,
     @ElementCollection
-    val seats: List<Seat>
+    val seats: List<Seat>,
+    val status: BookStatus = BOOKED
 ) {
 
     init {
@@ -35,18 +37,24 @@ class BookEntity(
             throw RuntimeException("예약 가능한 시간이 지났습니다.")
     }
 
+    enum class BookStatus {
+        CANCEL, PAID, BOOKED
+    }
+
     companion object {
         fun of(
             id: Long? = null,
             user: UserEntity,
             screen: ScreenEntity,
-            seats: List<Seat>
+            seats: List<Seat>,
+            status: BookStatus = BOOKED
         ): BookEntity{
             return BookEntity(
                 id = id,
                 user = user,
                 screen = screen,
-                seats = seats
+                seats = seats,
+                status = status
             )
         }
     }

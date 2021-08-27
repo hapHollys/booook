@@ -217,4 +217,5 @@ internal class BookServiceTest {
 
     }
 
+    // TODO 빈 예약시 Excetpion 테스트 추가
 }

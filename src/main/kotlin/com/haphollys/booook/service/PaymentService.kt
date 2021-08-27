@@ -1,6 +1,7 @@
 package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.book.BookEntity
+import com.haphollys.booook.domains.book.BookEntity.BookStatus.BOOKED
 import com.haphollys.booook.domains.payment.PaymentEntity
 import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.repository.BookRepository
@@ -28,7 +29,8 @@ class PaymentService(
             .orElseThrow {
                 throw IllegalArgumentException("해당 예약이 없습니다.")
             }
-        verifyMyBook(
+
+        verifyBook(
             loginUser = loginUser,
             book = book
         )
@@ -40,11 +42,14 @@ class PaymentService(
         )
     }
 
-    internal fun verifyMyBook(
+    internal fun verifyBook(
         loginUser: UserEntity,
         book: BookEntity
     ) {
         if (book.user.id != loginUser.id)
             throw IllegalArgumentException("나의 예약이 아닙니다.")
+
+        if (book.status != BOOKED)
+            throw IllegalArgumentException("결제 가능한 상태가 아닙니다.")
     }
 }
