@@ -10,4 +10,16 @@ class MovieEntity(
     var id: Long? = null,
     val name: String
 ) {
+
+    companion object {
+        fun of(
+            id: Long? = null,
+            name: String
+        ): MovieEntity {
+            return MovieEntity(
+                id = id,
+                name = name
+            )
+        }
+    }
 }

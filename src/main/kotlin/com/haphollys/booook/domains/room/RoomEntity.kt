@@ -22,10 +22,17 @@ class RoomEntity(
         TWO_D, THREE_D, FOUR_D
     }
 
-    fun getSeat(col: Int, row: Int): Seat {
+    fun getSeat(
+        row: Int,
+        col: Int
+    ): Seat {
         return this.seats.first{
             it.col == col && it.row == row
         }
+    }
+
+    fun getFreeSeats(): List<Seat> {
+
     }
 
     // TODO casting
@@ -46,7 +53,7 @@ class RoomEntity(
         fun of(
             numRow: Int,
             numCol: Int,
-            roomType: RoomType
+            roomType: RoomType = TWO_D
         ): RoomEntity {
             val seats: MutableList<Seat> = ArrayList()
 

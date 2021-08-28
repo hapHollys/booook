@@ -43,7 +43,7 @@ internal class PaymentEntityTest {
             roomType = TWO_D,
         )
 
-        val screen = ScreenEntity(
+        val screen = ScreenEntity.of(
             movie = movie,
             room = room
         )

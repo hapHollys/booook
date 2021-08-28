@@ -33,10 +33,14 @@ class Seat(
     }
 
     fun book() {
-        if (this.status != FREE) {
+        if (!bookable()) {
             throw RuntimeException("예약할 수 없는 좌석입니다.")
         }
 
         this.status = BOOKED
+    }
+
+    fun bookable(): Boolean {
+        return this.status != FREE
     }
 }
