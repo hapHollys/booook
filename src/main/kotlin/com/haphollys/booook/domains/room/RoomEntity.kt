@@ -1,8 +1,8 @@
 package com.haphollys.booook.domains.room
 
 import com.haphollys.booook.domains.room.RoomEntity.RoomType.TWO_D
-import com.haphollys.booook.domains.room.Seat.SeatType
-import com.haphollys.booook.domains.room.Seat.SeatType.*
+import com.haphollys.booook.domains.screen.Seat.SeatType
+import com.haphollys.booook.domains.screen.Seat.SeatType.*
 import javax.persistence.*
 
 @Table(name = "rooms")
@@ -13,26 +13,11 @@ class RoomEntity(
     var id: Long? = null,
     val numRow: Int,
     val numCol: Int,
-    @ElementCollection
-    val seats: MutableList<Seat>,
     @Enumerated(value = EnumType.STRING)
     val roomType: RoomType = TWO_D
 ) {
     enum class RoomType {
         TWO_D, THREE_D, FOUR_D
-    }
-
-    fun getSeat(
-        row: Int,
-        col: Int
-    ): Seat {
-        return this.seats.first{
-            it.col == col && it.row == row
-        }
-    }
-
-    fun getFreeSeats(): List<Seat> {
-
     }
 
     // TODO casting
@@ -44,9 +29,24 @@ class RoomEntity(
         var result = id?.hashCode() ?: 0
         result = 31 * result + numRow
         result = 31 * result + numCol
-        result = 31 * result + seats.hashCode()
         result = 31 * result + roomType.hashCode()
         return result
+    }
+
+    fun getSeatType(
+        row: Int
+    ): SeatType {
+        return when {
+            row < numRow / 3 -> {
+                FRONT
+            }
+            row < (numRow * 2 / 3) -> {
+                MIDDLE
+            }
+            else -> {
+                BACK
+            }
+        }
     }
 
     companion object {
@@ -55,44 +55,14 @@ class RoomEntity(
             numCol: Int,
             roomType: RoomType = TWO_D
         ): RoomEntity {
-            val seats: MutableList<Seat> = ArrayList()
-
             val roomEntity = RoomEntity(
                 numRow = numRow,
                 numCol = numCol,
-                seats = seats,
                 roomType = roomType
             )
-
-            for (row in 0 .. numRow) {
-                for (col in 0 .. numCol) {
-                    seats.add(Seat(
-                        room = roomEntity,
-                        row = row,
-                        col = col,
-                        seatType = getSeatType(numRow, row)
-                    ))
-                }
-            }
 
             return roomEntity
         }
 
-        private fun getSeatType(
-            numRow: Int,
-            row: Int
-        ): SeatType {
-            return when {
-                row < numRow / 3 -> {
-                    FRONT
-                }
-                row < (numRow * 2 / 3) -> {
-                    MIDDLE
-                }
-                else -> {
-                    BACK
-                }
-            }
-        }
     }
 }

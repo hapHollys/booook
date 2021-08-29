@@ -2,12 +2,14 @@ package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookEntity.BookStatus.CANCEL
+import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.payment.PaymentEntity
-import com.haphollys.booook.domains.room.Seat
-import com.haphollys.booook.domains.room.Seat.SeatType.FRONT
+import com.haphollys.booook.domains.screen.Seat
+import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.getTestScreenEntity
+import com.haphollys.booook.model.SeatPosition
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
 import com.haphollys.booook.repository.UserRepository
@@ -77,11 +79,12 @@ internal class PaymentServiceTest {
             id = othersBookId,
             user = other,
             screen = testScreen,
-            seats = listOf(
-                Seat(
-                    room = testScreen.room,
-                    row = 0,
-                    col = 0,
+            bookedSeats = listOf(
+                BookedSeat(
+                    SeatPosition(
+                        row = 0,
+                        col = 0,
+                    ),
                     seatType = FRONT
                 )
             )
@@ -110,11 +113,12 @@ internal class PaymentServiceTest {
             id = myBookId,
             user = me,
             screen = testScreen,
-            seats = listOf(
-                Seat(
-                    room = testScreen.room,
-                    row = 0,
-                    col = 0,
+            bookedSeats = listOf(
+                BookedSeat(
+                    SeatPosition(
+                        row = 0,
+                        col = 0,
+                    ),
                     seatType = FRONT
                 )
             )
@@ -149,6 +153,7 @@ internal class PaymentServiceTest {
         // given
         val notPayableId = 1234L
 
+
         val notPayableRequest = PaymentRequest(
             bookId = notPayableId,
         )
@@ -156,9 +161,13 @@ internal class PaymentServiceTest {
         val notPayableEntity = BookEntity.of(
             user = me,
             screen = testScreen,
-            seats = listOf(),
+            bookedSeats = listOf(),
             status = CANCEL
         )
+
+        every {
+            bookRepository.findById(1234L)
+        } returns Optional.of(notPayableEntity)
 
         // when
         assertThrows(

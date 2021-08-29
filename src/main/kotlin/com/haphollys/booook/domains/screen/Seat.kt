@@ -1,19 +1,18 @@
-package com.haphollys.booook.domains.room
+package com.haphollys.booook.domains.screen
 
-import com.haphollys.booook.domains.room.Seat.SeatStatus.BOOKED
-import com.haphollys.booook.domains.room.Seat.SeatStatus.FREE
+import com.haphollys.booook.domains.screen.Seat.SeatStatus.BOOKED
+import com.haphollys.booook.domains.screen.Seat.SeatStatus.FREE
+import com.haphollys.booook.model.SeatPosition
 import java.lang.RuntimeException
 import javax.persistence.Embeddable
+import javax.persistence.Embedded
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
-import javax.persistence.OneToOne
 
 @Embeddable
 class Seat(
-    @OneToOne
-    val room: RoomEntity,
-    val row: Int,
-    val col: Int,
+    @Embedded
+    val seatPosition: SeatPosition,
     @Enumerated(value = EnumType.STRING)
     val seatType: SeatType,
     var status: SeatStatus = FREE,
@@ -27,9 +26,10 @@ class Seat(
         FRONT, MIDDLE, BACK
     }
 
+    // TODO: ScreenRoom 비교?
     override fun equals(other: Any?): Boolean {
         val o = other as Seat
-        return room.equals(o.room) && row == o.row && col == o.col
+        return seatPosition == other.seatPosition
     }
 
     fun book() {
@@ -41,6 +41,6 @@ class Seat(
     }
 
     fun bookable(): Boolean {
-        return this.status != FREE
+        return this.status == FREE
     }
 }

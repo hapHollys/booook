@@ -1,16 +1,16 @@
 package com.haphollys.booook.domains.payment
 
 import com.haphollys.booook.domains.book.BookEntity
+import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.movie.MovieEntity
 import com.haphollys.booook.domains.room.RoomEntity
 import com.haphollys.booook.domains.room.RoomEntity.RoomType
 import com.haphollys.booook.domains.room.RoomEntity.RoomType.*
-import com.haphollys.booook.domains.room.Seat
-import com.haphollys.booook.domains.room.Seat.SeatStatus
-import com.haphollys.booook.domains.room.Seat.SeatType
-import com.haphollys.booook.domains.room.Seat.SeatType.*
+import com.haphollys.booook.domains.screen.Seat.SeatType
+import com.haphollys.booook.domains.screen.Seat.SeatType.*
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
+import com.haphollys.booook.model.SeatPosition
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -31,7 +31,7 @@ internal class PaymentEntityTest {
     }
 
     @Test
-    fun `3명 예약 테스트`() {
+    fun `1명 예약 테스트`() {
         // given
         val movie = MovieEntity(
             name = "Harry Porter"
@@ -42,6 +42,7 @@ internal class PaymentEntityTest {
             numCol = 20,
             roomType = TWO_D,
         )
+        room.id = 1L
 
         val screen = ScreenEntity.of(
             movie = movie,
@@ -52,11 +53,21 @@ internal class PaymentEntityTest {
             name = "user"
         )
 
-        val book = BookEntity(
+        val bookedSeats : List<BookedSeat> = listOf(
+            BookedSeat(
+                SeatPosition(
+                    row = 0,
+                    col = 0,
+                ),
+                seatType = FRONT
+            )
+        )
+
+        val book = BookEntity.of(
             id = 1L,
             user,
             screen = screen,
-            seats = room.seats
+            bookedSeats = bookedSeats
         )
 
         // when
@@ -66,6 +77,6 @@ internal class PaymentEntityTest {
         payment.setTotalAmount(priceList)
 
         // then
-        assertEquals(payment.totalAmount, 504000)
+        assertEquals(payment.totalAmount, 1000)
     }
 }

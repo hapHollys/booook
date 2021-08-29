@@ -4,10 +4,15 @@ import com.haphollys.booook.domains.movie.MovieEntity
 import com.haphollys.booook.domains.room.RoomEntity
 import com.haphollys.booook.domains.screen.ScreenEntity
 
-fun getTestScreenEntity(): ScreenEntity {
+fun getTestScreenEntity(
+    roomId: Long = 1L
+): ScreenEntity {
+    val room = RoomEntity.of(10, 10, RoomEntity.RoomType.TWO_D)
+    room.id = roomId
+
     return ScreenEntity.of(
         movie = getTestMovie(),
-        room = RoomEntity.of(10, 10, RoomEntity.RoomType.TWO_D),
+        room = room,
     )
 }
 
