@@ -11,10 +11,10 @@ class RoomEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
-    val numRow: Int,
-    val numCol: Int,
+    var numRow: Int,
+    var numCol: Int,
     @Enumerated(value = EnumType.STRING)
-    val roomType: RoomType = TWO_D
+    var roomType: RoomType = TWO_D
 ) {
     enum class RoomType {
         TWO_D, THREE_D, FOUR_D

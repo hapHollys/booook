@@ -12,7 +12,7 @@ class PaymentEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
     @OneToOne
-    val book: BookEntity,
+    var book: BookEntity,
     var totalAmount: Int? = null
 ) {
     internal fun setTotalAmount(priceList: Map<RoomType, Map<SeatType, Int>>) {

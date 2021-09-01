@@ -4,7 +4,6 @@ import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookEntity.BookStatus.CANCEL
 import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.payment.PaymentEntity
-import com.haphollys.booook.domains.screen.Seat
 import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
@@ -82,8 +81,8 @@ internal class PaymentServiceTest {
             bookedSeats = listOf(
                 BookedSeat(
                     SeatPosition(
-                        row = 0,
-                        col = 0,
+                        x = 0,
+                        y = 0,
                     ),
                     seatType = FRONT
                 )
@@ -116,8 +115,8 @@ internal class PaymentServiceTest {
             bookedSeats = listOf(
                 BookedSeat(
                     SeatPosition(
-                        row = 0,
-                        col = 0,
+                        x = 0,
+                        y = 0,
                     ),
                     seatType = FRONT
                 )

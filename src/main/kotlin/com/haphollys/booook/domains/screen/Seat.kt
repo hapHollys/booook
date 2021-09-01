@@ -12,9 +12,9 @@ import javax.persistence.Enumerated
 @Embeddable
 class Seat(
     @Embedded
-    val seatPosition: SeatPosition,
+    var seatPosition: SeatPosition,
     @Enumerated(value = EnumType.STRING)
-    val seatType: SeatType,
+    var seatType: SeatType,
     var status: SeatStatus = FREE,
 ) {
 

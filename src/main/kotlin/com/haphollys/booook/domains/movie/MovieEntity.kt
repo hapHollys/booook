@@ -8,7 +8,7 @@ class MovieEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
-    val name: String
+    var name: String
 ) {
 
     companion object {

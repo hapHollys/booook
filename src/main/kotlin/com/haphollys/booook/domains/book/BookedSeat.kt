@@ -10,8 +10,8 @@ import javax.persistence.Enumerated
 @Embeddable
 class BookedSeat(
     @Embedded
-    val seatPosition: SeatPosition,
+    var seatPosition: SeatPosition,
     @Enumerated(value=EnumType.STRING)
-    val seatType: SeatType
+    var seatType: SeatType
 ) {
 }

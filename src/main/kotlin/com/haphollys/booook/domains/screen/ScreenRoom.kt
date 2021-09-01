@@ -7,15 +7,14 @@ import javax.persistence.*
 
 @Embeddable
 class ScreenRoom(
-    @Column
-    val roomId: Long,
-    val numRow: Int,
-    val numCol: Int,
+    var roomId: Long,
+    var numRow: Int,
+    var numCol: Int,
     @Enumerated(value = EnumType.STRING)
-    val roomType: RoomType,
+    var roomType: RoomType,
     @ElementCollection
     // @CollectionTable(name="") TODO: 관계 테이블 이름 명시적으로 지정하기
-    val seats: List<Seat>
+    var seats: List<Seat>
 ) {
     fun getSeat(
         seatPosition: SeatPosition

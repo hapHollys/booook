@@ -13,10 +13,10 @@ class ScreenEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
     @OneToOne(fetch = FetchType.LAZY)
-    val movie: MovieEntity,
+    var movie: MovieEntity,
     @Embedded
-    val screenRoom: ScreenRoom,
-    val date: LocalDateTime = LocalDateTime.now()
+    var screenRoom: ScreenRoom,
+    var date: LocalDateTime = LocalDateTime.now()
 ) {
     fun bookSeat(
         bookSeatPosition: SeatPosition
@@ -48,8 +48,8 @@ class ScreenEntity(
                     seats.add(
                         Seat(
                             seatPosition = SeatPosition(
-                                row = row,
-                                col = col
+                                x = row,
+                                y = col
                             ),
                             seatType = room.getSeatType(row)
                         )

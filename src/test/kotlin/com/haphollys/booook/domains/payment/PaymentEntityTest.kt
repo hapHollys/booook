@@ -56,8 +56,8 @@ internal class PaymentEntityTest {
         val bookedSeats : List<BookedSeat> = listOf(
             BookedSeat(
                 SeatPosition(
-                    row = 0,
-                    col = 0,
+                    x = 0,
+                    y = 0,
                 ),
                 seatType = FRONT
             )

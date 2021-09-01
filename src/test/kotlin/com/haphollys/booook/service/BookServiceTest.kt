@@ -2,7 +2,6 @@ package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookedSeat
-import com.haphollys.booook.domains.screen.Seat
 import com.haphollys.booook.domains.screen.Seat.SeatStatus.BOOKED
 import com.haphollys.booook.domains.screen.Seat.SeatStatus.FREE
 import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
@@ -13,7 +12,7 @@ import com.haphollys.booook.model.SeatPosition
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.ScreenRepository
 import com.haphollys.booook.repository.UserRepository
-import com.haphollys.booook.service.dto.BookDto
+import com.haphollys.booook.service.dto.BookDto.*
 import com.haphollys.booook.service.dto.SeatDto
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
@@ -67,8 +66,8 @@ internal class BookServiceTest {
         val bookedSeats = listOf(
             BookedSeat(
                 SeatPosition(
-                    row = 0,
-                    col = 0,
+                    x = 0,
+                    y = 0,
                 ),
                 seatType = FRONT
             )
@@ -87,7 +86,7 @@ internal class BookServiceTest {
 
         val userId = 0L
         val screenId = 0L
-        val bookRequest = BookDto.BookRequest(
+        val bookRequest = BookRequest(
             screenId = screenId,
             userId = userId,
             seats = listOf(
@@ -109,8 +108,8 @@ internal class BookServiceTest {
         val bookedSeats = listOf(
             BookedSeat(
                 SeatPosition(
-                    row = 0,
-                    col = 0
+                    x = 0,
+                    y = 0
                 ),
                 seatType = FRONT
             )
@@ -138,7 +137,7 @@ internal class BookServiceTest {
             SeatDto(0, 1, FRONT)
         )
 
-        val bookRequest = BookDto.BookRequest(
+        val bookRequest = BookRequest(
             screenId = screenId,
             userId = userId,
             seats = seats
@@ -173,8 +172,8 @@ internal class BookServiceTest {
         val bookedSeats = listOf(
             BookedSeat(
                 SeatPosition(
-                    row = 0,
-                    col = 0,
+                    x = 0,
+                    y = 0,
                 ),
                 seatType = FRONT
             )
@@ -202,7 +201,7 @@ internal class BookServiceTest {
             SeatDto(0, 1, FRONT)
         )
 
-        val bookRequest = BookDto.BookRequest(
+        val bookRequest = BookRequest(
             screenId = screenId,
             userId = userId,
             seats = seats
@@ -220,4 +219,24 @@ internal class BookServiceTest {
     }
 
     // TODO 빈 예약시 Excetpion 테스트 추가
+
+    @Test
+    fun `예약 내역 조회 메소드 호출`() {
+        // given
+        val userId = 1L
+        val request = GetBookedListRequest(1L)
+
+        every {
+            bookRepository.findByUser_Id(userId)
+        } returns listOf()
+
+        // when
+        bookService.getBookedList(request)
+
+        // then
+        verify(atLeast = 1) {
+            bookRepository.findByUser_Id(request.userId)
+        }
+    }
+
 }

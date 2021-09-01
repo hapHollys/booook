@@ -2,13 +2,12 @@ package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookedSeat
-import com.haphollys.booook.domains.screen.Seat
-import com.haphollys.booook.domains.screen.Seat.SeatStatus.BOOKED
-import com.haphollys.booook.model.SeatPosition
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.ScreenRepository
 import com.haphollys.booook.repository.UserRepository
 import com.haphollys.booook.service.dto.BookDto
+import com.haphollys.booook.service.dto.BookDto.GetBookedListRequest
+import com.haphollys.booook.service.dto.BookDto.GetBookedResponse
 import com.haphollys.booook.service.dto.SeatDto
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -52,10 +51,28 @@ class BookService(
         )
     }
 
+    fun getBookedList(
+        request: GetBookedListRequest
+    ): List<GetBookedResponse> {
+        val bookedList = bookRepository.findByUser_Id(request.userId);
 
-//    fun pay() {
-//        // 성공 -> 예약 확정
-//        // 실패 -> 예약 취소
-//    }
-
+        return bookedList.map {
+            GetBookedResponse(
+                userName = it.user.name,
+                bookId = it.id!!,
+                screenId = it.screen.id!!,
+                movieName = it.screen.movie.name,
+                roomId = it.screen.screenRoom.roomId,
+                roomType = it.screen.screenRoom.roomType.toString(),
+                bookedSeats = it.bookedSeats.map { bookedSeat ->
+                    SeatDto(
+                        row = bookedSeat.seatPosition.x,
+                        col = bookedSeat.seatPosition.y,
+                        type = bookedSeat.seatType
+                    )
+                },
+                screenDate = it.screen.date
+            )
+        }
+    }
 }

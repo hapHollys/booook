@@ -10,8 +10,8 @@ data class SeatDto(
 ) {
     fun toSeatPosition() : SeatPosition {
         return SeatPosition(
-            row = row,
-            col = col
+            x = row,
+            y = col
         )
     }
 }

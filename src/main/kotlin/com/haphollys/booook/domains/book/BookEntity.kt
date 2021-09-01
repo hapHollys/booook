@@ -13,12 +13,12 @@ class BookEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
     @OneToOne
-    val user: UserEntity,
+    var user: UserEntity,
     @OneToOne
-    val screen: ScreenEntity,
+    var screen: ScreenEntity,
     @ElementCollection
-    val bookedSeats: List<BookedSeat>,
-    val status: BookStatus = BOOKED
+    var bookedSeats: List<BookedSeat>,
+    var status: BookStatus = BOOKED
 ) {
 
     init {
