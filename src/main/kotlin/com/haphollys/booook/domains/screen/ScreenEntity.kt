@@ -32,6 +32,12 @@ class ScreenEntity(
         }
     }
 
+    fun getBookableSeats(): List<Seat> {
+        return this.screenRoom.seats.filter {
+            it.bookable()
+        }
+    }
+
     companion object {
         fun of(
             id: Long? = null,
@@ -43,8 +49,8 @@ class ScreenEntity(
             val numRow = room.numRow
             val numCol = room.numCol
 
-            for (row in 0..numRow) {
-                for (col in 0..numCol) {
+            for (row in 0 until numRow) {
+                for (col in 0 until numCol) {
                     seats.add(
                         Seat(
                             seatPosition = SeatPosition(

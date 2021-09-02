@@ -27,7 +27,7 @@ class PaymentService(
     ): PaymentResponse {
         val book = bookRepository.findById(paymentRequest.bookId)
             .orElseThrow {
-                throw IllegalArgumentException("해당 예약이 없습니다.")
+                IllegalArgumentException("해당 예약이 없습니다.")
             }
 
         verifyBook(

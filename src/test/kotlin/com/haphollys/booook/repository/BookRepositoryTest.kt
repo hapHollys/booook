@@ -32,7 +32,7 @@ class BookRepositoryTest {
     fun setUp() {
         testUser = UserEntity(name = "TEST")
         testMovie = MovieEntity(name = "TEST_MOVIE")
-        testScreen = getTestScreenEntity(roomId = 1L, movie = testMovie)
+        testScreen = getTestScreenEntity(movie = testMovie)
 
         em.persist(testUser)
         em.persist(testMovie)

@@ -5,11 +5,12 @@ import com.haphollys.booook.domains.room.RoomEntity
 import com.haphollys.booook.domains.screen.ScreenEntity
 
 fun getTestScreenEntity(
-    roomId: Long = 1L,
+    room: RoomEntity = RoomEntity.of(10, 10, RoomEntity.RoomType.TWO_D),
     movie: MovieEntity = getTestMovie()
 ): ScreenEntity {
-    val room = RoomEntity.of(10, 10, RoomEntity.RoomType.TWO_D)
-    room.id = roomId
+    if (room.id == null) {
+        room.id = 1L
+    }
 
     return ScreenEntity.of(
         movie = movie,
