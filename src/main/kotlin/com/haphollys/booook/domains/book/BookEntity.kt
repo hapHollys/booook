@@ -1,8 +1,11 @@
 package com.haphollys.booook.domains.book
 
 import com.haphollys.booook.domains.book.BookEntity.BookStatus.BOOKED
+import com.haphollys.booook.domains.book.BookEntity.BookStatus.CANCEL
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
+import com.haphollys.booook.model.SeatPosition
+import java.lang.IllegalStateException
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -20,9 +23,23 @@ class BookEntity(
     var bookedSeats: List<BookedSeat>,
     var status: BookStatus = BOOKED
 ) {
-
     init {
         verifyBook()
+    }
+
+    fun unBook() {
+        verifyUnBookableStatus()
+
+        bookedSeats.forEach {
+            this.screen.screenRoom.getSeat(it.seatPosition).unBook()
+        }
+
+        this.status = CANCEL
+    }
+
+    private fun verifyUnBookableStatus() {
+        if (this.status != BOOKED)
+            throw IllegalStateException("예약 취소 가능한 상태가 아닙니다.")
     }
 
     private fun verifyBook() {

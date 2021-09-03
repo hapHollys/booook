@@ -6,8 +6,7 @@ import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.ScreenRepository
 import com.haphollys.booook.repository.UserRepository
 import com.haphollys.booook.service.dto.BookDto
-import com.haphollys.booook.service.dto.BookDto.GetBookedListRequest
-import com.haphollys.booook.service.dto.BookDto.GetBookedResponse
+import com.haphollys.booook.service.dto.BookDto.*
 import com.haphollys.booook.service.dto.SeatDto
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -74,5 +73,26 @@ class BookService(
                 screenDate = it.screen.date
             )
         }
+    }
+
+    fun unBook(request: UnBookRequest) {
+        val foundBook = bookRepository.findById(request.bookId)
+            .orElseThrow {
+                IllegalArgumentException("없는 예약내역 입니다.")
+            }
+
+        verifyOwnBook(
+            userId = request.userId,
+            book = foundBook
+        )
+        foundBook.unBook()
+    }
+
+    internal fun verifyOwnBook(
+        userId: Long,
+        book: BookEntity
+    ) {
+        if (book.user.id!! != userId)
+            throw IllegalArgumentException("자신의 예약 내역이 아닙니다.")
     }
 }

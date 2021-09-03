@@ -28,19 +28,31 @@ class Seat(
 
     // TODO: ScreenRoom 비교?
     override fun equals(other: Any?): Boolean {
-        val o = other as Seat
+        other as Seat
         return seatPosition == other.seatPosition
     }
 
     fun book() {
-        if (!bookable()) {
-            throw RuntimeException("예약할 수 없는 좌석입니다.")
-        }
-
+        verifyBookable()
         this.status = BOOKED
+    }
+
+    private fun verifyBookable() {
+        if (!bookable())
+            throw RuntimeException("예약 불가능한 좌석입니다.")
     }
 
     fun bookable(): Boolean {
         return this.status == FREE
+    }
+
+    fun unBook() {
+        verifyUnBookable()
+        this.status = FREE
+    }
+
+    private fun verifyUnBookable() {
+        if (this.status == FREE)
+            throw RuntimeException("예매되지 않은 좌석입니다.")
     }
 }

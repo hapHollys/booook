@@ -12,17 +12,18 @@ import com.haphollys.booook.model.SeatPosition
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.ScreenRepository
 import com.haphollys.booook.repository.UserRepository
+import com.haphollys.booook.service.dto.BookDto
 import com.haphollys.booook.service.dto.BookDto.*
 import com.haphollys.booook.service.dto.SeatDto
-import io.mockk.every
+import io.mockk.*
 import io.mockk.junit5.MockKExtension
-import io.mockk.mockk
-import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
+import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
 import java.util.*
 
 @ExtendWith(MockKExtension::class)
@@ -38,7 +39,7 @@ internal class BookServiceTest {
 
     @BeforeEach
     fun setUp() {
-        testUser = UserEntity(name = "TEST_USER")
+        testUser = UserEntity(id = 1L, name = "TEST_USER")
         testScreen = getTestScreenEntity()
 
         userRepository = mockk()
@@ -239,4 +240,111 @@ internal class BookServiceTest {
         }
     }
 
+
+    @Test
+    fun `예약 취소`() {
+        // given
+        val bookId = 1L
+        val book = makeBookedSeatBookEntity(bookId)
+
+        every {
+            bookRepository.findById(bookId)
+        } returns Optional.of(book)
+
+        val unBookRequest = UnBookRequest(
+            bookId = bookId,
+            userId = testUser.id!!
+        )
+
+        // when
+        bookService.unBook(request = unBookRequest)
+
+        // then
+        verify(atLeast = 1) {
+            bookRepository.findById(bookId)
+        }
+
+        verify(atLeast = 1) {
+            book.unBook()
+        }
+    }
+
+    // 이미 취소 되었거나, 결제된 경우 익셉션
+    @Test
+    fun `이미 취소된 예약 취소시 예외`() {
+        // given
+        val bookId = 1L
+        val book = makeBookedSeatBookEntity(bookId)
+
+        val unBookRequest = UnBookRequest(
+            bookId = bookId,
+            userId = testUser.id!!
+        )
+
+        every {
+            bookRepository.findById(bookId)
+        } returns Optional.of(book)
+
+        bookService.unBook(unBookRequest)
+
+        // when, then
+        assertThrows(
+            IllegalStateException::class.java
+        ) { bookService.unBook(unBookRequest) }
+    }
+
+//    @Test
+//    fun `이미 결제된 예약 취소시 예외`() {
+        // given
+//        makeBookedSeatBookEntity()
+//
+        // when
+//
+        // then
+//    }
+
+    // 유저가 예약한 것이 아닌 경우 익셉션
+    @Test
+    fun `유저의 예약이 아닌 경우 예약 취소시 예외`() {
+        // given
+        val bookId = 1L
+        val myBook = makeBookedSeatBookEntity(bookId)
+
+        val otherUserId = 2L
+        val unBookRequest = UnBookRequest(
+            bookId = bookId,
+            userId = otherUserId
+        )
+
+        every {
+            bookRepository.findById(bookId)
+        } returns Optional.of(myBook)
+
+        // when, then
+        assertThrows (IllegalArgumentException::class.java) {
+            bookService.unBook(unBookRequest)
+        }
+    }
+
+    private fun makeBookedSeatBookEntity(bookId: Long): BookEntity {
+        val bookPosition = SeatPosition(x = 0, y = 0)
+        val book = spyk(
+            BookEntity.of(
+                id = bookId,
+                user = testUser,
+                screen = testScreen,
+                bookedSeats = listOf(
+                    BookedSeat(
+                        seatPosition = bookPosition,
+                        seatType = FRONT
+                    ),
+                )
+            )
+        )
+
+        testScreen.screenRoom.getSeat(bookPosition)
+            .book()
+
+        return book
+    }
 }

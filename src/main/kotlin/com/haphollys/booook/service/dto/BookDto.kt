@@ -28,4 +28,9 @@ class BookDto() {
         val bookedSeats: List<SeatDto>,
         val screenDate: LocalDateTime
     )
+
+    data class UnBookRequest(
+        val bookId: Long,
+        val userId: Long
+    )
 }
