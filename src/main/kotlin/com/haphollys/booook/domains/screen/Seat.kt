@@ -15,6 +15,7 @@ class Seat(
     var seatPosition: SeatPosition,
     @Enumerated(value = EnumType.STRING)
     var seatType: SeatType,
+    @Enumerated(value = EnumType.STRING)
     var status: SeatStatus = FREE,
 ) {
 

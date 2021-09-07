@@ -19,6 +19,7 @@ class BookEntity(
     var user: UserEntity,
     @OneToOne
     var screen: ScreenEntity,
+    var bookedAt: LocalDateTime = LocalDateTime.now(),
     @ElementCollection
     var bookedSeats: List<BookedSeat>,
     var status: BookStatus = BOOKED
@@ -53,6 +54,10 @@ class BookEntity(
             throw RuntimeException("예약 가능한 시간이 지났습니다.")
     }
 
+    override fun toString(): String {
+        return "BookEntity(id=$id, bookedAt=$bookedAt, bookedSeats=$bookedSeats, status=$status)"
+    }
+
     enum class BookStatus {
         CANCEL, PAID, BOOKED
     }
@@ -63,15 +68,21 @@ class BookEntity(
             user: UserEntity,
             screen: ScreenEntity,
             bookedSeats: List<BookedSeat>,
-            status: BookStatus = BOOKED
+            status: BookStatus = BOOKED,
+            date: LocalDateTime = LocalDateTime.now().minusMinutes(6)
         ): BookEntity{
+            screen.bookSeats(bookedSeats.map { it.seatPosition })
+
             return BookEntity(
                 id = id,
                 user = user,
                 screen = screen,
                 bookedSeats = bookedSeats,
-                status = status
+                status = status,
+                bookedAt = date
             )
         }
     }
+
+
 }

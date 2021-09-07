@@ -12,7 +12,7 @@ class ScreenEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     var movie: MovieEntity,
     @Embedded
     var screenRoom: ScreenRoom,

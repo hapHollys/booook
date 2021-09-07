@@ -5,14 +5,14 @@ spring:
       path: /h2
 
   datasource:
-    #    username: root
-    #    password: 1234
-    #    driver-class-name: com.mysql.cj.jdbc.Driver
-    #    url: jdbc:mysql://localhost:3306/testdb?serverTimezone=UTC
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/testdb?serverTimezone=UTC
+  #    url: jdbc:h2:mem:testdb
+  #    driver-class-name: org.h2.Driver
+  #    username: sa
+  #    password:
 
   jpa:
     show-sql: true
@@ -21,3 +21,7 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: create
+
+  batch:
+    jdbc:
+      initialize-schema: ALWAYS
