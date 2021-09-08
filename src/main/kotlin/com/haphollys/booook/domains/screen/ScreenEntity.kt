@@ -32,6 +32,18 @@ class ScreenEntity(
         }
     }
 
+    fun unBookSeats(
+        bookSeats: List<SeatPosition>
+    ) {
+        bookSeats.forEach{
+            unBookSeat(it)
+        }
+    }
+
+    private fun unBookSeat(bookSeatPosition: SeatPosition) {
+        screenRoom.getSeat(bookSeatPosition).unBook()
+    }
+
     fun getBookableSeats(): List<Seat> {
         return this.screenRoom.seats.filter {
             it.bookable()
