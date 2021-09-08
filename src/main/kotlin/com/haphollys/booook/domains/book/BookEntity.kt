@@ -4,7 +4,6 @@ import com.haphollys.booook.domains.book.BookEntity.BookStatus.BOOKED
 import com.haphollys.booook.domains.book.BookEntity.BookStatus.CANCEL
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
-import com.haphollys.booook.model.SeatPosition
 import java.lang.IllegalStateException
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -54,10 +53,6 @@ class BookEntity(
             throw RuntimeException("예약 가능한 시간이 지났습니다.")
     }
 
-    override fun toString(): String {
-        return "BookEntity(id=$id, bookedAt=$bookedAt, bookedSeats=$bookedSeats, status=$status)"
-    }
-
     enum class BookStatus {
         CANCEL, PAID, BOOKED
     }
@@ -69,7 +64,6 @@ class BookEntity(
             screen: ScreenEntity,
             bookedSeats: List<BookedSeat>,
             status: BookStatus = BOOKED,
-            date: LocalDateTime = LocalDateTime.now().minusMinutes(6)
         ): BookEntity{
             screen.bookSeats(bookedSeats.map { it.seatPosition })
 
@@ -79,7 +73,6 @@ class BookEntity(
                 screen = screen,
                 bookedSeats = bookedSeats,
                 status = status,
-                bookedAt = date
             )
         }
     }
