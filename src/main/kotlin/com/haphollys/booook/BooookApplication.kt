@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-@EnableBatchProcessing
 class BooookApplication
 
 fun main(args: Array<String>) {
