@@ -62,11 +62,12 @@ internal class PaymentServiceTest {
 
         val paymentRequest = PaymentRequest(
             bookId = notExistsBookId,
+            userId = me.id!!
         )
 
         assertThrows(
             IllegalArgumentException::class.java
-        ) { paymentService.pay(loginUser = me, paymentRequest = paymentRequest) }
+        ) { paymentService.pay( paymentRequest = paymentRequest) }
     }
 
     @Test
@@ -91,6 +92,7 @@ internal class PaymentServiceTest {
 
         val myPaymentRequest = PaymentRequest(
             bookId = othersBookId,
+            userId = me.id!!
         )
 
         every {
@@ -100,7 +102,7 @@ internal class PaymentServiceTest {
         // when, then
         assertThrows(
             IllegalArgumentException::class.java,
-        ) { paymentService.pay(loginUser = me, paymentRequest = myPaymentRequest) }
+        ) { paymentService.pay( paymentRequest = myPaymentRequest) }
     }
 
     @Test
@@ -129,6 +131,7 @@ internal class PaymentServiceTest {
 
         val myPaymentRequest = PaymentRequest(
             bookId = myBookId,
+            userId = me.id!!
         )
 
         every {
@@ -137,7 +140,6 @@ internal class PaymentServiceTest {
 
         // when
         paymentService.pay(
-            loginUser = me,
             paymentRequest = myPaymentRequest
         )
 
@@ -155,6 +157,7 @@ internal class PaymentServiceTest {
 
         val notPayableRequest = PaymentRequest(
             bookId = notPayableId,
+            userId = me.id!!
         )
 
         val notPayableEntity = BookEntity.of(
@@ -173,7 +176,6 @@ internal class PaymentServiceTest {
             IllegalArgumentException::class.java
         ) {
             paymentService.pay(
-                loginUser = me,
                 paymentRequest = notPayableRequest,
             )
         }

@@ -22,7 +22,6 @@ class PaymentService(
     private val paymentRepository: PaymentRepository
 ) {
     fun pay(
-        loginUser: UserEntity,
         paymentRequest: PaymentRequest
     ): PaymentResponse {
         val book = bookRepository.findById(paymentRequest.bookId)
@@ -31,7 +30,7 @@ class PaymentService(
             }
 
         verifyBook(
-            loginUser = loginUser,
+            loginUserId = paymentRequest.userId,
             book = book
         )
 
@@ -43,10 +42,10 @@ class PaymentService(
     }
 
     internal fun verifyBook(
-        loginUser: UserEntity,
+        loginUserId: Long,
         book: BookEntity
     ) {
-        if (book.user.id != loginUser.id)
+        if (book.user.id != loginUserId)
             throw IllegalArgumentException("나의 예약이 아닙니다.")
 
         if (book.status != BOOKED)
