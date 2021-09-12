@@ -29,11 +29,12 @@ class PaymentService(
                 IllegalArgumentException("해당 예약이 없습니다.")
             }
 
-        verifyBook(
+        verifyOwnBook(
             loginUserId = paymentRequest.userId,
             book = book
         )
 
+        book.pay()
         val paymentEntity = PaymentEntity.of(book)
 
         return PaymentResponse(
@@ -41,14 +42,11 @@ class PaymentService(
         )
     }
 
-    internal fun verifyBook(
+    internal fun verifyOwnBook(
         loginUserId: Long,
         book: BookEntity
     ) {
         if (book.user.id != loginUserId)
             throw IllegalArgumentException("나의 예약이 아닙니다.")
-
-        if (book.status != BOOKED)
-            throw IllegalArgumentException("결제 가능한 상태가 아닙니다.")
     }
 }

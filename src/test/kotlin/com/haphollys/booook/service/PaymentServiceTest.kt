@@ -16,6 +16,7 @@ import com.haphollys.booook.service.dto.PaymentDto.PaymentRequest
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
+import io.mockk.spyk
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
@@ -106,11 +107,11 @@ internal class PaymentServiceTest {
     }
 
     @Test
-    fun `결제 시 결제 엔티티가 생성된다`() {
+    fun `결제 테스트`() {
         // given
         val myBookId = 1L
 
-        val myBookEntity = BookEntity.of(
+        val myBookEntity = spyk(BookEntity.of(
             id = myBookId,
             user = me,
             screen = testScreen,
@@ -123,7 +124,7 @@ internal class PaymentServiceTest {
                     seatType = FRONT
                 )
             )
-        )
+        ))
 
         every {
             bookRepository.findById(myBookId)
@@ -144,6 +145,10 @@ internal class PaymentServiceTest {
         )
 
         // then
+        verify (atLeast = 1) {
+            myBookEntity.pay()
+        }
+
         verify (atLeast = 1) {
             paymentRepository.save(any())
         }
@@ -179,5 +184,10 @@ internal class PaymentServiceTest {
                 paymentRequest = notPayableRequest,
             )
         }
+    }
+
+    @Test
+    fun `결제 시 예약 엔티티가 결제 상태로 바뀐다`() {
+
     }
 }
