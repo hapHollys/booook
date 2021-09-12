@@ -23,10 +23,12 @@ class PaymentEntity(
     }
 
     companion object {
-        fun of(book: BookEntity): PaymentEntity {
-            return PaymentEntity(
+        fun of(book: BookEntity, priceList: Map<RoomType, Map<SeatType, Int>>): PaymentEntity {
+            val payment = PaymentEntity(
                 book = book
             )
+            payment.setTotalAmount(priceList)
+            return payment
         }
     }
 }

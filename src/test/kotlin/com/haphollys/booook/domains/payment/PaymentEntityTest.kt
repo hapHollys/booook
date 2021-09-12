@@ -10,6 +10,7 @@ import com.haphollys.booook.domains.screen.Seat.SeatType
 import com.haphollys.booook.domains.screen.Seat.SeatType.*
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
+import com.haphollys.booook.model.PriceList
 import com.haphollys.booook.model.SeatPosition
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -17,17 +18,8 @@ import org.junit.jupiter.api.Test
 
 internal class PaymentEntityTest {
 
-    var priceList: Map<RoomType, Map<SeatType, Int>> = mapOf()
-
     @BeforeEach
     fun setUp() {
-        priceList = mapOf(
-            TWO_D to mapOf(
-                FRONT to 1000,
-                MIDDLE to 2000,
-                BACK to 3000
-            ),
-        )
     }
 
     @Test
@@ -71,10 +63,10 @@ internal class PaymentEntityTest {
         )
 
         // when
-        val payment = PaymentEntity(
-            book = book
+        val payment = PaymentEntity.of(
+            book = book,
+            priceList = PriceList().table
         )
-        payment.setTotalAmount(priceList)
 
         // then
         assertEquals(payment.totalAmount, 1000)
