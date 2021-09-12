@@ -51,4 +51,6 @@ class PaymentService(
         if (book.status != BOOKED)
             throw IllegalArgumentException("결제 가능한 상태가 아닙니다.")
     }
+
+    // TODO : 결제 내역 조회, 결제 취소
 }

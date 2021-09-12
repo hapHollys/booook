@@ -1,27 +1,23 @@
 package com.haphollys.booook.batch
 
 import com.haphollys.booook.domains.book.BookEntity
-import org.springframework.batch.core.*
+import org.springframework.batch.core.Job
+import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
-import org.springframework.batch.core.configuration.annotation.JobScope
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepScope
-import org.springframework.batch.core.launch.JobLauncher
-import org.springframework.batch.item.ExecutionContext
 import org.springframework.batch.item.ItemProcessor
-import org.springframework.batch.item.ItemWriter
 import org.springframework.batch.item.database.JpaCursorItemReader
 import org.springframework.batch.item.database.JpaItemWriter
-import org.springframework.batch.item.database.JpaPagingItemReader
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import java.time.LocalDateTime
 import java.util.*
-import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
 
 
+@Profile("deploy")
 @Configuration
 class RemoveUnPaidBookJob(
     private val jobBuilder: JobBuilderFactory,
