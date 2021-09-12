@@ -4,6 +4,7 @@ import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookEntity.BookStatus.BOOKED
 import com.haphollys.booook.domains.payment.PaymentEntity
 import com.haphollys.booook.domains.user.UserEntity
+import com.haphollys.booook.model.PriceList
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
 import com.haphollys.booook.repository.UserRepository
@@ -19,7 +20,8 @@ import java.lang.RuntimeException
 @Transactional
 class PaymentService(
     private val bookRepository: BookRepository,
-    private val paymentRepository: PaymentRepository
+    private val paymentRepository: PaymentRepository,
+    private val priceList: PriceList,
 ) {
     fun pay(
         paymentRequest: PaymentRequest
@@ -35,7 +37,7 @@ class PaymentService(
         )
 
         book.pay()
-        val paymentEntity = PaymentEntity.of(book)
+        val paymentEntity = PaymentEntity.of(book, priceList.table)
 
         return PaymentResponse(
             paymentId = paymentRepository.save(paymentEntity).id!!

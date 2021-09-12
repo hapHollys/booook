@@ -8,6 +8,7 @@ import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.getTestScreenEntity
+import com.haphollys.booook.model.PriceList
 import com.haphollys.booook.model.SeatPosition
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
@@ -49,7 +50,8 @@ internal class PaymentServiceTest {
 
         paymentService = PaymentService(
             bookRepository = bookRepository,
-            paymentRepository = paymentRepository
+            paymentRepository = paymentRepository,
+            priceList = PriceList(),
         )
     }
 
