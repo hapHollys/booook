@@ -32,6 +32,11 @@ internal class PaymentServiceTest {
     private lateinit var other: UserEntity
     private lateinit var testScreen: ScreenEntity
 
+    private lateinit var myBookEntity: BookEntity
+    private val myBookId = 1L
+    private lateinit var otherBookEntity: BookEntity
+    private val otherBookId = 2L
+
     private lateinit var userRepository: UserRepository
     private lateinit var bookRepository: BookRepository
     private lateinit var paymentRepository: PaymentRepository
@@ -43,6 +48,36 @@ internal class PaymentServiceTest {
         me = UserEntity(id = 1L, name = "ME_USER")
         other = UserEntity(id = 2L, name = "OTHER_USER")
         testScreen = getTestScreenEntity()
+
+        myBookEntity = spyk(BookEntity.of(
+            id = myBookId,
+            user = me,
+            screen = testScreen,
+            bookedSeats = listOf(
+                BookedSeat(
+                    SeatPosition(
+                        x = 0,
+                        y = 0,
+                    ),
+                    seatType = FRONT
+                )
+            )
+        ))
+
+        otherBookEntity = BookEntity.of(
+            id = otherBookId,
+            user = other,
+            screen = testScreen,
+            bookedSeats = listOf(
+                BookedSeat(
+                    SeatPosition(
+                        x = 0,
+                        y = 0,
+                    ),
+                    seatType = FRONT
+                )
+            )
+        )
 
         userRepository = mockk()
         bookRepository = mockk()
@@ -76,31 +111,14 @@ internal class PaymentServiceTest {
     @Test
     fun `본인이 예약한 좌석이 아니면 Exception`() {
         // given
-        val othersBookId = 1L
-
-        val othersBookEntity = BookEntity.of(
-            id = othersBookId,
-            user = other,
-            screen = testScreen,
-            bookedSeats = listOf(
-                BookedSeat(
-                    SeatPosition(
-                        x = 0,
-                        y = 0,
-                    ),
-                    seatType = FRONT
-                )
-            )
-        )
-
         val myPaymentRequest = PaymentRequest(
-            bookId = othersBookId,
+            bookId = otherBookId,
             userId = me.id!!
         )
 
         every {
-            bookRepository.findById(othersBookId)
-        } returns Optional.of(othersBookEntity)
+            bookRepository.findById(otherBookId)
+        } returns Optional.of(otherBookEntity)
 
         // when, then
         assertThrows(
@@ -111,23 +129,6 @@ internal class PaymentServiceTest {
     @Test
     fun `결제 테스트`() {
         // given
-        val myBookId = 1L
-
-        val myBookEntity = spyk(BookEntity.of(
-            id = myBookId,
-            user = me,
-            screen = testScreen,
-            bookedSeats = listOf(
-                BookedSeat(
-                    SeatPosition(
-                        x = 0,
-                        y = 0,
-                    ),
-                    seatType = FRONT
-                )
-            )
-        ))
-
         every {
             bookRepository.findById(myBookId)
         } returns Optional.of(myBookEntity)
