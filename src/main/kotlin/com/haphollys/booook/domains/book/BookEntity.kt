@@ -1,9 +1,9 @@
 package com.haphollys.booook.domains.book
 
-import com.haphollys.booook.domains.book.BookEntity.BookStatus.BOOKED
-import com.haphollys.booook.domains.book.BookEntity.BookStatus.CANCEL
+import com.haphollys.booook.domains.book.BookEntity.BookStatus.*
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
+import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -33,6 +33,12 @@ class BookEntity(
         this.status = CANCEL
     }
 
+    fun pay() {
+        verifyPayableStatus()
+
+        this.status = PAID
+    }
+
     private fun verifyUnBookableStatus() {
         if (this.status != BOOKED)
             throw IllegalStateException("예약 취소 가능한 상태가 아닙니다.")
@@ -47,6 +53,11 @@ class BookEntity(
 
         if (deadline.isAfter(screen.date))
             throw RuntimeException("예약 가능한 시간이 지났습니다.")
+    }
+
+    private fun verifyPayableStatus() {
+        if (status != BOOKED)
+            throw IllegalArgumentException("결제 가능한 상태가 아닙니다.")
     }
 
     enum class BookStatus {
