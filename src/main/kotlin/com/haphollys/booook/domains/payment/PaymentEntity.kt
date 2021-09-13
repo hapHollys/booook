@@ -39,4 +39,23 @@ class PaymentEntity(
             return payment
         }
     }
+
+    fun unPay() {
+        verifyUnPayable()
+
+        this.status = CANCEL
+        this.book.unBook()
+
+        this.book.screen.unBookSeats(
+            this.book.bookedSeats.map {
+                it.seatPosition
+            }
+        )
+    }
+
+    internal fun verifyUnPayable() {
+        if (status != PAID) {
+            throw IllegalArgumentException("취소 가능한 상태가 아닙니다")
+        }
+    }
 }
