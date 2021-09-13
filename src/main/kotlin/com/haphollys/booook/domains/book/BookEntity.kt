@@ -7,6 +7,7 @@ import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
 import java.time.LocalDateTime
 import javax.persistence.*
+import javax.persistence.EnumType.STRING
 
 @Table(name = "books")
 @Entity
@@ -21,6 +22,7 @@ class BookEntity(
     var bookedAt: LocalDateTime = LocalDateTime.now(),
     @ElementCollection
     var bookedSeats: List<BookedSeat>,
+    @Enumerated(value = STRING)
     var status: BookStatus = BOOKED
 ) {
     init {
