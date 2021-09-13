@@ -5,8 +5,8 @@ import java.time.LocalDateTime
 
 class BookDto() {
     data class BookRequest(
-        val screenId: Long,
         val userId: Long,
+        val screenId: Long,
         val seats: List<SeatDto>
     )
 
@@ -30,7 +30,7 @@ class BookDto() {
     )
 
     data class UnBookRequest(
+        val userId: Long,
         val bookId: Long,
-        val userId: Long
     )
 }
