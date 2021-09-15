@@ -34,13 +34,6 @@ class BookService(
         val foundScreen = screenRepository.findById(request.screenId)
             .orElseThrow { RuntimeException("없는 상영 입니다.") }
 
-        // TODO: bookEntity 내에서 호출하도록
-        foundScreen.bookSeats(
-            request.seats.map {
-                it.toSeatPosition()
-            }
-        )
-
         val bookEntity = BookEntity.of(
             user = foundUser,
             screen = foundScreen,
@@ -94,13 +87,6 @@ class BookService(
             book = foundBook
         )
         foundBook.unBook()
-
-        // TODO: bookEntity 내에서 호출하도록
-        foundBook.screen.unBookSeats(
-            foundBook.bookedSeats.map {
-                it.seatPosition
-            }
-        )
     }
 
     internal fun verifyOwnBook(

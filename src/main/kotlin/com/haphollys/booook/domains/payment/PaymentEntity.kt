@@ -45,12 +45,6 @@ class PaymentEntity(
 
         this.status = CANCEL
         this.book.unBook()
-
-        this.book.screen.unBookSeats(
-            this.book.bookedSeats.map {
-                it.seatPosition
-            }
-        )
     }
 
     internal fun verifyUnPayable() {
