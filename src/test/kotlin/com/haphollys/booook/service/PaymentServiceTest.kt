@@ -71,8 +71,8 @@ internal class PaymentServiceTest {
             bookedSeats = listOf(
                 BookedSeat(
                     SeatPosition(
-                        x = 0,
-                        y = 0,
+                        x = 1,
+                        y = 1,
                     ),
                     seatType = FRONT
                 )
