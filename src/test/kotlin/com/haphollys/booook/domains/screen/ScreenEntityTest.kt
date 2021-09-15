@@ -2,17 +2,49 @@ package com.haphollys.booook.domains.screen
 
 import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.SeatPosition
+import io.mockk.spyk
+import io.mockk.verify
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.springframework.boot.test.context.SpringBootTest
 
 internal class ScreenEntityTest {
-
     lateinit var screenEntity: ScreenEntity
 
     @BeforeEach
     fun setUp() {
         screenEntity = getTestScreenEntity()
+        screenEntity.screenRoom = spyk(screenEntity.screenRoom)
+    }
+
+    @Test
+    fun `한 좌석 예약`() {
+        // given
+        val bookPosition = SeatPosition(x = 0, y = 0)
+
+        // when
+        screenEntity.bookSeats(listOf(bookPosition))
+
+        // then
+        verify {
+            screenEntity.screenRoom.book(bookPosition)
+        }
+    }
+
+    @Test
+    fun `한 좌석 예약 취소`() {
+        // given
+        val bookPosition = SeatPosition(x = 0, y = 0)
+        screenEntity.bookSeats(listOf(bookPosition))
+
+        // when
+        screenEntity.unBookSeats(listOf(bookPosition))
+
+        // then
+        verify {
+            screenEntity.screenRoom.unBook(bookPosition)
+        }
     }
 
     @Test
