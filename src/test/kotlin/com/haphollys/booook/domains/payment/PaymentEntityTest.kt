@@ -2,14 +2,9 @@ package com.haphollys.booook.domains.payment
 
 import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookedSeat
-import com.haphollys.booook.domains.movie.MovieEntity
 import com.haphollys.booook.domains.payment.PaymentEntity.Status.CANCEL
-import com.haphollys.booook.domains.room.RoomEntity
-import com.haphollys.booook.domains.room.RoomEntity.RoomType
-import com.haphollys.booook.domains.room.RoomEntity.RoomType.*
-import com.haphollys.booook.domains.screen.Seat.SeatType
-import com.haphollys.booook.domains.screen.Seat.SeatType.*
 import com.haphollys.booook.domains.screen.ScreenEntity
+import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
 import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.PriceList
@@ -17,6 +12,7 @@ import com.haphollys.booook.model.SeatPosition
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -64,12 +60,6 @@ internal class PaymentEntityTest {
     @Test
     fun `결제 취소`() {
         // given
-        testBook.screen.bookSeats(
-            testBook.bookedSeats.map {
-                it.seatPosition
-            }
-        )
-
         val payment = PaymentEntity.of(
             book = testBook,
             priceList = PriceList().table
@@ -85,6 +75,21 @@ internal class PaymentEntityTest {
         // bookEntity 의 unbook 호출
         verify {
             testBook.unBook()
+        }
+    }
+
+    @Test
+    fun `이미 취소된 결제 취소 시 예외`() {
+        // given
+        val payment = PaymentEntity.of(
+            book = testBook,
+            priceList = PriceList().table
+        )
+        payment.unPay()
+
+        // when, then
+        assertThrows(IllegalArgumentException::class.java) {
+            payment.unPay()
         }
     }
 }

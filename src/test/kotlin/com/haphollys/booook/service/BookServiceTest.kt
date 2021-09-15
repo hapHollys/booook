@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
+import java.lang.RuntimeException
 import java.util.*
 
 @ExtendWith(MockKExtension::class)
@@ -64,26 +65,9 @@ internal class BookServiceTest {
     @Test
     fun `예약 시 예약 엔티티가 생성된다`() {
         // given
-        val bookedSeats = listOf(
-            BookedSeat(
-                SeatPosition(
-                    x = 0,
-                    y = 0,
-                ),
-                seatType = FRONT
-            )
-        )
-
-        val bookEntity = BookEntity.of(
-            id = 1L,
-            user = testUser,
-            screen = testScreen,
-            bookedSeats = bookedSeats
-        )
-
         every {
             bookRepository.save(any())
-        } returns bookEntity
+        } returns mockk<BookEntity>(relaxed = true)
 
         val userId = 0L
         val screenId = 0L
@@ -101,122 +85,6 @@ internal class BookServiceTest {
 
         // then
         verify(atLeast = 1) { bookRepository.save(any()) }
-    }
-
-    @Test
-    fun `예약시 좌석의 상태가 예약됨으로 바뀐다`() {
-        // given
-        val bookedSeats = listOf(
-            BookedSeat(
-                SeatPosition(
-                    x = 0,
-                    y = 0
-                ),
-                seatType = FRONT
-            )
-        )
-
-        val bookEntity = BookEntity.of(
-            id = 1L,
-            user = testUser,
-            screen = testScreen,
-            bookedSeats = bookedSeats
-        )
-
-        every {
-            bookRepository.save(any())
-        } returns bookEntity
-
-        every {
-            bookRepository.findById(any())
-        } returns Optional.of(bookEntity)
-
-        val userId = 0L
-        val screenId = 0L
-        val seats = listOf(
-            SeatDto(0, 0, FRONT),
-            SeatDto(0, 1, FRONT)
-        )
-
-        val bookRequest = BookRequest(
-            screenId = screenId,
-            userId = userId,
-            seats = seats
-        )
-
-        // when
-        val response = bookService.book(bookRequest)
-
-        // then
-        testScreen.screenRoom.seats.forEach {
-            run {
-                var isBookedSeat = false
-                seats.forEach { it2: SeatDto ->
-                    run {
-                        if (it.seatPosition == it2.toSeatPosition()) {
-                            isBookedSeat = true
-                            assertEquals(BOOKED, it.status)
-                        }
-                    }
-                }
-                if (!isBookedSeat) {
-                    assertEquals(FREE, it.status)
-                }
-            }
-        }
-
-    }
-
-    @Test
-    fun `이미 예약된 좌석은 예약할 수 없다`() {
-        // given
-        val bookedSeats = listOf(
-            BookedSeat(
-                SeatPosition(
-                    x = 0,
-                    y = 0,
-                ),
-                seatType = FRONT
-            )
-        )
-
-        val bookEntity = BookEntity.of(
-            id = 1L,
-            user = testUser,
-            screen = testScreen,
-            bookedSeats = bookedSeats
-        )
-
-        every {
-            bookRepository.save(any())
-        } returns bookEntity
-
-        every {
-            bookRepository.findById(any())
-        } returns Optional.of(bookEntity)
-
-        val userId = 0L
-        val screenId = 0L
-        val seats = listOf(
-            SeatDto(0, 0, FRONT),
-            SeatDto(0, 1, FRONT)
-        )
-
-        val bookRequest = BookRequest(
-            screenId = screenId,
-            userId = userId,
-            seats = seats
-        )
-
-        seats.forEach {
-            testScreen.screenRoom.getSeat(it.toSeatPosition()).book()
-        }
-
-        // then
-        assertThrows(
-            RuntimeException::class.java
-        ) { bookService.book(bookRequest) }
-
     }
 
     // TODO 빈 예약시 Excetpion 테스트 추가
@@ -269,38 +137,14 @@ internal class BookServiceTest {
         }
     }
 
-    // 이미 취소 되었거나, 결제된 경우 익셉션
-    @Test
-    fun `이미 취소된 예약 취소시 예외`() {
-        // given
-        val bookId = 1L
-        val book = makeBookedSeatBookEntity(bookId)
-
-        val unBookRequest = UnBookRequest(
-            bookId = bookId,
-            userId = testUser.id!!
-        )
-
-        every {
-            bookRepository.findById(bookId)
-        } returns Optional.of(book)
-
-        bookService.unBook(unBookRequest)
-
-        // when, then
-        assertThrows(
-            IllegalStateException::class.java
-        ) { bookService.unBook(unBookRequest) }
-    }
-
 //    @Test
 //    fun `이미 결제된 예약 취소시 예외`() {
-        // given
+    // given
 //        makeBookedSeatBookEntity()
 //
-        // when
+    // when
 //
-        // then
+    // then
 //    }
 
     // 유저가 예약한 것이 아닌 경우 익셉션
@@ -321,29 +165,31 @@ internal class BookServiceTest {
         } returns Optional.of(myBook)
 
         // when, then
-        assertThrows (IllegalArgumentException::class.java) {
+        assertThrows(IllegalArgumentException::class.java) {
             bookService.unBook(unBookRequest)
         }
     }
 
-    private fun makeBookedSeatBookEntity(bookId: Long): BookEntity {
-        val bookPosition = SeatPosition(x = 0, y = 0)
+    private fun makeBookedSeatBookEntity(
+        bookId: Long = 1L,
+        bookedSeats: List<BookedSeat> = listOf(
+            BookedSeat(
+                seatPosition = SeatPosition(x = 0, y = 0),
+                seatType = FRONT
+            ),
+        )
+    ): BookEntity {
         val book = spyk(
             BookEntity.of(
                 id = bookId,
                 user = testUser,
                 screen = testScreen,
-                bookedSeats = listOf(
-                    BookedSeat(
-                        seatPosition = bookPosition,
-                        seatType = FRONT
-                    ),
-                )
+                bookedSeats = bookedSeats
             )
         )
 
-        testScreen.screenRoom.getSeat(bookPosition)
-            .book()
+//        testScreen.screenRoom.getSeat(bookPosition)
+//            .book()
 
         return book
     }
