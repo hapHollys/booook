@@ -16,7 +16,15 @@ class ScreenRoom(
     // @CollectionTable(name="") TODO: 관계 테이블 이름 명시적으로 지정하기
     var seats: List<Seat>
 ) {
-    fun getSeat(
+    fun book(bookSeatPosition: SeatPosition) {
+        getSeat(bookSeatPosition).book()
+    }
+
+    fun unBook(bookSeatPosition: SeatPosition) {
+        getSeat(bookSeatPosition).unBook()
+    }
+
+    private fun getSeat(
         seatPosition: SeatPosition
     ): Seat {
         var seat : Seat? = null

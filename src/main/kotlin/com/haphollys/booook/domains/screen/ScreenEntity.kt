@@ -18,18 +18,18 @@ class ScreenEntity(
     var screenRoom: ScreenRoom,
     var date: LocalDateTime = LocalDateTime.now()
 ) {
-    fun bookSeat(
-        bookSeatPosition: SeatPosition
-    ){
-        screenRoom.getSeat(bookSeatPosition).book()
-    }
-
     fun bookSeats(
         bookSeats: List<SeatPosition>
     ) {
         bookSeats.forEach{
             bookSeat(it)
         }
+    }
+
+    private fun bookSeat(
+        bookSeatPosition: SeatPosition
+    ){
+        screenRoom.book(bookSeatPosition)
     }
 
     fun unBookSeats(
@@ -41,7 +41,7 @@ class ScreenEntity(
     }
 
     private fun unBookSeat(bookSeatPosition: SeatPosition) {
-        screenRoom.getSeat(bookSeatPosition).unBook()
+        screenRoom.unBook(bookSeatPosition)
     }
 
     fun getBookableSeats(): List<Seat> {
