@@ -83,6 +83,33 @@ internal class BookEntityTest {
     }
 
     @Test
+    fun `이미 결제된 예약 취소 시 예외`() {
+        // given
+        val bookedSeats = listOf(
+            BookedSeat(
+                SeatPosition(
+                    x = 0,
+                    y = 0
+                ),
+                seatType = FRONT
+            )
+        )
+        val bookEntity = BookEntity.of(
+            id = 1L,
+            user = testUser,
+            screen = testScreen,
+            bookedSeats = bookedSeats,
+        )
+        bookEntity.pay()
+
+        // when, then
+
+        assertThrows(
+            IllegalStateException::class.java
+        ) { bookEntity.unBook() }
+    }
+
+    @Test
     fun `결제`() {
         // given
         val bookedSeats = listOf(

@@ -80,4 +80,35 @@ internal class SeatTest {
             freeSeat.unBook()
         }
     }
+
+    @Test
+    fun `예약 가능 상태 확인`() {
+        // given
+        val seat = Seat(
+            seatPosition = SeatPosition(
+                x = 0,
+                y = 0,
+            ),
+            seatType = FRONT
+        )
+
+        // when, then
+        assertEquals(true, seat.bookable())
+    }
+
+    @Test
+    fun `예약 불가능 상태 확인`() {
+        // given
+        val seat = Seat(
+            seatPosition = SeatPosition(
+                x = 0,
+                y = 0,
+            ),
+            seatType = FRONT
+        )
+        seat.book()
+
+        // when, then
+        assertEquals(false, seat.bookable())
+    }
 }

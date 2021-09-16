@@ -91,7 +91,7 @@ internal class PaymentServiceTest {
     }
 
     @Test
-    fun `예약된 좌석이 아니면 결제할 수 있다`() {
+    fun `예약된 좌석이 아니면 결제할 수 없다`() {
         every {
             bookRepository.findById(any())
         } returns Optional.empty()
@@ -157,40 +157,4 @@ internal class PaymentServiceTest {
         }
     }
 
-    @Test
-    fun `결제 가능한 상태가 아니면 결제할 수 없다`() {
-        // given
-        val notPayableId = 1234L
-
-
-        val notPayableRequest = PaymentRequest(
-            bookId = notPayableId,
-            userId = me.id!!
-        )
-
-        val notPayableEntity = BookEntity.of(
-            user = me,
-            screen = testScreen,
-            bookedSeats = listOf(),
-            status = CANCEL
-        )
-
-        every {
-            bookRepository.findById(1234L)
-        } returns Optional.of(notPayableEntity)
-
-        // when
-        assertThrows(
-            IllegalArgumentException::class.java
-        ) {
-            paymentService.pay(
-                paymentRequest = notPayableRequest,
-            )
-        }
-    }
-
-    @Test
-    fun `결제 시 예약 엔티티가 결제 상태로 바뀐다`() {
-
-    }
 }

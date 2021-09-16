@@ -29,7 +29,6 @@ import java.util.*
 
 @ExtendWith(MockKExtension::class)
 internal class BookServiceTest {
-    //    private lateinit var paymentRepository: PaymentRepository
     private lateinit var bookRepository: BookRepository
     private lateinit var screenRepository: ScreenRepository
     private lateinit var userRepository: UserRepository
@@ -87,8 +86,6 @@ internal class BookServiceTest {
         verify(atLeast = 1) { bookRepository.save(any()) }
     }
 
-    // TODO 빈 예약시 Excetpion 테스트 추가
-
     @Test
     fun `예약 내역 조회 메소드 호출`() {
         // given
@@ -137,17 +134,6 @@ internal class BookServiceTest {
         }
     }
 
-//    @Test
-//    fun `이미 결제된 예약 취소시 예외`() {
-    // given
-//        makeBookedSeatBookEntity()
-//
-    // when
-//
-    // then
-//    }
-
-    // 유저가 예약한 것이 아닌 경우 익셉션
     @Test
     fun `유저의 예약이 아닌 경우 예약 취소시 예외`() {
         // given
@@ -187,9 +173,6 @@ internal class BookServiceTest {
                 bookedSeats = bookedSeats
             )
         )
-
-//        testScreen.screenRoom.getSeat(bookPosition)
-//            .book()
 
         return book
     }
