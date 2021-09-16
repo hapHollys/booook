@@ -4,7 +4,10 @@ import com.haphollys.booook.presentation.Response
 import com.haphollys.booook.service.ScreenService
 import com.haphollys.booook.service.dto.ScreenDto
 import com.haphollys.booook.service.dto.ScreenDto.GetBookableSeatsResponse
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1/screens")

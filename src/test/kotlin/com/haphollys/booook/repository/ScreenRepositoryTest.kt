@@ -1,13 +1,7 @@
 package com.haphollys.booook.repository
 
-import com.haphollys.booook.domains.book.BookEntity
-import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.movie.MovieEntity
-import com.haphollys.booook.domains.screen.ScreenEntity
-import com.haphollys.booook.domains.screen.Seat
-import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.getTestScreenEntity
-import com.haphollys.booook.model.SeatPosition
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.BeforeEach

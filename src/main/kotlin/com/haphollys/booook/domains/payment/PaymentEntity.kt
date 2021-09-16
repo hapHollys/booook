@@ -1,7 +1,8 @@
 package com.haphollys.booook.domains.payment
 
 import com.haphollys.booook.domains.book.BookEntity
-import com.haphollys.booook.domains.payment.PaymentEntity.Status.*
+import com.haphollys.booook.domains.payment.PaymentEntity.Status.CANCEL
+import com.haphollys.booook.domains.payment.PaymentEntity.Status.PAID
 import com.haphollys.booook.domains.room.RoomEntity.RoomType
 import com.haphollys.booook.domains.screen.Seat.SeatType
 import javax.persistence.*

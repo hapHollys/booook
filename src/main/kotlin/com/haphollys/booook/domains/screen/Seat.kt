@@ -3,7 +3,6 @@ package com.haphollys.booook.domains.screen
 import com.haphollys.booook.domains.screen.Seat.SeatStatus.BOOKED
 import com.haphollys.booook.domains.screen.Seat.SeatStatus.FREE
 import com.haphollys.booook.model.SeatPosition
-import java.lang.RuntimeException
 import javax.persistence.Embeddable
 import javax.persistence.Embedded
 import javax.persistence.EnumType

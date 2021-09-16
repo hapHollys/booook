@@ -2,29 +2,25 @@ package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookedSeat
-import com.haphollys.booook.domains.screen.Seat.SeatStatus.BOOKED
-import com.haphollys.booook.domains.screen.Seat.SeatStatus.FREE
-import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
 import com.haphollys.booook.domains.screen.ScreenEntity
+import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
 import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.SeatPosition
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.ScreenRepository
 import com.haphollys.booook.repository.UserRepository
-import com.haphollys.booook.service.dto.BookDto
 import com.haphollys.booook.service.dto.BookDto.*
 import com.haphollys.booook.service.dto.SeatDto
-import io.mockk.*
+import io.mockk.every
 import io.mockk.junit5.MockKExtension
-import org.junit.jupiter.api.Assertions.assertEquals
+import io.mockk.mockk
+import io.mockk.spyk
+import io.mockk.verify
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
-import java.lang.IllegalArgumentException
-import java.lang.IllegalStateException
-import java.lang.RuntimeException
 import java.util.*
 
 @ExtendWith(MockKExtension::class)

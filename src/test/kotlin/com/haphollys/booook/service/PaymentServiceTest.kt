@@ -1,11 +1,10 @@
 package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.book.BookEntity
-import com.haphollys.booook.domains.book.BookEntity.BookStatus.CANCEL
 import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.payment.PaymentEntity
-import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
 import com.haphollys.booook.domains.screen.ScreenEntity
+import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
 import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.PriceList

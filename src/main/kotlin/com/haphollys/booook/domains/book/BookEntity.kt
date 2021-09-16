@@ -3,8 +3,6 @@ package com.haphollys.booook.domains.book
 import com.haphollys.booook.domains.book.BookEntity.BookStatus.*
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
-import java.lang.IllegalArgumentException
-import java.lang.IllegalStateException
 import java.time.LocalDateTime
 import javax.persistence.*
 import javax.persistence.EnumType.STRING

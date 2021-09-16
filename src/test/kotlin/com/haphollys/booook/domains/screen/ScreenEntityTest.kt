@@ -4,10 +4,10 @@ import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.SeatPosition
 import io.mockk.spyk
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
 
 internal class ScreenEntityTest {
     lateinit var screenEntity: ScreenEntity

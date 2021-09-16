@@ -1,9 +1,11 @@
 package com.haphollys.booook.domains.screen
 
-import com.haphollys.booook.domains.room.RoomEntity
 import com.haphollys.booook.domains.room.RoomEntity.RoomType
 import com.haphollys.booook.model.SeatPosition
-import javax.persistence.*
+import javax.persistence.ElementCollection
+import javax.persistence.Embeddable
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
 
 @Embeddable
 class ScreenRoom(

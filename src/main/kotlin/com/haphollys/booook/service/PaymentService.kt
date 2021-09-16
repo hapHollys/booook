@@ -1,20 +1,14 @@
 package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.book.BookEntity
-import com.haphollys.booook.domains.book.BookEntity.BookStatus.BOOKED
 import com.haphollys.booook.domains.payment.PaymentEntity
-import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.model.PriceList
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
-import com.haphollys.booook.repository.UserRepository
-import com.haphollys.booook.service.dto.PaymentDto
-import com.haphollys.booook.service.dto.PaymentDto.*
-import org.springframework.beans.factory.annotation.Value
+import com.haphollys.booook.service.dto.PaymentDto.PaymentRequest
+import com.haphollys.booook.service.dto.PaymentDto.PaymentResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.IllegalArgumentException
-import java.lang.RuntimeException
 
 @Service
 @Transactional
