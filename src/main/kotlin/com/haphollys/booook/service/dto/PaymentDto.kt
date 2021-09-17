@@ -9,4 +9,13 @@ class PaymentDto() {
     data class PaymentResponse(
         val paymentId: Long
     )
+
+    data class UnPaymentRequest(
+        val userId: Long,
+        val paymentId: Long,
+    )
+
+    data class UnPaymentResponse(
+        val paymentId: Long,
+    )
 }

@@ -5,8 +5,7 @@ import com.haphollys.booook.domains.payment.PaymentEntity
 import com.haphollys.booook.model.PriceList
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
-import com.haphollys.booook.service.dto.PaymentDto.PaymentRequest
-import com.haphollys.booook.service.dto.PaymentDto.PaymentResponse
+import com.haphollys.booook.service.dto.PaymentDto.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -38,6 +37,26 @@ class PaymentService(
         )
     }
 
+    fun unPay(
+        unPaymentRequest: UnPaymentRequest
+    ): UnPaymentResponse {
+        val payment = paymentRepository.findById(unPaymentRequest.paymentId)
+            .orElseThrow {
+                IllegalArgumentException("해당 결제가 없습니다.")
+            }
+
+        verifyOwnBook(
+            loginUserId = unPaymentRequest.userId,
+            book = payment.book
+        )
+
+        payment.unPay()
+
+        return UnPaymentResponse(
+            paymentId = payment.id!!
+        )
+    }
+
     internal fun verifyOwnBook(
         loginUserId: Long,
         book: BookEntity
@@ -46,5 +65,5 @@ class PaymentService(
             throw IllegalArgumentException("나의 예약이 아닙니다.")
     }
 
-    // TODO : 결제 내역 조회, 결제 취소
+    // TODO : 결제 내역 조회
 }
