@@ -31,9 +31,6 @@ class BookEntity(
         verifyUnBookableStatus()
 
         this.status = CANCEL
-        this.screen.unBookSeats(
-            bookedSeats.map { it.seatPosition }
-        )
     }
 
     fun pay() {

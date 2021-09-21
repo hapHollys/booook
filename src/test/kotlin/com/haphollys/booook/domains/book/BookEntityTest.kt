@@ -1,5 +1,6 @@
 package com.haphollys.booook.domains.book
 
+import com.haphollys.booook.domains.book.BookEntity.BookStatus.CANCEL
 import com.haphollys.booook.domains.book.BookEntity.BookStatus.PAID
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
@@ -28,7 +29,7 @@ internal class BookEntityTest {
     }
 
     @Test
-    fun `좌석 예약취소`() {
+    fun `예약 취소`() {
         // given
         val bookedSeats = listOf(
             BookedSeat(
@@ -50,9 +51,7 @@ internal class BookEntityTest {
         bookEntity.unBook()
 
         // then
-        verify {
-            testScreen.unBookSeats(any())
-        }
+        assertEquals(CANCEL, bookEntity.status)
     }
 
     @Test
