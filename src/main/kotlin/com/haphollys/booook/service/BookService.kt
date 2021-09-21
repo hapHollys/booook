@@ -1,6 +1,6 @@
 package com.haphollys.booook.service
 
-import com.haphollys.booook.domains.book.BookDomainService
+import com.haphollys.booook.domains.book.BookSeatsService
 import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.repository.BookRepository
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class BookService(
-    private val bookDomainService: BookDomainService,
+    private val bookSeatsService: BookSeatsService,
     private val bookRepository: BookRepository,
     private val screenRepository: ScreenRepository,
     private val userRepository: UserRepository,
@@ -29,7 +29,7 @@ class BookService(
         val foundScreen = screenRepository.findById(request.screenId)
             .orElseThrow { RuntimeException("없는 상영 입니다.") }
 
-        val bookEntity = bookDomainService.book(
+        val bookEntity = bookSeatsService.bookSeats(
             user = foundUser,
             screen = foundScreen,
             bookedSeats = request.seats
@@ -82,7 +82,7 @@ class BookService(
             book = foundBook
         )
 
-        bookDomainService.unBook(foundBook)
+        bookSeatsService.unBookSeats(foundBook)
     }
 
     internal fun verifyOwnBook(

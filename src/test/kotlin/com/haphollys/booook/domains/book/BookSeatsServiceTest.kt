@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MockKExtension::class)
-internal class BookDomainServiceTest {
+internal class BookSeatsServiceTest {
 
-    lateinit var bookDomainService: BookDomainService
+    lateinit var bookSeatsService: BookSeatsService
 
     lateinit var testUser: UserEntity
     lateinit var testScreen: ScreenEntity
 
     @BeforeEach
     fun setUp() {
-        bookDomainService = BookDomainService()
+        bookSeatsService = BookSeatsService()
 
         testScreen = spyk(getTestScreenEntity())
         testUser = UserEntity(id = 1L, name = "TEST_USER")
@@ -40,7 +40,7 @@ internal class BookDomainServiceTest {
         mockkObject(BookEntity.Companion)
 
         // when
-        bookDomainService.book(
+        bookSeatsService.bookSeats(
             user = testUser,
             screen = testScreen,
             bookedSeats = bookedSeats
@@ -66,7 +66,7 @@ internal class BookDomainServiceTest {
         val myBook = mockk<BookEntity>(relaxed = true)
 
         // when
-        bookDomainService.unBook(
+        bookSeatsService.unBookSeats(
             book = myBook,
         )
 

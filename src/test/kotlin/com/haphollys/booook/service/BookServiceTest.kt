@@ -1,6 +1,6 @@
 package com.haphollys.booook.service
 
-import com.haphollys.booook.domains.book.BookDomainService
+import com.haphollys.booook.domains.book.BookSeatsService
 import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.screen.ScreenEntity
@@ -32,7 +32,7 @@ internal class BookServiceTest {
 
     private lateinit var bookService: BookService
 
-    private lateinit var bookDomainService: BookDomainService
+    private lateinit var bookSeatsService: BookSeatsService
 
     lateinit var testUser: UserEntity
     lateinit var testScreen: ScreenEntity
@@ -54,11 +54,11 @@ internal class BookServiceTest {
 
         bookRepository = mockk()
 
-        bookDomainService = mockk(relaxed = true)
+        bookSeatsService = mockk(relaxed = true)
 
         bookService = spyk(
             BookService(
-                bookDomainService = bookDomainService,
+                bookSeatsService = bookSeatsService,
                 bookRepository = bookRepository,
                 screenRepository = screenRepository,
                 userRepository = userRepository
@@ -149,7 +149,7 @@ internal class BookServiceTest {
         }
 
         verify(atLeast = 1) {
-            bookDomainService.unBook(book)
+            bookSeatsService.unBookSeats(book)
         }
     }
 

@@ -7,8 +7,8 @@ import java.lang.IllegalArgumentException
 
 
 @Service
-class BookDomainService {
-    fun book(
+class BookSeatsService {
+    fun bookSeats(
         user: UserEntity,
         screen: ScreenEntity,
         bookedSeats: List<BookedSeat>,
@@ -26,7 +26,7 @@ class BookDomainService {
         return bookEntity
     }
 
-    fun unBook(
+    fun unBookSeats(
         book: BookEntity
     ) {
         book.unBook()
