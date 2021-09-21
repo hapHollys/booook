@@ -1,5 +1,6 @@
 package com.haphollys.booook.service
 
+import com.haphollys.booook.domains.book.BookDomainService
 import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.screen.ScreenEntity
@@ -28,7 +29,10 @@ internal class BookServiceTest {
     private lateinit var bookRepository: BookRepository
     private lateinit var screenRepository: ScreenRepository
     private lateinit var userRepository: UserRepository
+
     private lateinit var bookService: BookService
+
+    private lateinit var bookDomainService: BookDomainService
 
     lateinit var testUser: UserEntity
     lateinit var testScreen: ScreenEntity
@@ -50,10 +54,15 @@ internal class BookServiceTest {
 
         bookRepository = mockk()
 
-        bookService = BookService(
-            bookRepository = bookRepository,
-            screenRepository = screenRepository,
-            userRepository = userRepository
+        bookDomainService = mockk(relaxed = true)
+
+        bookService = spyk(
+            BookService(
+                bookDomainService = bookDomainService,
+                bookRepository = bookRepository,
+                screenRepository = screenRepository,
+                userRepository = userRepository
+            )
         )
     }
 
@@ -106,7 +115,7 @@ internal class BookServiceTest {
     fun `예약 취소`() {
         // given
         val bookId = 1L
-        val book = makeBookedSeatBookEntity(bookId)
+        val book = mockk<BookEntity>(relaxed = true)
 
         every {
             bookRepository.findById(bookId)
@@ -117,6 +126,13 @@ internal class BookServiceTest {
             userId = testUser.id!!
         )
 
+        every {
+            bookService.verifyOwnBook(
+                userId = any(),
+                book = any()
+            )
+        } answers { nothing }
+
         // when
         bookService.unBook(request = unBookRequest)
 
@@ -125,8 +141,15 @@ internal class BookServiceTest {
             bookRepository.findById(bookId)
         }
 
+        verify {
+            bookService.verifyOwnBook(
+                userId = testUser.id!!,
+                book = book
+            )
+        }
+
         verify(atLeast = 1) {
-            book.unBook()
+            bookDomainService.unBook(book)
         }
     }
 

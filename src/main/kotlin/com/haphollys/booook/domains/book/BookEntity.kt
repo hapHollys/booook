@@ -75,10 +75,6 @@ class BookEntity(
             bookedSeats: List<BookedSeat>,
             status: BookStatus = BOOKED,
         ): BookEntity{
-            screen.bookSeats(
-                bookedSeats.map { it.seatPosition }
-            )
-
             return BookEntity(
                 id = id,
                 user = user,
