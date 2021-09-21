@@ -71,11 +71,6 @@ internal class PaymentEntityTest {
         // then
         // 결제 엔티티 상태가 취소가 됨
         assertEquals(CANCEL, payment.status)
-
-        // bookEntity 의 unbook 호출
-        verify {
-            testBook.unBook()
-        }
     }
 
     @Test

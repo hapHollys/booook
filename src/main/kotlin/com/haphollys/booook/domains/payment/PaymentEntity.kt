@@ -45,7 +45,6 @@ class PaymentEntity(
         verifyUnPayable()
 
         this.status = CANCEL
-        this.book.unBook()
     }
 
     internal fun verifyUnPayable() {
