@@ -1,6 +1,8 @@
 package com.haphollys.booook.domains.payment
 
 import com.haphollys.booook.domains.book.BookEntity
+import com.haphollys.booook.domains.book.BookSeatsService
+import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.model.PriceList
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -9,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class PaymentDomainService(
     private val priceList: PriceList,
-
+    private val bookSeatsService: BookSeatsService
 ) {
     fun pay(
         book: BookEntity
@@ -22,14 +24,15 @@ class PaymentDomainService(
     }
 
     fun unPay(
-        payment: PaymentEntity
+        payment: PaymentEntity,
+        book: BookEntity,
+        screen: ScreenEntity
     ) {
-        payment.unPay()
-
-        payment.book.unBook()
-
-        payment.book.screen.unBookSeats(
-            payment.book.bookedSeats.map { it.seatPosition }
+        bookSeatsService.unBookSeats(
+            book = book,
+            screen = screen
         )
+
+        payment.unPay()
     }
 }

@@ -1,6 +1,7 @@
 package com.haphollys.booook.domains.payment
 
 import com.haphollys.booook.domains.book.BookEntity
+import com.haphollys.booook.domains.book.BookSeatsService
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -13,13 +14,15 @@ import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MockKExtension::class)
 internal class PaymentDomainServiceTest {
-
+    lateinit var bookSeatsService: BookSeatsService
     lateinit var paymentDomainService: PaymentDomainService
 
     @BeforeEach
     fun setUp() {
+        bookSeatsService = mockk(relaxed = true)
         paymentDomainService = PaymentDomainService(
-            priceList = mockk(relaxed = true)
+            priceList = mockk(relaxed = true),
+            bookSeatsService = bookSeatsService
         )
     }
 
@@ -52,21 +55,24 @@ internal class PaymentDomainServiceTest {
     fun `결제 취소`() {
         // given
         val paymentEntity = mockk<PaymentEntity>(relaxed = true)
+        val bookEntity = mockk<BookEntity>(relaxed = true)
         
         // when
-        paymentDomainService.unPay(payment = paymentEntity)
+        paymentDomainService.unPay(
+            payment = paymentEntity,
+            book = bookEntity,
+            screen = bookEntity.screen
+        )
         
         // then
         verify {
             paymentEntity.unPay()
         }
-
         verify {
-            paymentEntity.book.unBook()
-        }
-
-        verify {
-            paymentEntity.book.screen.unBookSeats(any())
+            bookSeatsService.unBookSeats(
+                book = bookEntity,
+                screen = bookEntity.screen
+            )
         }
     }
 
