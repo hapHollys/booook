@@ -8,6 +8,7 @@ import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.SeatPosition
 import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -55,7 +56,7 @@ internal class BookEntityTest {
     }
 
     @Test
-    fun `이미 취소된 예약 취소시 예외`() {
+    fun `이미 취소된 예약 취소 시 예외`() {
         // given
         val bookedSeats = listOf(
             BookedSeat(
@@ -75,10 +76,11 @@ internal class BookEntityTest {
         bookEntity.unBook()
 
         // when, then
-
         assertThrows(
             IllegalStateException::class.java
-        ) { bookEntity.unBook() }
+        ) {
+            bookEntity.unBook()
+        }
     }
 
     @Test
