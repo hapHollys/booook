@@ -1,6 +1,7 @@
 package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.book.BookEntity
+import com.haphollys.booook.domains.payment.PaymentDomainService
 import com.haphollys.booook.domains.payment.PaymentEntity
 import com.haphollys.booook.model.PriceList
 import com.haphollys.booook.repository.BookRepository
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class PaymentService(
+    private val paymentDomainService: PaymentDomainService,
     private val bookRepository: BookRepository,
     private val paymentRepository: PaymentRepository,
     private val priceList: PriceList,
@@ -26,14 +28,15 @@ class PaymentService(
 
         verifyOwnBook(
             loginUserId = paymentRequest.userId,
+            bookUserId = book.user.id!!
+        )
+
+        val payment = paymentDomainService.pay(
             book = book
         )
 
-        book.pay()
-        val paymentEntity = PaymentEntity.of(book, priceList.table)
-
         return PaymentResponse(
-            paymentId = paymentRepository.save(paymentEntity).id!!
+            paymentId = paymentRepository.save(payment).id!!
         )
     }
 
@@ -47,10 +50,14 @@ class PaymentService(
 
         verifyOwnBook(
             loginUserId = unPaymentRequest.userId,
-            book = payment.book
+            bookUserId = payment.book.user.id!!
         )
 
-        payment.unPay()
+        paymentDomainService.unPay(
+            payment = payment,
+            book = payment.book,
+            screen = payment.book.screen
+        )
 
         return UnPaymentResponse(
             paymentId = payment.id!!
@@ -59,9 +66,9 @@ class PaymentService(
 
     internal fun verifyOwnBook(
         loginUserId: Long,
-        book: BookEntity
+        bookUserId: Long
     ) {
-        if (book.user.id != loginUserId)
+        if (bookUserId != loginUserId)
             throw IllegalArgumentException("나의 예약이 아닙니다.")
     }
 

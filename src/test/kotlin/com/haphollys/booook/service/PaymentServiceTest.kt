@@ -2,9 +2,14 @@ package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookedSeat
+import com.haphollys.booook.domains.payment.PaymentDomainService
 import com.haphollys.booook.domains.payment.PaymentEntity
+import com.haphollys.booook.domains.room.RoomEntity.RoomType
+import com.haphollys.booook.domains.room.RoomEntity.RoomType.*
 import com.haphollys.booook.domains.screen.ScreenEntity
-import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
+import com.haphollys.booook.domains.screen.Seat
+import com.haphollys.booook.domains.screen.Seat.SeatType
+import com.haphollys.booook.domains.screen.Seat.SeatType.*
 import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.PriceList
@@ -12,7 +17,6 @@ import com.haphollys.booook.model.SeatPosition
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
 import com.haphollys.booook.repository.UserRepository
-import com.haphollys.booook.service.dto.PaymentDto
 import com.haphollys.booook.service.dto.PaymentDto.PaymentRequest
 import com.haphollys.booook.service.dto.PaymentDto.UnPaymentRequest
 import io.mockk.every
@@ -28,82 +32,60 @@ import java.util.*
 
 @ExtendWith(MockKExtension::class)
 internal class PaymentServiceTest {
+    val myUserId = 1L
+    val otherUserId = 2L
 
-    private lateinit var me: UserEntity
-    private lateinit var other: UserEntity
-    private lateinit var testScreen: ScreenEntity
+    val myBookId = 3L
+    val otherBookId = 4L
 
-    private lateinit var myBookEntity: BookEntity
-    private val myBookId = 1L
-    private lateinit var otherBookEntity: BookEntity
-    private val otherBookId = 2L
+    private lateinit var priceList: PriceList
 
     private lateinit var userRepository: UserRepository
     private lateinit var bookRepository: BookRepository
     private lateinit var paymentRepository: PaymentRepository
 
+    private lateinit var paymentDomainService: PaymentDomainService
     private lateinit var paymentService: PaymentService
 
     @BeforeEach
     fun setUp() {
-        me = UserEntity(id = 1L, name = "ME_USER")
-        other = UserEntity(id = 2L, name = "OTHER_USER")
-        testScreen = getTestScreenEntity()
-
-        myBookEntity = spyk(
-            BookEntity.of(
-                id = myBookId,
-                user = me,
-                screen = testScreen,
-                bookedSeats = listOf(
-                    BookedSeat(
-                        SeatPosition(
-                            x = 0,
-                            y = 0,
-                        ),
-                        seatType = FRONT
-                    )
-                )
-            )
-        )
-
-        otherBookEntity = BookEntity.of(
-            id = otherBookId,
-            user = other,
-            screen = testScreen,
-            bookedSeats = listOf(
-                BookedSeat(
-                    SeatPosition(
-                        x = 1,
-                        y = 1,
-                    ),
-                    seatType = FRONT
+        priceList = PriceList(
+            mapOf(
+                TWO_D to mapOf(
+                    FRONT to 1000,
+                    MIDDLE to 2000,
+                    BACK to 1000
                 )
             )
         )
 
         userRepository = mockk()
         bookRepository = mockk()
-        paymentRepository = mockk()
+        paymentRepository = mockk(relaxed = true)
 
-        paymentService = PaymentService(
-            bookRepository = bookRepository,
-            paymentRepository = paymentRepository,
-            priceList = PriceList(),
+        paymentDomainService = mockk(relaxed = true)
+        paymentService = spyk(
+            PaymentService(
+                bookRepository = bookRepository,
+                paymentRepository = paymentRepository,
+                priceList = priceList,
+                paymentDomainService = paymentDomainService
+            )
         )
     }
 
     @Test
     fun `예약된 좌석이 아니면 결제할 수 없다`() {
+        val notExistsBookId = 1234L
+
         every {
-            bookRepository.findById(any())
+            bookRepository.findById(notExistsBookId)
         } returns Optional.empty()
 
-        val notExistsBookId = 1234L
 
         val paymentRequest = PaymentRequest(
             bookId = notExistsBookId,
-            userId = me.id!!
+            userId = 1L
         )
 
         assertThrows(
@@ -114,36 +96,46 @@ internal class PaymentServiceTest {
     @Test
     fun `본인이 예약한 좌석이 아니면 Exception`() {
         // given
-        val myPaymentRequest = PaymentRequest(
-            bookId = otherBookId,
-            userId = me.id!!
-        )
+        val otherBook = mockk<BookEntity>(relaxed = true)
+        every {
+            otherBook.user.id
+        } returns otherUserId
 
         every {
             bookRepository.findById(otherBookId)
-        } returns Optional.of(otherBookEntity)
+        } returns Optional.of(otherBook)
+
+        val paymentRequest = PaymentRequest(
+            userId = myUserId,
+            bookId = otherBookId
+        )
 
         // when, then
         assertThrows(
             IllegalArgumentException::class.java,
-        ) { paymentService.pay(paymentRequest = myPaymentRequest) }
+        ) { paymentService.pay(paymentRequest = paymentRequest) }
     }
 
     @Test
     fun `결제 테스트`() {
         // given
+        val myBook = mockk<BookEntity>(relaxed = true)
+        every {
+            myBook.user.id
+        } returns myUserId
+
         every {
             bookRepository.findById(myBookId)
-        } returns Optional.of(myBookEntity)
+        } returns Optional.of(myBook)
 
         val myPaymentRequest = PaymentRequest(
             bookId = myBookId,
-            userId = me.id!!
+            userId = myUserId
         )
 
         every {
             paymentRepository.save(any())
-        } returns PaymentEntity(id = 1L, book = myBookEntity)
+        } returns PaymentEntity(id = 1L, book = myBook)
 
         // when
         paymentService.pay(
@@ -152,7 +144,7 @@ internal class PaymentServiceTest {
 
         // then
         verify(atLeast = 1) {
-            myBookEntity.pay()
+            paymentDomainService.pay(book = myBook)
         }
 
         verify(atLeast = 1) {
@@ -163,42 +155,52 @@ internal class PaymentServiceTest {
     @Test
     fun `결제 취소`() {
         // given
-        val payment = spyk(PaymentEntity(id = 1L, book = myBookEntity))
+        val payment = mockk<PaymentEntity>(relaxed = true)
 
         val unPaymentRequest = UnPaymentRequest(
             paymentId = payment.id!!,
-            userId = me.id!!
+            userId = myUserId
         )
 
         every {
-            paymentRepository.findById(1L)
+            paymentRepository.findById(any())
         } returns Optional.of(payment)
+
+        every {
+            paymentService.verifyOwnBook(loginUserId = any(), bookUserId = any())
+        } returns Unit
 
         // when
         paymentService.unPay(unPaymentRequest)
 
         // then
         verify {
-            payment.unPay()
+            paymentDomainService.unPay(
+                payment = payment,
+                book = payment.book,
+                screen = payment.book.screen
+            )
         }
     }
 
     @Test
     fun `본인의 예약이 아니면 결제 취소 시 Exception`() {
         // given
-        val otherPayment = PaymentEntity(
-            id = 1L,
-            book = otherBookEntity,
-        )
-
-        val myUnPaymentRequest = UnPaymentRequest(
-            paymentId = otherPayment.id!!,
-            userId = me.id!!
-        )
+        val otherPaymentId = 2L
+        val otherPayment = mockk<PaymentEntity>(relaxed = true)
 
         every {
-            paymentRepository.findById(1L)
+            otherPayment.book.user.id
+        } returns otherUserId
+
+        every {
+            paymentRepository.findById(otherPaymentId)
         } returns Optional.of(otherPayment)
+
+        val myUnPaymentRequest = UnPaymentRequest(
+            userId = myUserId,
+            paymentId = otherPaymentId
+        )
 
         // when, then
         assertThrows(
