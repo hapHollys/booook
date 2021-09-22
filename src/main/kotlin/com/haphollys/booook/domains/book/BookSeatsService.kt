@@ -2,6 +2,7 @@ package com.haphollys.booook.domains.book
 
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
+import com.haphollys.booook.model.SeatPosition
 import org.springframework.stereotype.Service
 import java.lang.IllegalArgumentException
 
@@ -27,14 +28,13 @@ class BookSeatsService {
     }
 
     fun unBookSeats(
-        book: BookEntity
+        book: BookEntity,
+        screen: ScreenEntity
     ) {
         book.unBook()
 
-        book.screen.unBookSeats(
-            book.bookedSeats.map {
-                it.seatPosition
-            }
+        screen.unBookSeats(
+            seatPositions = book.bookedSeats.map { it.seatPosition }
         )
     }
 }

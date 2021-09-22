@@ -68,15 +68,15 @@ internal class BookSeatsServiceTest {
         // when
         bookSeatsService.unBookSeats(
             book = myBook,
+            screen = testScreen
         )
 
         // then
         verify {
             myBook.unBook()
         }
-
         verify {
-            myBook.screen.unBookSeats(any())
+            testScreen.unBookSeats(any())
         }
     }
 }
