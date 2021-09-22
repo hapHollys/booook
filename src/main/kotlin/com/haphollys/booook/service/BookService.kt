@@ -82,7 +82,10 @@ class BookService(
             book = foundBook
         )
 
-        bookSeatsService.unBookSeats(foundBook)
+        bookSeatsService.unBookSeats(
+            book = foundBook,
+            screen = foundBook.screen
+        )
     }
 
     internal fun verifyOwnBook(

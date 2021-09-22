@@ -67,7 +67,7 @@ internal class BookServiceTest {
     }
 
     @Test
-    fun `예약 시 예약 엔티티가 생성된다`() {
+    fun `예약`() {
         // given
         every {
             bookRepository.save(any())
@@ -89,6 +89,13 @@ internal class BookServiceTest {
 
         // then
         verify(atLeast = 1) { bookRepository.save(any()) }
+        verify {
+            bookSeatsService.bookSeats(
+                user = testUser,
+                screen = testScreen,
+                bookedSeats = any()
+            )
+        }
     }
 
     @Test
@@ -149,12 +156,15 @@ internal class BookServiceTest {
         }
 
         verify(atLeast = 1) {
-            bookSeatsService.unBookSeats(book)
+            bookSeatsService.unBookSeats(
+                book = any(),
+                screen = any()
+            )
         }
     }
 
     @Test
-    fun `유저의 예약이 아닌 경우 예약 취소시 예외`() {
+    fun `유저의 예약이 아닌 경우 예약 취소 시 예외`() {
         // given
         val bookId = 1L
         val myBook = makeBookedSeatBookEntity(bookId)
