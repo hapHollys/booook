@@ -1,5 +1,6 @@
 package com.haphollys.booook.domains.screen
 
+import com.haphollys.booook.domains.BaseEntity
 import com.haphollys.booook.domains.movie.MovieEntity
 import com.haphollys.booook.domains.room.RoomEntity
 import com.haphollys.booook.model.SeatPosition
@@ -17,7 +18,7 @@ class ScreenEntity(
     @Embedded
     var screenRoom: ScreenRoom,
     var date: LocalDateTime = LocalDateTime.now()
-) {
+): BaseEntity() {
     fun bookSeats(
         seatPositions: List<SeatPosition>
     ) {

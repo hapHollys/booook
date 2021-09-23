@@ -20,6 +20,7 @@ class PaymentEntity(
     @Enumerated(value = STRING)
     var status: Status = PAID
 ) {
+) : BaseEntity() {
     enum class Status {
         PAID, CANCEL
     }
