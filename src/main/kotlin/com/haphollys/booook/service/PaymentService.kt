@@ -32,6 +32,7 @@ class PaymentService(
         )
 
         val payment = paymentDomainService.pay(
+            payerId = paymentRequest.userId,
             book = book
         )
 

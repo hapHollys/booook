@@ -1,10 +1,13 @@
 package com.haphollys.booook.domains.payment
 
+import com.haphollys.booook.domains.BaseEntity
 import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.payment.PaymentEntity.Status.CANCEL
 import com.haphollys.booook.domains.payment.PaymentEntity.Status.PAID
 import com.haphollys.booook.domains.room.RoomEntity.RoomType
 import com.haphollys.booook.domains.screen.Seat.SeatType
+import com.haphollys.booook.domains.user.UserEntity
+import java.time.LocalDateTime
 import javax.persistence.*
 import javax.persistence.EnumType.STRING
 
@@ -14,6 +17,7 @@ class PaymentEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
+    var payerId: Long,
     @OneToOne
     var book: BookEntity,
     var totalAmount: Int? = null,
@@ -32,16 +36,6 @@ class PaymentEntity(
             .sumOf { priceList[roomType]!![it.seatType]!! }
     }
 
-    companion object {
-        fun of(book: BookEntity, priceList: Map<RoomType, Map<SeatType, Int>>): PaymentEntity {
-            val payment = PaymentEntity(
-                book = book
-            )
-            payment.setTotalAmount(priceList)
-            return payment
-        }
-    }
-
     fun unPay() {
         verifyUnPayable()
 
@@ -52,6 +46,21 @@ class PaymentEntity(
     internal fun verifyUnPayable() {
         if (status != PAID) {
             throw IllegalArgumentException("취소 가능한 상태가 아닙니다")
+        }
+    }
+
+    companion object {
+        fun of(
+            payerId: Long,
+            book: BookEntity,
+            priceList: Map<RoomType, Map<SeatType, Int>>
+        ): PaymentEntity {
+            val payment = PaymentEntity(
+                payerId = payerId,
+                book = book
+            )
+            payment.setTotalAmount(priceList)
+            return payment
         }
     }
 }

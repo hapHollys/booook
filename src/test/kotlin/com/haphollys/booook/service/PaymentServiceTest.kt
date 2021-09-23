@@ -17,8 +17,8 @@ import com.haphollys.booook.model.SeatPosition
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
 import com.haphollys.booook.repository.UserRepository
-import com.haphollys.booook.service.dto.PaymentDto.PaymentRequest
-import com.haphollys.booook.service.dto.PaymentDto.UnPaymentRequest
+import com.haphollys.booook.service.dto.PaymentDto
+import com.haphollys.booook.service.dto.PaymentDto.*
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
@@ -135,7 +135,11 @@ internal class PaymentServiceTest {
 
         every {
             paymentRepository.save(any())
-        } returns PaymentEntity(id = 1L, book = myBook)
+        } returns PaymentEntity(
+            id = 1L,
+            payerId = myUserId,
+            book = myBook
+        )
 
         // when
         paymentService.pay(
@@ -144,7 +148,10 @@ internal class PaymentServiceTest {
 
         // then
         verify(atLeast = 1) {
-            paymentDomainService.pay(book = myBook)
+            paymentDomainService.pay(
+                payerId = myUserId,
+                book = myBook
+            )
         }
 
         verify(atLeast = 1) {
@@ -207,6 +214,20 @@ internal class PaymentServiceTest {
             IllegalArgumentException::class.java,
         ) {
             paymentService.unPay(unPaymentRequest = myUnPaymentRequest)
+        }
+    }
+
+    @Test
+    fun `결제 내역 조회`() {
+        // given
+        val request = GetPaymentRequest(userId = myUserId)
+
+        // when
+        paymentService.getPaymentList(request)
+
+        // then
+        verify {
+            paymentRepository.findByPayerId(request.userId)
         }
     }
 }
