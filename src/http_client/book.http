@@ -1,0 +1,17 @@
+### BOOK
+POST {{host}}/api/v1/books
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "screenId": 1,
+  "seats": [
+    {
+      "row": 0,
+      "col": 1,
+      "type": "FRONT"
+    }
+  ]
+}
+
+

@@ -1,0 +1,2 @@
+### screen
+GET {{host}}/api/v1/screens/{{screenId}}
