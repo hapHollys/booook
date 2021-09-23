@@ -18,8 +18,8 @@ class PaymentEntity(
     var book: BookEntity,
     var totalAmount: Int? = null,
     @Enumerated(value = STRING)
-    var status: Status = PAID
-) {
+    var status: Status = PAID,
+    var canceledAt: LocalDateTime? = null
 ) : BaseEntity() {
     enum class Status {
         PAID, CANCEL
@@ -46,6 +46,7 @@ class PaymentEntity(
         verifyUnPayable()
 
         this.status = CANCEL
+        this.canceledAt = LocalDateTime.now()
     }
 
     internal fun verifyUnPayable() {
