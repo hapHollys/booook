@@ -67,10 +67,14 @@ class PaymentService(
     }
 
     // query option들 처리 방안 고려
+    // paging(& sort), where user_id and between A and B
     fun getPaymentList(
         request: GetPaymentRequest
     ): List<GetPaymentResponse> {
-        val paymentList = paymentRepository.findByPayerId(request.userId)
+        val paymentList = paymentRepository.findMyPayments(
+            userId = request.userId,
+            pagingRequest = request.pagingRequest
+        )
 
         return paymentList.map {
             GetPaymentResponse(

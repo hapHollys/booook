@@ -16,7 +16,7 @@ class BookDto() {
 
     class GetBookedListRequest(
         val userId: Long,
-        val pagingRequest: PagingRequest
+        val pagingRequest: PagingRequest? = null
     )
 
     data class GetBookedResponse(

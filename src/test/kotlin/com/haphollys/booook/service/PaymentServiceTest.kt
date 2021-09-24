@@ -17,6 +17,7 @@ import com.haphollys.booook.model.SeatPosition
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
 import com.haphollys.booook.repository.UserRepository
+import com.haphollys.booook.service.dto.PagingRequest
 import com.haphollys.booook.service.dto.PaymentDto
 import com.haphollys.booook.service.dto.PaymentDto.*
 import io.mockk.every
@@ -220,14 +221,14 @@ internal class PaymentServiceTest {
     @Test
     fun `결제 내역 조회`() {
         // given
-        val request = GetPaymentRequest(userId = myUserId)
+        val request = GetPaymentRequest(userId = myUserId, PagingRequest())
 
         // when
         paymentService.getPaymentList(request)
 
         // then
         verify {
-            paymentRepository.findByPayerId(request.userId)
+            paymentRepository.findMyPayments(request.userId, any())
         }
     }
 }
