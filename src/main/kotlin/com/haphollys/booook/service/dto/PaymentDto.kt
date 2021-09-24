@@ -23,7 +23,8 @@ class PaymentDto() {
     )
 
     data class GetPaymentRequest(
-        val userId: Long
+        val userId: Long,
+        val pagingRequest: PagingRequest
     )
 
     data class GetPaymentResponse(
