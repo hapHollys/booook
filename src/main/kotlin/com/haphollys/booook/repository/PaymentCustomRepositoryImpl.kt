@@ -3,6 +3,7 @@ package com.haphollys.booook.repository
 import com.haphollys.booook.domains.payment.PaymentEntity
 import com.haphollys.booook.domains.payment.QPaymentEntity.paymentEntity
 import com.haphollys.booook.service.dto.PagingRequest
+import com.querydsl.core.types.Predicate
 import com.querydsl.jpa.impl.JPAQueryFactory
 
 class PaymentCustomRepositoryImpl(
@@ -14,7 +15,13 @@ class PaymentCustomRepositoryImpl(
     ): List<PaymentEntity> {
         return query.select(paymentEntity)
             .from(paymentEntity)
-            .where(paymentEntity.payerId.eq(userId))
+            .where(payerIdEq(userId))
             .fetch()
+    }
+
+    private fun payerIdEq(
+        userId: Long
+    ): Predicate {
+        return paymentEntity.payerId.eq(userId)
     }
 }
