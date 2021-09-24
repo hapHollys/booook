@@ -1,5 +1,6 @@
 package com.haphollys.booook.repository
 
+import com.haphollys.booook.config.TestQueryDslConfig
 import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.movie.MovieEntity
@@ -14,8 +15,10 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
+import org.springframework.context.annotation.Import
 
 @DataJpaTest
+@Import(TestQueryDslConfig::class)
 class BookRepositoryTest {
 
     @Autowired

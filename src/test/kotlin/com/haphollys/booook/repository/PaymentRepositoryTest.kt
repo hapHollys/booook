@@ -1,8 +1,10 @@
 package com.haphollys.booook.repository
 
+import com.haphollys.booook.config.TestQueryDslConfig
 import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.payment.PaymentEntity
 import com.haphollys.booook.model.PriceList
+import com.haphollys.booook.service.dto.PagingRequest
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -11,8 +13,11 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
+import org.springframework.context.annotation.Import
+import org.springframework.test.context.ActiveProfiles
 
 @DataJpaTest
+@Import(TestQueryDslConfig::class)
 class PaymentRepositoryTest {
     @Autowired
     lateinit var em: TestEntityManager
@@ -64,9 +69,15 @@ class PaymentRepositoryTest {
     @Test
     fun `내 결제 내역만 반환`() {
         // when
-        val myPaymentList = paymentRepository.findByPayerId(myUserId)
+        val result = paymentRepository.findMyPayments(
+            userId = myUserId,
+            pagingRequest = PagingRequest()
+        )
 
         // then
-        assertEquals( 1, myPaymentList.size)
+        assertEquals(1, result.size)
     }
+
+
+
 }
