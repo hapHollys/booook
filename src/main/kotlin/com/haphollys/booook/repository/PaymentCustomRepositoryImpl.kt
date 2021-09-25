@@ -15,7 +15,8 @@ class PaymentCustomRepositoryImpl(
     ): List<PaymentEntity> {
         return query.select(paymentEntity)
             .from(paymentEntity)
-            .where(payerIdEq(userId))
+            .where(payerIdEq(userId), cursorPosition(pagingRequest.lastId))
+            .limit(pagingRequest.size.toLong())
             .fetch()
     }
 
@@ -23,5 +24,11 @@ class PaymentCustomRepositoryImpl(
         userId: Long
     ): Predicate {
         return paymentEntity.payerId.eq(userId)
+    }
+
+    private fun cursorPosition(lastId: Long?): Predicate? {
+        if (lastId == null) return null
+
+        return paymentEntity.id.lt(lastId)
     }
 }
