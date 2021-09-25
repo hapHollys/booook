@@ -15,6 +15,7 @@ class ScreenController(
     private val screenService: ScreenService
 ) {
     @GetMapping("/{screenId}")
+    @GetMapping("/{screenId}/seats")
     fun getBookableSeats(
         @PathVariable("screenId") screenId: Long
     ): Response<GetBookableSeatsResponse> {

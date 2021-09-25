@@ -1,2 +1,5 @@
-### screen
+### bookable seats
+GET {{host}}/api/v1/screens/{{screenId}}/seats
+
+### screens
 GET {{host}}/api/v1/screens/{{screenId}}
