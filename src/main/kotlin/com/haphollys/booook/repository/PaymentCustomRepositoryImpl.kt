@@ -16,7 +16,7 @@ class PaymentCustomRepositoryImpl(
         return query.select(paymentEntity)
             .from(paymentEntity)
             .where(payerIdEq(userId), cursorPosition(pagingRequest.lastId))
-            .limit(pagingRequest.size.toLong())
+            .limit(pagingRequest.size)
             .fetch()
     }
 
