@@ -74,4 +74,16 @@ internal class ScreenEntityTest {
         val roomSize = screenEntity.screenRoom.numCol * screenEntity.screenRoom.numRow
         assertEquals(roomSize, bookedPositions.size + bookableSeats.size)
     }
+
+    @Test
+    fun `좌석 수 조회`() {
+        // given
+
+        // when
+        val result = screenEntity.getSeatNum()
+
+        // then
+        val seatNum = screenEntity.screenRoom.numRow * screenEntity.screenRoom.numCol
+        assertEquals(seatNum, result)
+    }
 }

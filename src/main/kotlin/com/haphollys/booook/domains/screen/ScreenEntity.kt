@@ -53,6 +53,10 @@ class ScreenEntity(
         }
     }
 
+    fun getSeatNum(): Int {
+        return screenRoom.seats.size
+    }
+
     companion object {
         fun of(
             id: Long? = null,
