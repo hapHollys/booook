@@ -5,4 +5,4 @@ data class PagingRequest(
     val lastId: Long? = null,
 )
 
-const val DEFAULT_PAGING_SIZE = 20LLLL
+const val DEFAULT_PAGING_SIZE = 20L
