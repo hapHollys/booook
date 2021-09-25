@@ -78,6 +78,7 @@ class PaymentService(
 
         return paymentList.map {
             GetPaymentResponse(
+                paymentId = it.id!!,
                 screenId = it.book.screen.id!!,
                 movieName = it.book.screen.movie.name,
                 posterImageUrl = "https://www.naver.com",

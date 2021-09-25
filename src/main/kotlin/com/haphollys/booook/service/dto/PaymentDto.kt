@@ -28,6 +28,7 @@ class PaymentDto() {
     )
 
     data class GetPaymentResponse(
+        val paymentId: Long,
         val screenId: Long,
         val movieName: String,
         val posterImageUrl: String,
@@ -36,5 +37,4 @@ class PaymentDto() {
         val paymentDate: LocalDateTime,
         val status: PaymentEntity.Status
     )
-
 }
