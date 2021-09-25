@@ -3,3 +3,5 @@ GET {{host}}/api/v1/screens/{{screenId}}/seats
 
 ### screens
 GET {{host}}/api/v1/screens/{{screenId}}
+### pass LocalDateTime to requestParam
+GET {{host}}/test2?date=2021-09-04 01:00:00
