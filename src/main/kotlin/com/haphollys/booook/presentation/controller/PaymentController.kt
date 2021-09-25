@@ -14,10 +14,13 @@ class PaymentController(
 ) {
     @GetMapping
     fun getPayments(
+        @ModelAttribute pagingRequest: PagingRequest
     ): Response<List<PaymentDto.GetPaymentResponse>> {
+        println("paging ${pagingRequest.size} , ${pagingRequest.lastId}")
+
         val request = GetPaymentRequest(
             userId = 1L,
-            PagingRequest()
+            pagingRequest = pagingRequest
         )
 
         return Response(
