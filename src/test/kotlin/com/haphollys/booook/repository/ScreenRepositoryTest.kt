@@ -28,7 +28,7 @@ class ScreenRepositoryTest {
 
     @BeforeEach
     fun setUp() {
-        testMovie = MovieEntity(name = "TEST_MOVIE")
+        testMovie = MovieEntity(name = "TEST_MOVIE", openingDate = LocalDateTime.now())
 
         em.persist(testMovie)
         em.flush()
