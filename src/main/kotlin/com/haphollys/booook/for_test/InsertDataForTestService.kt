@@ -4,9 +4,7 @@ import com.haphollys.booook.domains.movie.MovieEntity
 import com.haphollys.booook.domains.room.RoomEntity
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
-import com.haphollys.booook.repository.BookRepository
-import com.haphollys.booook.repository.ScreenRepository
-import com.haphollys.booook.repository.UserRepository
+import com.haphollys.booook.repository.*
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
@@ -20,6 +18,7 @@ class InsertDataForTestService(
 ) {
     fun testInsert() {
         val movie = MovieEntity(name = "HARRY PORTER", openingDate = LocalDateTime.now())
+        movie.play()
         movieRepository.save(movie)
 
         val user = UserEntity(name = "GALID")
