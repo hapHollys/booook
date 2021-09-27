@@ -1,0 +1,15 @@
+### PAY
+POST {{host}}/api/v1/payments
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "bookId": 1
+}
+
+
+### get PAY LIST
+GET {{host}}/api/v1/payments
+
+
+
