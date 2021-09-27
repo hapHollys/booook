@@ -26,6 +26,10 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
+    // sawgger
+    implementation("io.springfox:springfox-swagger2:_")
+    implementation("io.springfox:springfox-swagger-ui:_")
+
     // queryDsl
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("com.querydsl:querydsl-jpa")
