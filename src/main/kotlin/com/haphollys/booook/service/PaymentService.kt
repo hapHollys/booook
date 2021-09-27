@@ -7,6 +7,7 @@ import com.haphollys.booook.model.PriceList
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
 import com.haphollys.booook.service.dto.PaymentDto.*
+import com.haphollys.booook.service.dto.SeatDto
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -32,6 +33,7 @@ class PaymentService(
         )
 
         val payment = paymentDomainService.pay(
+            payerId = paymentRequest.userId,
             book = book
         )
 
@@ -64,6 +66,35 @@ class PaymentService(
         )
     }
 
+    // query option들 처리 방안 고려
+    // paging(& sort), where user_id and between A and B
+    fun getPaymentList(
+        request: GetPaymentRequest
+    ): List<GetPaymentResponse> {
+        val paymentList = paymentRepository.findMyPayments(
+            userId = request.userId,
+            pagingRequest = request.pagingRequest
+        )
+
+        return paymentList.map {
+            GetPaymentResponse(
+                paymentId = it.id!!,
+                screenId = it.book.screen.id!!,
+                movieName = it.book.screen.movie.name,
+                posterImageUrl = "https://www.naver.com",
+                bookedSeats = it.book.bookedSeats.map {
+                    SeatDto(
+                        row = it.seatPosition.x,
+                        col = it.seatPosition.y,
+                        type = it.seatType)
+                },
+                totalAmount = it.totalAmount!!,
+                paymentDate = it.createdAt!!,
+                status = it.status
+            )
+        }
+    }
+
     internal fun verifyOwnBook(
         loginUserId: Long,
         bookUserId: Long
@@ -71,6 +102,4 @@ class PaymentService(
         if (bookUserId != loginUserId)
             throw IllegalArgumentException("나의 예약이 아닙니다.")
     }
-
-    // TODO : 결제 내역 조회
 }

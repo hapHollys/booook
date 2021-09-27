@@ -14,8 +14,9 @@ class BookDto() {
         val bookId: Long
     )
 
-    data class GetBookedListRequest(
-        val userId: Long
+    class GetBookedListRequest(
+        val userId: Long,
+        val pagingRequest: PagingRequest? = null
     )
 
     data class GetBookedResponse(

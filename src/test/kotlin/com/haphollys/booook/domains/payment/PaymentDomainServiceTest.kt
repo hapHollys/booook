@@ -2,6 +2,7 @@ package com.haphollys.booook.domains.payment
 
 import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookSeatsService
+import com.haphollys.booook.domains.user.UserEntity
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -29,19 +30,22 @@ internal class PaymentDomainServiceTest {
     @Test
     fun `결제`() {
         // given
+        val userEntity = mockk<UserEntity>(relaxed = true)
         val bookEntity = mockk<BookEntity>(relaxed = true)
 
         mockkObject(PaymentEntity.Companion)
         
         // when
         paymentDomainService.pay(
+            payerId = userEntity.id!!,
             book = bookEntity
         )
 
         // then
         verify {
             PaymentEntity.of(
-                book = any(),
+                payerId = userEntity.id!!,
+                book = bookEntity,
                 priceList = any()
             )
         }

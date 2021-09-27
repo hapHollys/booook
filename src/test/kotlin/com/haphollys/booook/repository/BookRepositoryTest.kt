@@ -1,5 +1,6 @@
 package com.haphollys.booook.repository
 
+import com.haphollys.booook.config.TestQueryDslConfig
 import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.movie.MovieEntity
@@ -14,8 +15,11 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
+import org.springframework.context.annotation.Import
+import java.time.LocalDateTime
 
 @DataJpaTest
+@Import(TestQueryDslConfig::class)
 class BookRepositoryTest {
 
     @Autowired
@@ -31,7 +35,7 @@ class BookRepositoryTest {
     @BeforeEach
     fun setUp() {
         testUser = UserEntity(name = "TEST")
-        testMovie = MovieEntity(name = "TEST_MOVIE")
+        testMovie = MovieEntity(name = "TEST_MOVIE", openingDate = LocalDateTime.now())
         testScreen = getTestScreenEntity(movie = testMovie)
 
         em.persist(testUser)

@@ -1,5 +1,6 @@
 package com.haphollys.booook.domains.room
 
+import com.haphollys.booook.domains.BaseEntity
 import com.haphollys.booook.domains.room.RoomEntity.RoomType.TWO_D
 import com.haphollys.booook.domains.screen.Seat.SeatType
 import com.haphollys.booook.domains.screen.Seat.SeatType.*
@@ -15,7 +16,7 @@ class RoomEntity(
     var numCol: Int,
     @Enumerated(value = EnumType.STRING)
     var roomType: RoomType = TWO_D
-) {
+): BaseEntity() {
     enum class RoomType {
         TWO_D, THREE_D, FOUR_D
     }

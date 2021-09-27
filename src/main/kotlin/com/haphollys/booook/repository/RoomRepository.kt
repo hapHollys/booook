@@ -1,4 +1,4 @@
-package com.haphollys.booook.for_test
+package com.haphollys.booook.repository
 
 import com.haphollys.booook.domains.room.RoomEntity
 import org.springframework.data.jpa.repository.JpaRepository

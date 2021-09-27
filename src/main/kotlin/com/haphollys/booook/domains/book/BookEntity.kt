@@ -1,5 +1,6 @@
 package com.haphollys.booook.domains.book
 
+import com.haphollys.booook.domains.BaseEntity
 import com.haphollys.booook.domains.book.BookEntity.BookStatus.*
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
@@ -22,7 +23,7 @@ class BookEntity(
     var bookedSeats: List<BookedSeat>,
     @Enumerated(value = STRING)
     var status: BookStatus = BOOKED
-) {
+): BaseEntity() {
     init {
         verifyBook()
     }
