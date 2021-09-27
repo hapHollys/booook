@@ -3,7 +3,7 @@ package com.haphollys.booook.service.dto
 import java.time.LocalDateTime
 
 class MovieDto {
-    data class GetCurrentScreenedMovieResponse(
+    data class GetCurrentPlayingMovieResponse(
         val movieId: Long,
         val movieName: String
     )

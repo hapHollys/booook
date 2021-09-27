@@ -2,7 +2,6 @@ package com.haphollys.booook.presentation.controller
 
 import com.haphollys.booook.presentation.Response
 import com.haphollys.booook.service.MovieService
-import com.haphollys.booook.service.dto.MovieDto
 import com.haphollys.booook.service.dto.MovieDto.*
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -15,9 +14,9 @@ class MovieController(
     private val movieService: MovieService
 ) {
     @GetMapping
-    fun getCurrentScreenedMovieList(): Response<List<GetCurrentScreenedMovieResponse>> {
+    fun getCurrentPlayingMovieList(): Response<List<GetCurrentPlayingMovieResponse>> {
         return Response (
-            data = movieService.getCurrentScreenedMovieList()
+            data = movieService.getCurrentPlayingMovieList()
         )
     }
 

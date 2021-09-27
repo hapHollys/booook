@@ -33,11 +33,11 @@ internal class MovieServiceTest {
     @Test
     fun `현재 상영중인 영화 조회`() {
         // given, when
-        val result = movieService.getCurrentScreenedMovieList()
+        val result = movieService.getCurrentPlayingMovieList()
 
         // then
         verify {
-            movieRepository.findCurrentScreenedMovieResponse()
+            movieRepository.findCurrentPlayingMovieList()
         }
     }
 
