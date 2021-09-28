@@ -11,6 +11,9 @@ plugins {
     // query dsl
     id("com.ewerk.gradle.plugins.querydsl") version "1.0.10"
     kotlin("kapt") version "1.4.10"
+
+    // jacoco
+    jacoco
 }
 
 group = "com.hapHollys"
@@ -61,6 +64,45 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+
+// queryDsl
 sourceSets["main"].withConvention(org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet::class){
     kotlin.srcDir("$buildDir/generated/source/kapt/main")
+}
+
+// jacoco
+jacoco {
+    toolVersion = "0.8.7"
+    reportsDirectory.set(layout.buildDirectory.dir("customJacocoReportDir"))
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(false)
+        csv.required.set(false)
+        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+    }
+}
+
+
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = "0.5".toBigDecimal()
+            }
+        }
+
+        rule {
+            isEnabled = false
+            element = "CLASS"
+            includes = listOf("org.gradle.*")
+            excludes = listOf("**/Q*")
+            limit {
+                counter = "LINE"
+                value = "TOTALCOUNT"
+                maximum = "0.3".toBigDecimal()
+            }
+        }
+    }
 }
