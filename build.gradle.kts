@@ -50,7 +50,9 @@ dependencies {
 
     // test
     testImplementation("io.mockk:mockk:1.10.0")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(group = "org.mockito")
+    }
 }
 
 tasks.withType<KotlinCompile> {
