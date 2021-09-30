@@ -1,24 +1,15 @@
 package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.book.BookEntity
-import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.payment.PaymentDomainService
 import com.haphollys.booook.domains.payment.PaymentEntity
-import com.haphollys.booook.domains.room.RoomEntity.RoomType
 import com.haphollys.booook.domains.room.RoomEntity.RoomType.*
-import com.haphollys.booook.domains.screen.ScreenEntity
-import com.haphollys.booook.domains.screen.Seat
-import com.haphollys.booook.domains.screen.Seat.SeatType
 import com.haphollys.booook.domains.screen.Seat.SeatType.*
-import com.haphollys.booook.domains.user.UserEntity
-import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.PriceList
-import com.haphollys.booook.model.SeatPosition
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
 import com.haphollys.booook.repository.UserRepository
 import com.haphollys.booook.service.dto.PagingRequest
-import com.haphollys.booook.service.dto.PaymentDto
 import com.haphollys.booook.service.dto.PaymentDto.*
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
@@ -82,7 +73,6 @@ internal class PaymentServiceTest {
         every {
             bookRepository.findById(notExistsBookId)
         } returns Optional.empty()
-
 
         val paymentRequest = PaymentRequest(
             bookId = notExistsBookId,

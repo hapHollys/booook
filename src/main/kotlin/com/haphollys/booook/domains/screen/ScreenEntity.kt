@@ -18,25 +18,25 @@ class ScreenEntity(
     @Embedded
     var screenRoom: ScreenRoom,
     var date: LocalDateTime = LocalDateTime.now()
-): BaseEntity() {
+) : BaseEntity() {
     fun bookSeats(
         seatPositions: List<SeatPosition>
     ) {
-        seatPositions.forEach{
+        seatPositions.forEach {
             bookSeat(it)
         }
     }
 
     private fun bookSeat(
         seatPosition: SeatPosition
-    ){
+    ) {
         screenRoom.book(seatPosition)
     }
 
     fun unBookSeats(
         seatPositions: List<SeatPosition>
     ) {
-        seatPositions.forEach{
+        seatPositions.forEach {
             unBookSeat(it)
         }
     }

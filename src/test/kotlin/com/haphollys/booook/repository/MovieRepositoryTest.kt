@@ -18,8 +18,7 @@ class MovieRepositoryTest {
     lateinit var movieRepository: MovieRepository
 
     @BeforeEach
-    fun setUp(){
-
+    fun setUp() {
     }
 
     @Test
@@ -48,5 +47,4 @@ class MovieRepositoryTest {
         // then
         assertEquals(openedMovieList.size, result.size)
     }
-
 }

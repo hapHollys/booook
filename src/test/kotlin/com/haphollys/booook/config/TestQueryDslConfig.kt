@@ -15,5 +15,4 @@ class TestQueryDslConfig(
     fun queryFactory(): JPAQueryFactory {
         return JPAQueryFactory(em)
     }
-
 }

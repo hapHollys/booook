@@ -10,9 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 class MovieService(
     private val movieRepository: MovieRepository
 ) {
-    fun getCurrentPlayingMovieList(
-
-    ): List<GetCurrentPlayingMovieResponse> {
+    fun getCurrentPlayingMovieList(): List<GetCurrentPlayingMovieResponse> {
         return movieRepository.findCurrentPlayingMovieList()
             .map {
                 GetCurrentPlayingMovieResponse(

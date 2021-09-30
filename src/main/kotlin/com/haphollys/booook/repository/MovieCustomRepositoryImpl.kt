@@ -7,7 +7,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 
 class MovieCustomRepositoryImpl(
     private val query: JPAQueryFactory
-): MovieCustomRepository {
+) : MovieCustomRepository {
     override fun findCurrentPlayingMovieList(): List<MovieEntity> {
         return query.select(movieEntity)
             .from(movieEntity)

@@ -1,8 +1,6 @@
 package com.haphollys.booook.service
 
-import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.payment.PaymentDomainService
-import com.haphollys.booook.domains.payment.PaymentEntity
 import com.haphollys.booook.model.PriceList
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
@@ -86,7 +84,8 @@ class PaymentService(
                     SeatDto(
                         row = it.seatPosition.x,
                         col = it.seatPosition.y,
-                        type = it.seatType)
+                        type = it.seatType
+                    )
                 },
                 totalAmount = it.totalAmount!!,
                 paymentDate = it.createdAt!!,

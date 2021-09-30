@@ -15,7 +15,7 @@ class MovieController(
 ) {
     @GetMapping
     fun getCurrentPlayingMovieList(): Response<List<GetCurrentPlayingMovieResponse>> {
-        return Response (
+        return Response(
             data = movieService.getCurrentPlayingMovieList()
         )
     }

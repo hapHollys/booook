@@ -23,7 +23,7 @@ class BookEntity(
     var bookedSeats: List<BookedSeat>,
     @Enumerated(value = STRING)
     var status: BookStatus = BOOKED
-): BaseEntity() {
+) : BaseEntity() {
     init {
         verifyBook()
     }
@@ -72,7 +72,7 @@ class BookEntity(
             screen: ScreenEntity,
             bookedSeats: List<BookedSeat>,
             status: BookStatus = BOOKED,
-        ): BookEntity{
+        ): BookEntity {
             return BookEntity(
                 id = id,
                 user = user,

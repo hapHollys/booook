@@ -5,7 +5,6 @@ import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.payment.PaymentEntity.Status.CANCEL
 import com.haphollys.booook.domains.room.RoomEntity.RoomType.TWO_D
 import com.haphollys.booook.domains.screen.ScreenEntity
-import com.haphollys.booook.domains.screen.Seat
 import com.haphollys.booook.domains.screen.Seat.SeatType.*
 import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.getTestScreenEntity

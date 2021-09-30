@@ -82,5 +82,4 @@ class BookRepositoryTest {
         // then
         assertEquals(bookedList.size, foundBookedList.size)
     }
-
 }

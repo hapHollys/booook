@@ -58,5 +58,4 @@ internal class MovieServiceTest {
             movieRepository.findById(request.movieId)
         }
     }
-
 }

@@ -19,7 +19,7 @@ class TestController(
     fun getTest(
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss") date: LocalDateTime
     ): String {
-        println("date : ${date}")
+        println("date : $date")
         return "OK"
     }
 }

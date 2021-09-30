@@ -6,7 +6,6 @@ import com.haphollys.booook.domains.payment.PaymentEntity.Status.CANCEL
 import com.haphollys.booook.domains.payment.PaymentEntity.Status.PAID
 import com.haphollys.booook.domains.room.RoomEntity.RoomType
 import com.haphollys.booook.domains.screen.Seat.SeatType
-import com.haphollys.booook.domains.user.UserEntity
 import java.time.LocalDateTime
 import javax.persistence.*
 import javax.persistence.EnumType.STRING

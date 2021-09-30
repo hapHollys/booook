@@ -1,7 +1,7 @@
 package com.haphollys.booook.service
 
-import com.haphollys.booook.domains.book.BookSeatsService
 import com.haphollys.booook.domains.book.BookEntity
+import com.haphollys.booook.domains.book.BookSeatsService
 import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
@@ -116,7 +116,6 @@ internal class BookServiceTest {
             bookRepository.findByUser_Id(request.userId)
         }
     }
-
 
     @Test
     fun `예약 취소`() {

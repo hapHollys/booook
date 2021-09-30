@@ -12,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
-
 @ExtendWith(MockKExtension::class)
 internal class PaymentDomainServiceTest {
     lateinit var bookSeatsService: BookSeatsService
@@ -34,7 +33,7 @@ internal class PaymentDomainServiceTest {
         val bookEntity = mockk<BookEntity>(relaxed = true)
 
         mockkObject(PaymentEntity.Companion)
-        
+
         // when
         paymentDomainService.pay(
             payerId = userEntity.id!!,
@@ -54,20 +53,20 @@ internal class PaymentDomainServiceTest {
             bookEntity.pay()
         }
     }
-    
+
     @Test
     fun `결제 취소`() {
         // given
         val paymentEntity = mockk<PaymentEntity>(relaxed = true)
         val bookEntity = mockk<BookEntity>(relaxed = true)
-        
+
         // when
         paymentDomainService.unPay(
             payment = paymentEntity,
             book = bookEntity,
             screen = bookEntity.screen
         )
-        
+
         // then
         verify {
             paymentEntity.unPay()
@@ -79,5 +78,4 @@ internal class PaymentDomainServiceTest {
             )
         }
     }
-
 }

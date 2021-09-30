@@ -15,5 +15,4 @@ class PriceList(
             BACK to 3000
         ),
     )
-) {
-}
+)

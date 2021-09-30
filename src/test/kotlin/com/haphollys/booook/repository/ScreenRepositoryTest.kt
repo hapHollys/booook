@@ -57,7 +57,7 @@ class ScreenRepositoryTest {
         // given
         val targetDate = LocalDateTime.of(2021, 12, 31, 12, 0)
 
-        val beforeScreen = getTestScreenEntity(movie= testMovie)
+        val beforeScreen = getTestScreenEntity(movie = testMovie)
         beforeScreen.date = targetDate.minusDays(1L)
 
         val targetScreen = getTestScreenEntity(movie = testMovie)

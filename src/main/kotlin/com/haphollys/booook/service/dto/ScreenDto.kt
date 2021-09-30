@@ -1,6 +1,5 @@
 package com.haphollys.booook.service.dto
 
-import com.haphollys.booook.domains.room.RoomEntity
 import com.haphollys.booook.domains.room.RoomEntity.RoomType
 import java.time.LocalDateTime
 

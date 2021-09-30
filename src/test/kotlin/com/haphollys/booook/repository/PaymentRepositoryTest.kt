@@ -5,7 +5,6 @@ import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.payment.PaymentEntity
 import com.haphollys.booook.model.PriceList
 import com.haphollys.booook.service.dto.PagingRequest
-import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.context.annotation.Import
-import org.springframework.test.context.ActiveProfiles
 
 @DataJpaTest
 @Import(TestQueryDslConfig::class)
@@ -77,7 +75,4 @@ class PaymentRepositoryTest {
         // then
         assertEquals(1, result.size)
     }
-
-
-
 }

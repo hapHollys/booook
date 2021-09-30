@@ -8,9 +8,7 @@ import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.SeatPosition
 import io.mockk.junit5.MockKExtension
-import io.mockk.mockk
 import io.mockk.spyk
-import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
