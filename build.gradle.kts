@@ -84,26 +84,26 @@ tasks.jacocoTestReport {
         xml.required.set(false)
         csv.required.set(false)
         html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+
+        classDirectories.setFrom(
+            sourceSets.main.get().output.asFileTree.matching {
+                exclude("**/Q*", "**/dto/*")
+            }
+        )
     }
 }
 
 tasks.jacocoTestCoverageVerification {
     violationRules {
         rule {
-            limit {
-                minimum = "0.5".toBigDecimal()
-            }
-        }
-
-        rule {
-            isEnabled = false
+            isEnabled = true
             element = "CLASS"
             includes = listOf("org.gradle.*")
-            excludes = listOf("**/Q*")
+            excludes = listOf("**/Q*", "**/dto/*")
             limit {
                 counter = "LINE"
                 value = "TOTALCOUNT"
-                maximum = "0.3".toBigDecimal()
+                maximum = "0.5".toBigDecimal()
             }
         }
     }
