@@ -1,7 +1,12 @@
 package com.haphollys.booook.service.dto
 
 class MovieDto {
-    data class GetCurrentPlayingMovieResponse(
+    data class GetMovieListRequest(
+        val playingNow: Boolean?,
+        val pagingRequest: PagingRequest
+    )
+
+    data class GetMovieListResponse(
         val movieId: Long,
         val movieName: String
     )

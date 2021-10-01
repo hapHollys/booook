@@ -1,6 +1,7 @@
 package com.haphollys.booook.service
 
 import com.haphollys.booook.repository.MovieRepository
+import com.haphollys.booook.service.dto.MovieDto
 import com.haphollys.booook.service.dto.MovieDto.GetMovieInfoRequest
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
@@ -33,11 +34,19 @@ internal class MovieServiceTest {
     @Test
     fun `현재 상영중인 영화 조회`() {
         // given, when
-        val result = movieService.getCurrentPlayingMovieList()
+        val result = movieService.getMovieList(
+            request = MovieDto.GetMovieListRequest(
+                playingNow = true,
+                pagingRequest = mockk(relaxed = true)
+            )
+        )
 
         // then
         verify {
-            movieRepository.findCurrentPlayingMovieList()
+            movieRepository.findAllBy(
+                playingNow = true,
+                pagingRequest = any()
+            )
         }
     }
 
