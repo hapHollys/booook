@@ -87,7 +87,14 @@ tasks.jacocoTestReport {
 
         classDirectories.setFrom(
             sourceSets.main.get().output.asFileTree.matching {
-                exclude("**/Q*", "**/dto/*", "**/for_test/*", "**/batch/*")
+                exclude(
+                    "**/Q*",
+                    "**/dto/*",
+                    "**/for_test/*",
+                    "**/batch/*",
+                    "**/infra/*",
+                    "**/external/*",
+                )
             }
         )
     }
@@ -109,10 +116,10 @@ tasks.jacocoTestCoverageVerification {
             enabled = true
             element = "CLASS"
             excludes = listOf(
-                "**.batch.*",
                 "**.Q*",
                 "**.dto.*",
                 "**.for_test.*",
+                "**.batch.*",
                 "**.infra.*",
                 "**.external.*",
                 "**.Companion",
