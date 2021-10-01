@@ -108,12 +108,18 @@ tasks.jacocoTestCoverageVerification {
         rule {
             enabled = true
             element = "CLASS"
-            excludes = listOf("**/Q*", "**/dto/*", "**/for_test/*", "**/batch/*")
+            excludes = listOf(
+                "**.batch.*",
+                "**.Q*",
+                "**.dto.*",
+                "**.for_test.*",
+                "**.Companion"
+            )
 
             limit {
                 counter = "BRANCH"
                 value = "COVEREDRATIO"
-                minimum = "0.9".toBigDecimal()
+                minimum = "0.8".toBigDecimal()
             }
 
             limit {
