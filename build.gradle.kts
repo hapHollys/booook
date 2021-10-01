@@ -87,7 +87,7 @@ tasks.jacocoTestReport {
 
         classDirectories.setFrom(
             sourceSets.main.get().output.asFileTree.matching {
-                exclude("**/Q*", "**/dto/*")
+                exclude("**/Q*", "**/dto/*", "**/for_test/*", "**/batch/*")
             }
         )
     }
@@ -96,15 +96,43 @@ tasks.jacocoTestReport {
 tasks.jacocoTestCoverageVerification {
     violationRules {
         rule {
-            isEnabled = true
+            enabled = true
+            // 'element'가 없으면 프로젝트의 전체 파일을 합친 값을 기준으로 합니다.
+            limit {
+                // 'counter'를 지정하지 않으면 default는 'INSTRUCTION'
+                // 'value'를 지정하지 않으면 default는 'COVEREDRATIO'
+                minimum = "0.30".toBigDecimal()
+            }
+        }
+
+        rule {
+            enabled = true
             element = "CLASS"
-            includes = listOf("org.gradle.*")
-            excludes = listOf("**/Q*", "**/dto/*")
+            excludes = listOf("**/Q*", "**/dto/*", "**/for_test/*", "**/batch/*")
+
+            limit {
+                counter = "BRANCH"
+                value = "COVEREDRATIO"
+                minimum = "0.9".toBigDecimal()
+            }
+
             limit {
                 counter = "LINE"
-                value = "TOTALCOUNT"
-                maximum = "0.5".toBigDecimal()
+                value = "COVEREDRATIO"
+                minimum = "0.8".toBigDecimal()
             }
         }
     }
+}
+
+val testCoverage by tasks.registering {
+    group = "verification"
+    description = "Runs the unit tests with coverage"
+
+    dependsOn(":test",
+        ":jacocoTestReport",
+        ":jacocoTestCoverageVerification")
+
+    tasks["jacocoTestReport"].mustRunAfter(tasks["test"])
+    tasks["jacocoTestCoverageVerification"].mustRunAfter(tasks["jacocoTestReport"])
 }
