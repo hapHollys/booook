@@ -19,6 +19,8 @@ internal class DateUtilTest {
         testMin
     )
 
+    val dateutil = DateUtil()
+
     @Test
     fun `date의 시작 시간`() {
         // when

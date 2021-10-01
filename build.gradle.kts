@@ -113,7 +113,10 @@ tasks.jacocoTestCoverageVerification {
                 "**.Q*",
                 "**.dto.*",
                 "**.for_test.*",
-                "**.Companion"
+                "**.infra.*",
+                "**.external.*",
+                "**.Companion",
+                "**.*ApplicationKt"
             )
 
             limit {
