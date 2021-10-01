@@ -64,4 +64,21 @@ class MovieRepositoryTest {
         // then
         assertEquals(openedMovieList.size, result.size)
     }
+
+    @Test
+    fun `영화 목록 페이징`() {
+        // given
+        val lastId = openedMovieList.last().id
+
+        // when
+        val result = movieRepository.findAllBy(
+            playingNow = null,
+            pagingRequest = PagingRequest(
+                lastId = lastId
+            )
+        )
+
+        // then
+        assertEquals(1, result.size)
+    }
 }
