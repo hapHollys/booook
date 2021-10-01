@@ -229,7 +229,7 @@ internal class PaymentServiceTest {
 
         // then
         verify {
-            paymentRepository.findMyPayments(request.userId, any())
+            paymentRepository.findByUserId(request.userId, any())
         }
     }
 }

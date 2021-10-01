@@ -9,7 +9,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 class PaymentCustomRepositoryImpl(
     private val query: JPAQueryFactory
 ) : PaymentCustomRepository {
-    override fun findMyPayments(
+    override fun findByUserId(
         userId: Long,
         pagingRequest: PagingRequest
     ): List<PaymentEntity> {

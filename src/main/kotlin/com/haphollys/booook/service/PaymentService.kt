@@ -81,7 +81,7 @@ class PaymentService(
     fun getPaymentList(
         request: GetPaymentRequest
     ): List<GetPaymentResponse> {
-        val paymentList = paymentRepository.findMyPayments(
+        val paymentList = paymentRepository.findByUserId(
             userId = request.userId,
             pagingRequest = request.pagingRequest
         )
