@@ -1,11 +1,12 @@
 package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.payment.PaymentDomainService
-import com.haphollys.booook.model.PriceList
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
 import com.haphollys.booook.service.dto.PaymentDto.*
 import com.haphollys.booook.service.dto.SeatDto
+import com.haphollys.booook.service.external.pg.PGDto
+import com.haphollys.booook.service.external.pg.PGService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -15,7 +16,7 @@ class PaymentService(
     private val paymentDomainService: PaymentDomainService,
     private val bookRepository: BookRepository,
     private val paymentRepository: PaymentRepository,
-    private val priceList: PriceList,
+    private val pgService: PGService
 ) {
     fun pay(
         paymentRequest: PaymentRequest
@@ -33,6 +34,13 @@ class PaymentService(
         val payment = paymentDomainService.pay(
             payerId = paymentRequest.userId,
             book = book
+        )
+
+        pgService.pay(
+            PGDto.PaymentRequest(
+                paymentId = payment.id!!,
+                amount = payment.totalAmount!!
+            )
         )
 
         return PaymentResponse(
@@ -57,6 +65,10 @@ class PaymentService(
             payment = payment,
             book = payment.book,
             screen = payment.book.screen
+        )
+
+        pgService.unPay(
+            pgUnPayRequest = PGDto.UnPaymentRequest(payment.id!!)
         )
 
         return UnPaymentResponse(

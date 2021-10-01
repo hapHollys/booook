@@ -11,6 +11,7 @@ import com.haphollys.booook.repository.PaymentRepository
 import com.haphollys.booook.repository.UserRepository
 import com.haphollys.booook.service.dto.PagingRequest
 import com.haphollys.booook.service.dto.PaymentDto.*
+import com.haphollys.booook.service.external.pg.PGService
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
@@ -37,6 +38,7 @@ internal class PaymentServiceTest {
     private lateinit var paymentRepository: PaymentRepository
 
     private lateinit var paymentDomainService: PaymentDomainService
+    private lateinit var pgService: PGService
     private lateinit var paymentService: PaymentService
 
     @BeforeEach
@@ -53,6 +55,7 @@ internal class PaymentServiceTest {
 
         userRepository = mockk()
         bookRepository = mockk()
+        pgService = mockk(relaxed = true)
         paymentRepository = mockk(relaxed = true)
 
         paymentDomainService = mockk(relaxed = true)
@@ -60,7 +63,7 @@ internal class PaymentServiceTest {
             PaymentService(
                 bookRepository = bookRepository,
                 paymentRepository = paymentRepository,
-                priceList = priceList,
+                pgService = pgService,
                 paymentDomainService = paymentDomainService
             )
         )
@@ -138,11 +141,15 @@ internal class PaymentServiceTest {
         )
 
         // then
-        verify(atLeast = 1) {
+        verify(exactly = 1) {
             paymentDomainService.pay(
                 payerId = myUserId,
                 book = myBook
             )
+        }
+
+        verify(exactly = 1) {
+            pgService.pay(any())
         }
 
         verify(atLeast = 1) {
@@ -178,6 +185,10 @@ internal class PaymentServiceTest {
                 book = payment.book,
                 screen = payment.book.screen
             )
+        }
+
+        verify(exactly = 1) {
+            pgService.unPay(any())
         }
     }
 
