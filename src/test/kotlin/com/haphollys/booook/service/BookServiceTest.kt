@@ -2,10 +2,12 @@ package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookSeatsService
+import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
 import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.getTestScreenEntity
+import com.haphollys.booook.model.SeatPosition
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.ScreenRepository
 import com.haphollys.booook.repository.UserRepository
@@ -19,6 +21,7 @@ import io.mockk.verify
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import java.time.LocalDateTime
 import java.util.*
 
 @ExtendWith(MockKExtension::class)
@@ -101,9 +104,26 @@ internal class BookServiceTest {
         val userId = 1L
         val request = GetBookedListRequest(1L)
 
+        val foundBook = BookEntity.of(
+            id = 1L,
+            user = testUser,
+            screen = testScreen.apply {
+                id = 1L
+                date = LocalDateTime.now().plusHours(1)
+            },
+            bookedSeats = listOf(
+                BookedSeat(
+                    seatPosition = SeatPosition(x = 0, y = 0),
+                    seatType = FRONT
+                )
+            ),
+        )
+
         every {
             bookRepository.findByUser_Id(userId)
-        } returns listOf()
+        } returns listOf(
+            foundBook
+        )
 
         // when
         bookService.getBookedList(request)

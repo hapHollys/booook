@@ -73,8 +73,14 @@ internal class ScreenServiceTest {
             pagingRequest = PagingRequest()
         )
 
+        every {
+            screenRepository.findByMovieIdAndDate(movieId = movieId, date = targetDate, pagingRequest = any())
+        } returns listOf(
+            mockk(relaxed = true)
+        )
+
         // when
-        val result = screenService.getScreens(getScreenRequest)
+        screenService.getScreens(getScreenRequest)
 
         // then
         verify {

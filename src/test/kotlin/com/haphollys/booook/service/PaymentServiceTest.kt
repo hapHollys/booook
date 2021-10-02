@@ -5,6 +5,7 @@ import com.haphollys.booook.domains.payment.PaymentDomainService
 import com.haphollys.booook.domains.payment.PaymentEntity
 import com.haphollys.booook.domains.room.RoomEntity.RoomType.TWO_D
 import com.haphollys.booook.domains.screen.Seat.SeatType.*
+import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.PriceList
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
@@ -59,14 +60,13 @@ internal class PaymentServiceTest {
         paymentRepository = mockk(relaxed = true)
 
         paymentDomainService = mockk(relaxed = true)
-        paymentService = spyk(
-            PaymentService(
-                bookRepository = bookRepository,
-                paymentRepository = paymentRepository,
-                pgService = pgService,
-                paymentDomainService = paymentDomainService
-            )
+        paymentService = PaymentService(
+            bookRepository = bookRepository,
+            paymentRepository = paymentRepository,
+            pgService = pgService,
+            paymentDomainService = paymentDomainService
         )
+
     }
 
     @Test
@@ -170,6 +170,15 @@ internal class PaymentServiceTest {
     fun `결제 내역 조회`() {
         // given
         val request = GetPaymentRequest(userId = myUserId, PagingRequest())
+
+        every {
+            paymentRepository.findByUserId(
+                userId = request.userId,
+                pagingRequest = any()
+            )
+        } returns listOf(
+            mockk(relaxed = true)
+        )
 
         // when
         paymentService.getPaymentList(request)
