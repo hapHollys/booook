@@ -26,11 +26,6 @@ class PaymentService(
                 IllegalArgumentException("해당 예약이 없습니다.")
             }
 
-        verifyOwnBook(
-            loginUserId = paymentRequest.userId,
-            bookUserId = book.user.id!!
-        )
-
         val payment = paymentDomainService.pay(
             payerId = paymentRequest.userId,
             book = book
@@ -56,12 +51,8 @@ class PaymentService(
                 IllegalArgumentException("해당 결제가 없습니다.")
             }
 
-        verifyOwnBook(
-            loginUserId = unPaymentRequest.userId,
-            bookUserId = payment.book.user.id!!
-        )
-
         paymentDomainService.unPay(
+            userId = unPaymentRequest.userId,
             payment = payment,
             book = payment.book,
             screen = payment.book.screen
@@ -104,13 +95,5 @@ class PaymentService(
                 status = it.status
             )
         }
-    }
-
-    internal fun verifyOwnBook(
-        loginUserId: Long,
-        bookUserId: Long
-    ) {
-        if (bookUserId != loginUserId)
-            throw IllegalArgumentException("나의 예약이 아닙니다.")
     }
 }

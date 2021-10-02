@@ -77,22 +77,10 @@ class BookService(
                 IllegalArgumentException("없는 예약내역 입니다.")
             }
 
-        verifyOwnBook(
-            userId = request.userId,
-            book = foundBook
-        )
-
         bookSeatsService.unBookSeats(
+            userId = request.userId,
             book = foundBook,
             screen = foundBook.screen
         )
-    }
-
-    internal fun verifyOwnBook(
-        userId: Long,
-        book: BookEntity
-    ) {
-        if (book.user.id!! != userId)
-            throw IllegalArgumentException("자신의 예약 내역이 아닙니다.")
     }
 }

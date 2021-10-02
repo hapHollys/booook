@@ -2,12 +2,10 @@ package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookSeatsService
-import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
 import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.getTestScreenEntity
-import com.haphollys.booook.model.SeatPosition
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.ScreenRepository
 import com.haphollys.booook.repository.UserRepository
@@ -18,7 +16,6 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -132,13 +129,6 @@ internal class BookServiceTest {
             userId = testUser.id!!
         )
 
-        every {
-            bookService.verifyOwnBook(
-                userId = any(),
-                book = any()
-            )
-        } answers { nothing }
-
         // when
         bookService.unBook(request = unBookRequest)
 
@@ -147,61 +137,12 @@ internal class BookServiceTest {
             bookRepository.findById(bookId)
         }
 
-        verify {
-            bookService.verifyOwnBook(
-                userId = testUser.id!!,
-                book = book
-            )
-        }
-
         verify(atLeast = 1) {
             bookSeatsService.unBookSeats(
+                userId = any(),
                 book = any(),
                 screen = any()
             )
         }
-    }
-
-    @Test
-    fun `유저의 예약이 아닌 경우 예약 취소 시 예외`() {
-        // given
-        val bookId = 1L
-        val myBook = makeBookedSeatBookEntity(bookId)
-
-        val otherUserId = 2L
-        val unBookRequest = UnBookRequest(
-            bookId = bookId,
-            userId = otherUserId
-        )
-
-        every {
-            bookRepository.findById(bookId)
-        } returns Optional.of(myBook)
-
-        // when, then
-        assertThrows(IllegalArgumentException::class.java) {
-            bookService.unBook(unBookRequest)
-        }
-    }
-
-    private fun makeBookedSeatBookEntity(
-        bookId: Long = 1L,
-        bookedSeats: List<BookedSeat> = listOf(
-            BookedSeat(
-                seatPosition = SeatPosition(x = 0, y = 0),
-                seatType = FRONT
-            ),
-        )
-    ): BookEntity {
-        val book = spyk(
-            BookEntity.of(
-                id = bookId,
-                user = testUser,
-                screen = testScreen,
-                bookedSeats = bookedSeats
-            )
-        )
-
-        return book
     }
 }

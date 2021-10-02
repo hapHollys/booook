@@ -26,11 +26,13 @@ class PaymentDomainService(
     }
 
     fun unPay(
+        userId: Long,
         payment: PaymentEntity,
         book: BookEntity,
         screen: ScreenEntity
     ) {
         bookSeatsService.unBookSeats(
+            userId = userId,
             book = book,
             screen = screen
         )

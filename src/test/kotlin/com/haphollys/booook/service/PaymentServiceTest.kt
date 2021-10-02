@@ -3,7 +3,7 @@ package com.haphollys.booook.service
 import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.payment.PaymentDomainService
 import com.haphollys.booook.domains.payment.PaymentEntity
-import com.haphollys.booook.domains.room.RoomEntity.RoomType.*
+import com.haphollys.booook.domains.room.RoomEntity.RoomType.TWO_D
 import com.haphollys.booook.domains.screen.Seat.SeatType.*
 import com.haphollys.booook.model.PriceList
 import com.haphollys.booook.repository.BookRepository
@@ -88,29 +88,6 @@ internal class PaymentServiceTest {
     }
 
     @Test
-    fun `본인이 예약한 좌석이 아니면 Exception`() {
-        // given
-        val otherBook = mockk<BookEntity>(relaxed = true)
-        every {
-            otherBook.user.id
-        } returns otherUserId
-
-        every {
-            bookRepository.findById(otherBookId)
-        } returns Optional.of(otherBook)
-
-        val paymentRequest = PaymentRequest(
-            userId = myUserId,
-            bookId = otherBookId
-        )
-
-        // when, then
-        assertThrows(
-            IllegalArgumentException::class.java,
-        ) { paymentService.pay(paymentRequest = paymentRequest) }
-    }
-
-    @Test
     fun `결제 테스트`() {
         // given
         val myBook = mockk<BookEntity>(relaxed = true)
@@ -171,16 +148,13 @@ internal class PaymentServiceTest {
             paymentRepository.findById(any())
         } returns Optional.of(payment)
 
-        every {
-            paymentService.verifyOwnBook(loginUserId = any(), bookUserId = any())
-        } returns Unit
-
         // when
         paymentService.unPay(unPaymentRequest)
 
         // then
         verify {
             paymentDomainService.unPay(
+                userId = myUserId,
                 payment = payment,
                 book = payment.book,
                 screen = payment.book.screen
@@ -189,33 +163,6 @@ internal class PaymentServiceTest {
 
         verify(exactly = 1) {
             pgService.unPay(any())
-        }
-    }
-
-    @Test
-    fun `본인의 예약이 아니면 결제 취소 시 Exception`() {
-        // given
-        val otherPaymentId = 2L
-        val otherPayment = mockk<PaymentEntity>(relaxed = true)
-
-        every {
-            otherPayment.book.user.id
-        } returns otherUserId
-
-        every {
-            paymentRepository.findById(otherPaymentId)
-        } returns Optional.of(otherPayment)
-
-        val myUnPaymentRequest = UnPaymentRequest(
-            userId = myUserId,
-            paymentId = otherPaymentId
-        )
-
-        // when, then
-        assertThrows(
-            IllegalArgumentException::class.java,
-        ) {
-            paymentService.unPay(unPaymentRequest = myUnPaymentRequest)
         }
     }
 
