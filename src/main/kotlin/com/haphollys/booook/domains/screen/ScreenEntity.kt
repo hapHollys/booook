@@ -19,6 +19,10 @@ class ScreenEntity(
     var screenRoom: ScreenRoom,
     var date: LocalDateTime = LocalDateTime.now()
 ) : BaseEntity() {
+    fun getDeadline(): LocalDateTime {
+        return date.minusMinutes(10)
+    }
+
     fun bookSeats(
         seatPositions: List<SeatPosition>
     ) {

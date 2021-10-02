@@ -50,9 +50,7 @@ class BookEntity(
     }
 
     private fun verifyAvailableDate() {
-        val deadline = LocalDateTime.now().minusMinutes(10)
-
-        if (deadline.isAfter(screen.date))
+        if (bookedAt.isAfter(screen.getDeadline()))
             throw RuntimeException("예약 가능한 시간이 지났습니다.")
     }
 
