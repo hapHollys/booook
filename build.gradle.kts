@@ -51,7 +51,8 @@ dependencies {
     runtimeOnly("mysql:mysql-connector-java")
 
     // test
-    testImplementation("io.mockk:mockk:1.10.0")
+    testImplementation("com.ninja-squad:springmockk:_")
+    testImplementation("io.mockk:mockk:_")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.mockito")
     }
