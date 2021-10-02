@@ -20,7 +20,7 @@ class ScreenEntity(
     var date: LocalDateTime = LocalDateTime.now()
 ) : BaseEntity() {
     fun getDeadline(): LocalDateTime {
-        return date.minusMinutes(10)
+        return date.minusMinutes(BOOK_DEADLINE_MINUTES)
     }
 
     fun bookSeats(
@@ -62,6 +62,8 @@ class ScreenEntity(
     }
 
     companion object {
+        const val BOOK_DEADLINE_MINUTES = 10L
+
         fun of(
             id: Long? = null,
             movie: MovieEntity,
