@@ -1,18 +1,21 @@
 package com.haphollys.booook.service.dto
 
-import java.time.LocalDateTime
-
 class MovieDto {
-    data class GetCurrentPlayingMovieResponse(
+    data class GetMovieListRequest(
+        val playingNow: Boolean?,
+        val pagingRequest: PagingRequest
+    )
+
+    data class GetMovieListResponse(
         val movieId: Long,
         val movieName: String
     )
 
-    data class GetMovieInfoRequest (
+    data class GetMovieInfoRequest(
         val movieId: Long
     )
 
-    data class GetMovieInfoResponse (
+    data class GetMovieInfoResponse(
         val movieId: Long,
         val movieName: String
     )

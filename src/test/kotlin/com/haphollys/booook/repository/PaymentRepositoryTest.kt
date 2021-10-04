@@ -5,7 +5,6 @@ import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.payment.PaymentEntity
 import com.haphollys.booook.model.PriceList
 import com.haphollys.booook.service.dto.PagingRequest
-import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.context.annotation.Import
-import org.springframework.test.context.ActiveProfiles
 
 @DataJpaTest
 @Import(TestQueryDslConfig::class)
@@ -24,6 +22,7 @@ class PaymentRepositoryTest {
 
     @Autowired
     lateinit var bookRepository: BookRepository
+
     @Autowired
     lateinit var paymentRepository: PaymentRepository
 
@@ -45,7 +44,11 @@ class PaymentRepositoryTest {
         em.persist(otherBook)
 
         priceList = mockk<PriceList>(relaxed = true)
+    }
 
+    @Test
+    fun `내 결제 내역만 반환`() {
+        // given
         myPayment = PaymentEntity.of(
             payerId = myUserId,
             book = myBook,
@@ -64,12 +67,9 @@ class PaymentRepositoryTest {
                 otherPayment
             )
         )
-    }
 
-    @Test
-    fun `내 결제 내역만 반환`() {
         // when
-        val result = paymentRepository.findMyPayments(
+        val result = paymentRepository.findByUserId(
             userId = myUserId,
             pagingRequest = PagingRequest()
         )
@@ -78,6 +78,28 @@ class PaymentRepositoryTest {
         assertEquals(1, result.size)
     }
 
+    @Test
+    fun `결제 내역 페이징`() {
+        // given
+        val myId = 1L
 
+        val myPaymentList = listOf(
+            PaymentEntity.of(payerId = myId, book = myBook, priceList = priceList.table),
+            PaymentEntity.of(payerId = myId, book = myBook, priceList = priceList.table),
+            PaymentEntity.of(payerId = myId, book = myBook, priceList = priceList.table)
+        )
 
+        paymentRepository.saveAll(myPaymentList)
+
+        // when
+        val result = paymentRepository.findByUserId(
+            userId = myId,
+            pagingRequest = PagingRequest(
+                lastId = myPaymentList.last().id!!
+            )
+        )
+
+        // then
+        assertEquals(2, result.size)
+    }
 }

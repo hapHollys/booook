@@ -18,25 +18,29 @@ class ScreenEntity(
     @Embedded
     var screenRoom: ScreenRoom,
     var date: LocalDateTime = LocalDateTime.now()
-): BaseEntity() {
+) : BaseEntity() {
+    fun getDeadline(): LocalDateTime {
+        return date.minusMinutes(BOOK_DEADLINE_MINUTES)
+    }
+
     fun bookSeats(
         seatPositions: List<SeatPosition>
     ) {
-        seatPositions.forEach{
+        seatPositions.forEach {
             bookSeat(it)
         }
     }
 
     private fun bookSeat(
         seatPosition: SeatPosition
-    ){
+    ) {
         screenRoom.book(seatPosition)
     }
 
     fun unBookSeats(
         seatPositions: List<SeatPosition>
     ) {
-        seatPositions.forEach{
+        seatPositions.forEach {
             unBookSeat(it)
         }
     }
@@ -58,6 +62,8 @@ class ScreenEntity(
     }
 
     companion object {
+        const val BOOK_DEADLINE_MINUTES = 10L
+
         fun of(
             id: Long? = null,
             movie: MovieEntity,

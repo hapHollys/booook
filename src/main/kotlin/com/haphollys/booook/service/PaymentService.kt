@@ -1,13 +1,12 @@
 package com.haphollys.booook.service
 
-import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.payment.PaymentDomainService
-import com.haphollys.booook.domains.payment.PaymentEntity
-import com.haphollys.booook.model.PriceList
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
 import com.haphollys.booook.service.dto.PaymentDto.*
 import com.haphollys.booook.service.dto.SeatDto
+import com.haphollys.booook.service.external.pg.PGDto
+import com.haphollys.booook.service.external.pg.PGService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -17,7 +16,7 @@ class PaymentService(
     private val paymentDomainService: PaymentDomainService,
     private val bookRepository: BookRepository,
     private val paymentRepository: PaymentRepository,
-    private val priceList: PriceList,
+    private val pgService: PGService
 ) {
     fun pay(
         paymentRequest: PaymentRequest
@@ -27,14 +26,16 @@ class PaymentService(
                 IllegalArgumentException("해당 예약이 없습니다.")
             }
 
-        verifyOwnBook(
-            loginUserId = paymentRequest.userId,
-            bookUserId = book.user.id!!
-        )
-
         val payment = paymentDomainService.pay(
             payerId = paymentRequest.userId,
             book = book
+        )
+
+        pgService.pay(
+            PGDto.PaymentRequest(
+                paymentId = payment.id!!,
+                amount = payment.totalAmount!!
+            )
         )
 
         return PaymentResponse(
@@ -50,15 +51,15 @@ class PaymentService(
                 IllegalArgumentException("해당 결제가 없습니다.")
             }
 
-        verifyOwnBook(
-            loginUserId = unPaymentRequest.userId,
-            bookUserId = payment.book.user.id!!
-        )
-
         paymentDomainService.unPay(
+            userId = unPaymentRequest.userId,
             payment = payment,
             book = payment.book,
             screen = payment.book.screen
+        )
+
+        pgService.unPay(
+            pgUnPayRequest = PGDto.UnPaymentRequest(payment.id!!)
         )
 
         return UnPaymentResponse(
@@ -71,7 +72,7 @@ class PaymentService(
     fun getPaymentList(
         request: GetPaymentRequest
     ): List<GetPaymentResponse> {
-        val paymentList = paymentRepository.findMyPayments(
+        val paymentList = paymentRepository.findByUserId(
             userId = request.userId,
             pagingRequest = request.pagingRequest
         )
@@ -86,20 +87,13 @@ class PaymentService(
                     SeatDto(
                         row = it.seatPosition.x,
                         col = it.seatPosition.y,
-                        type = it.seatType)
+                        type = it.seatType
+                    )
                 },
                 totalAmount = it.totalAmount!!,
                 paymentDate = it.createdAt!!,
                 status = it.status
             )
         }
-    }
-
-    internal fun verifyOwnBook(
-        loginUserId: Long,
-        bookUserId: Long
-    ) {
-        if (bookUserId != loginUserId)
-            throw IllegalArgumentException("나의 예약이 아닙니다.")
     }
 }

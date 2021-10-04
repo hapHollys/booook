@@ -11,7 +11,6 @@ import javax.persistence.Enumerated
 class BookedSeat(
     @Embedded
     var seatPosition: SeatPosition,
-    @Enumerated(value=EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     var seatType: SeatType
-) {
-}
+)

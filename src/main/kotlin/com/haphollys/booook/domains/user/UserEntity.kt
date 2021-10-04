@@ -10,5 +10,4 @@ class UserEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
     var name: String
-): BaseEntity() {
-}
+) : BaseEntity()

@@ -23,7 +23,7 @@ class BookEntity(
     var bookedSeats: List<BookedSeat>,
     @Enumerated(value = STRING)
     var status: BookStatus = BOOKED
-): BaseEntity() {
+) : BaseEntity() {
     init {
         verifyBook()
     }
@@ -50,9 +50,7 @@ class BookEntity(
     }
 
     private fun verifyAvailableDate() {
-        val deadline = LocalDateTime.now().minusMinutes(10)
-
-        if (deadline.isAfter(screen.date))
+        if (bookedAt.isAfter(screen.getDeadline()))
             throw RuntimeException("예약 가능한 시간이 지났습니다.")
     }
 
@@ -72,7 +70,7 @@ class BookEntity(
             screen: ScreenEntity,
             bookedSeats: List<BookedSeat>,
             status: BookStatus = BOOKED,
-        ): BookEntity{
+        ): BookEntity {
             return BookEntity(
                 id = id,
                 user = user,

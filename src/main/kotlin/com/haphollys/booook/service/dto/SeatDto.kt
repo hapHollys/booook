@@ -8,7 +8,7 @@ data class SeatDto(
     val col: Int,
     val type: SeatType
 ) {
-    fun toSeatPosition() : SeatPosition {
+    fun toSeatPosition(): SeatPosition {
         return SeatPosition(
             x = row,
             y = col

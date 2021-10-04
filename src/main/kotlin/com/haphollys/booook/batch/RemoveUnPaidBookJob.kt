@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Profile
 import java.time.LocalDateTime
 import javax.persistence.EntityManagerFactory
 
-
 @Profile("deploy")
 @Configuration
 class RemoveUnPaidBookJob(
@@ -63,7 +62,7 @@ class RemoveUnPaidBookJob(
     fun processor(): ItemProcessor<BookEntity, BookEntity> {
         // 예약한지 5분지났는지 검증 후 CANCEL 상태로
         return ItemProcessor<BookEntity, BookEntity> {
-            println("PROCESSOR : ${it}")
+            println("PROCESSOR : $it")
             it.status = BookEntity.BookStatus.CANCEL
             it
         }

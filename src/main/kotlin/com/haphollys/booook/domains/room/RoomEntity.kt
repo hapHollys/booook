@@ -16,7 +16,7 @@ class RoomEntity(
     var numCol: Int,
     @Enumerated(value = EnumType.STRING)
     var roomType: RoomType = TWO_D
-): BaseEntity() {
+) : BaseEntity() {
     enum class RoomType {
         TWO_D, THREE_D, FOUR_D
     }
@@ -64,6 +64,5 @@ class RoomEntity(
 
             return roomEntity
         }
-
     }
 }

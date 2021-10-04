@@ -11,12 +11,10 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 @ExtendWith(MockKExtension::class)
@@ -75,8 +73,14 @@ internal class ScreenServiceTest {
             pagingRequest = PagingRequest()
         )
 
+        every {
+            screenRepository.findByMovieIdAndDate(movieId = movieId, date = targetDate, pagingRequest = any())
+        } returns listOf(
+            mockk(relaxed = true)
+        )
+
         // when
-        val result = screenService.getScreens(getScreenRequest)
+        screenService.getScreens(getScreenRequest)
 
         // then
         verify {
@@ -87,5 +91,4 @@ internal class ScreenServiceTest {
             )
         }
     }
-
 }

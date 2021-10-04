@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/books")
 class BookController(
     private val bookService: BookService
-){
+) {
     @PostMapping()
     fun book(
         @RequestBody request: BookDto.BookRequest

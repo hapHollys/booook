@@ -65,8 +65,8 @@ internal class ScreenEntityTest {
         val bookableSeats = screenEntity.getBookableSeats()
 
         // then
-        bookableSeats.forEach{
-            bookedPositions.forEach{ bookedPosition ->
+        bookableSeats.forEach {
+            bookedPositions.forEach { bookedPosition ->
                 assertFalse(it.seatPosition == bookedPosition)
             }
         }

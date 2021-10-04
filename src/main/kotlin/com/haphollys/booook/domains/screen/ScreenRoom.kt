@@ -29,8 +29,8 @@ class ScreenRoom(
     private fun getSeat(
         seatPosition: SeatPosition
     ): Seat {
-        var seat : Seat? = null
-        seats.forEach{
+        var seat: Seat? = null
+        seats.forEach {
             if (it.seatPosition == seatPosition) {
                 seat = it
             }

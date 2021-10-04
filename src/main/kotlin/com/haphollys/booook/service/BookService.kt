@@ -1,7 +1,7 @@
 package com.haphollys.booook.service
 
-import com.haphollys.booook.domains.book.BookSeatsService
 import com.haphollys.booook.domains.book.BookEntity
+import com.haphollys.booook.domains.book.BookSeatsService
 import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.ScreenRepository
@@ -49,7 +49,7 @@ class BookService(
     fun getBookedList(
         request: GetBookedListRequest
     ): List<GetBookedResponse> {
-        val bookedList = bookRepository.findByUser_Id(request.userId);
+        val bookedList = bookRepository.findByUser_Id(request.userId)
 
         return bookedList.map {
             GetBookedResponse(
@@ -77,23 +77,10 @@ class BookService(
                 IllegalArgumentException("없는 예약내역 입니다.")
             }
 
-        verifyOwnBook(
-            userId = request.userId,
-            book = foundBook
-        )
-
         bookSeatsService.unBookSeats(
+            userId = request.userId,
             book = foundBook,
             screen = foundBook.screen
         )
     }
-
-    internal fun verifyOwnBook(
-        userId: Long,
-        book: BookEntity
-    ) {
-        if (book.user.id!! != userId)
-            throw IllegalArgumentException("자신의 예약 내역이 아닙니다.")
-    }
-
 }

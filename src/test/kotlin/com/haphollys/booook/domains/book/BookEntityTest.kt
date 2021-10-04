@@ -10,12 +10,13 @@ import com.haphollys.booook.model.SeatPosition
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.spyk
-import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import java.lang.RuntimeException
+import java.time.LocalDateTime
 
 @ExtendWith(MockKExtension::class)
 internal class BookEntityTest {
@@ -27,6 +28,25 @@ internal class BookEntityTest {
     fun setUp() {
         testUser = UserEntity(id = 1L, name = "TEST_USER")
         testScreen = spyk(getTestScreenEntity())
+    }
+
+    @Test
+    fun `예약 가능한 시간이 지난 Screen 예약 시 예외`() {
+        // given
+        val beforeScreen = ScreenEntity.of(
+            movie = mockk(relaxed = true),
+            room = mockk(relaxed = true),
+            date = LocalDateTime.of(2020, 1, 1, 1, 0)
+        )
+
+        // when, then
+        assertThrows(RuntimeException::class.java) {
+            BookEntity.of(
+                user = testUser,
+                screen = beforeScreen,
+                bookedSeats = mockk(relaxed = true),
+            )
+        }
     }
 
     @Test

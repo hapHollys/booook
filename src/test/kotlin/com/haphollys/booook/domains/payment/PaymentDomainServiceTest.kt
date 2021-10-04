@@ -34,7 +34,7 @@ internal class PaymentDomainServiceTest {
         val bookEntity = mockk<BookEntity>(relaxed = true)
 
         mockkObject(PaymentEntity.Companion)
-        
+
         // when
         paymentDomainService.pay(
             payerId = userEntity.id!!,
@@ -54,30 +54,32 @@ internal class PaymentDomainServiceTest {
             bookEntity.pay()
         }
     }
-    
+
     @Test
     fun `결제 취소`() {
         // given
+        val myId = 1L
         val paymentEntity = mockk<PaymentEntity>(relaxed = true)
         val bookEntity = mockk<BookEntity>(relaxed = true)
-        
+
         // when
         paymentDomainService.unPay(
+            userId = myId,
             payment = paymentEntity,
             book = bookEntity,
             screen = bookEntity.screen
         )
-        
+
         // then
         verify {
             paymentEntity.unPay()
         }
         verify {
             bookSeatsService.unBookSeats(
+                userId = myId,
                 book = bookEntity,
                 screen = bookEntity.screen
             )
         }
     }
-
 }

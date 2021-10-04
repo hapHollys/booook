@@ -16,6 +16,7 @@ fun getTestScreenEntity(
     return ScreenEntity.of(
         movie = movie,
         room = room,
+        date = LocalDateTime.now().plusHours(10)
     )
 }
 

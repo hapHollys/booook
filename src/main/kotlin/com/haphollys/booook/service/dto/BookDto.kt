@@ -2,7 +2,6 @@ package com.haphollys.booook.service.dto
 
 import java.time.LocalDateTime
 
-
 class BookDto() {
     data class BookRequest(
         val userId: Long,

@@ -14,7 +14,7 @@ class MovieEntity(
     var name: String,
     var openingDate: LocalDateTime,
     var playing: Boolean = false
-): BaseEntity() {
+) : BaseEntity() {
 
     fun play() {
         verifyPlayable()

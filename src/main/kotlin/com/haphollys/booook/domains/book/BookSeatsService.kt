@@ -2,10 +2,7 @@ package com.haphollys.booook.domains.book
 
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
-import com.haphollys.booook.model.SeatPosition
 import org.springframework.stereotype.Service
-import java.lang.IllegalArgumentException
-
 
 @Service
 class BookSeatsService {
@@ -28,13 +25,27 @@ class BookSeatsService {
     }
 
     fun unBookSeats(
+        userId: Long,
         book: BookEntity,
         screen: ScreenEntity
     ) {
+        verifyOwnBook(
+            userId = userId,
+            book = book
+        )
+
         book.unBook()
 
         screen.unBookSeats(
             seatPositions = book.bookedSeats.map { it.seatPosition }
         )
+    }
+
+    internal fun verifyOwnBook(
+        userId: Long,
+        book: BookEntity
+    ) {
+        if (book.user.id!! != userId)
+            throw IllegalArgumentException("자신의 예약 내역이 아닙니다.")
     }
 }

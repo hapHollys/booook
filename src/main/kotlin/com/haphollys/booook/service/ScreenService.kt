@@ -1,6 +1,5 @@
 package com.haphollys.booook.service
 
-import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.repository.ScreenRepository
 import com.haphollys.booook.service.dto.ScreenDto
 import com.haphollys.booook.service.dto.ScreenDto.*

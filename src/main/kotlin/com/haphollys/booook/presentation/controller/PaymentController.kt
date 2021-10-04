@@ -36,4 +36,13 @@ class PaymentController(
             data = paymentService.pay(request)
         )
     }
+
+    @PutMapping
+    fun unPay(
+        @RequestBody request: UnPaymentRequest
+    ): Response<UnPaymentResponse> {
+        return Response(
+            data = paymentService.unPay(request)
+        )
+    }
 }

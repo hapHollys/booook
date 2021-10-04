@@ -1,25 +1,18 @@
 package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.book.BookEntity
-import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.payment.PaymentDomainService
 import com.haphollys.booook.domains.payment.PaymentEntity
-import com.haphollys.booook.domains.room.RoomEntity.RoomType
-import com.haphollys.booook.domains.room.RoomEntity.RoomType.*
-import com.haphollys.booook.domains.screen.ScreenEntity
-import com.haphollys.booook.domains.screen.Seat
-import com.haphollys.booook.domains.screen.Seat.SeatType
+import com.haphollys.booook.domains.room.RoomEntity.RoomType.TWO_D
 import com.haphollys.booook.domains.screen.Seat.SeatType.*
-import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.PriceList
-import com.haphollys.booook.model.SeatPosition
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
 import com.haphollys.booook.repository.UserRepository
 import com.haphollys.booook.service.dto.PagingRequest
-import com.haphollys.booook.service.dto.PaymentDto
 import com.haphollys.booook.service.dto.PaymentDto.*
+import com.haphollys.booook.service.external.pg.PGService
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
@@ -46,6 +39,7 @@ internal class PaymentServiceTest {
     private lateinit var paymentRepository: PaymentRepository
 
     private lateinit var paymentDomainService: PaymentDomainService
+    private lateinit var pgService: PGService
     private lateinit var paymentService: PaymentService
 
     @BeforeEach
@@ -62,17 +56,17 @@ internal class PaymentServiceTest {
 
         userRepository = mockk()
         bookRepository = mockk()
+        pgService = mockk(relaxed = true)
         paymentRepository = mockk(relaxed = true)
 
         paymentDomainService = mockk(relaxed = true)
-        paymentService = spyk(
-            PaymentService(
-                bookRepository = bookRepository,
-                paymentRepository = paymentRepository,
-                priceList = priceList,
-                paymentDomainService = paymentDomainService
-            )
+        paymentService = PaymentService(
+            bookRepository = bookRepository,
+            paymentRepository = paymentRepository,
+            pgService = pgService,
+            paymentDomainService = paymentDomainService
         )
+
     }
 
     @Test
@@ -83,7 +77,6 @@ internal class PaymentServiceTest {
             bookRepository.findById(notExistsBookId)
         } returns Optional.empty()
 
-
         val paymentRequest = PaymentRequest(
             bookId = notExistsBookId,
             userId = 1L
@@ -91,29 +84,6 @@ internal class PaymentServiceTest {
 
         assertThrows(
             IllegalArgumentException::class.java
-        ) { paymentService.pay(paymentRequest = paymentRequest) }
-    }
-
-    @Test
-    fun `본인이 예약한 좌석이 아니면 Exception`() {
-        // given
-        val otherBook = mockk<BookEntity>(relaxed = true)
-        every {
-            otherBook.user.id
-        } returns otherUserId
-
-        every {
-            bookRepository.findById(otherBookId)
-        } returns Optional.of(otherBook)
-
-        val paymentRequest = PaymentRequest(
-            userId = myUserId,
-            bookId = otherBookId
-        )
-
-        // when, then
-        assertThrows(
-            IllegalArgumentException::class.java,
         ) { paymentService.pay(paymentRequest = paymentRequest) }
     }
 
@@ -148,11 +118,15 @@ internal class PaymentServiceTest {
         )
 
         // then
-        verify(atLeast = 1) {
+        verify(exactly = 1) {
             paymentDomainService.pay(
                 payerId = myUserId,
                 book = myBook
             )
+        }
+
+        verify(exactly = 1) {
+            pgService.pay(any())
         }
 
         verify(atLeast = 1) {
@@ -174,47 +148,21 @@ internal class PaymentServiceTest {
             paymentRepository.findById(any())
         } returns Optional.of(payment)
 
-        every {
-            paymentService.verifyOwnBook(loginUserId = any(), bookUserId = any())
-        } returns Unit
-
         // when
         paymentService.unPay(unPaymentRequest)
 
         // then
         verify {
             paymentDomainService.unPay(
+                userId = myUserId,
                 payment = payment,
                 book = payment.book,
                 screen = payment.book.screen
             )
         }
-    }
 
-    @Test
-    fun `본인의 예약이 아니면 결제 취소 시 Exception`() {
-        // given
-        val otherPaymentId = 2L
-        val otherPayment = mockk<PaymentEntity>(relaxed = true)
-
-        every {
-            otherPayment.book.user.id
-        } returns otherUserId
-
-        every {
-            paymentRepository.findById(otherPaymentId)
-        } returns Optional.of(otherPayment)
-
-        val myUnPaymentRequest = UnPaymentRequest(
-            userId = myUserId,
-            paymentId = otherPaymentId
-        )
-
-        // when, then
-        assertThrows(
-            IllegalArgumentException::class.java,
-        ) {
-            paymentService.unPay(unPaymentRequest = myUnPaymentRequest)
+        verify(exactly = 1) {
+            pgService.unPay(any())
         }
     }
 
@@ -223,12 +171,21 @@ internal class PaymentServiceTest {
         // given
         val request = GetPaymentRequest(userId = myUserId, PagingRequest())
 
+        every {
+            paymentRepository.findByUserId(
+                userId = request.userId,
+                pagingRequest = any()
+            )
+        } returns listOf(
+            mockk(relaxed = true)
+        )
+
         // when
         paymentService.getPaymentList(request)
 
         // then
         verify {
-            paymentRepository.findMyPayments(request.userId, any())
+            paymentRepository.findByUserId(request.userId, any())
         }
     }
 }

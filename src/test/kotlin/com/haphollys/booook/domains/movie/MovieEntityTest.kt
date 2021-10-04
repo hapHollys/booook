@@ -13,7 +13,6 @@ internal class MovieEntityTest {
 
     @BeforeEach
     fun setUp() {
-
     }
 
     @Test
@@ -48,7 +47,7 @@ internal class MovieEntityTest {
         // then
         assertEquals(true, movie.playing)
     }
-    
+
     @Test
     fun `상영 끝`() {
         // given
@@ -56,10 +55,10 @@ internal class MovieEntityTest {
             name = "TEST_MOVIE",
             openingDate = LocalDateTime.now()
         )
-        
+
         // when
         movie.stop()
-        
+
         // then
         assertEquals(false, movie.playing)
     }
