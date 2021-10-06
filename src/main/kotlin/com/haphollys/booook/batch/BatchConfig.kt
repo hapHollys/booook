@@ -4,7 +4,7 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 
-@Profile("deploy")
+@Profile("batch")
 @Configuration
 @EnableBatchProcessing
 class BatchConfig
