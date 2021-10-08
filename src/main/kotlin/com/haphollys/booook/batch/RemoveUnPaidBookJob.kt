@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Profile
 import java.time.LocalDateTime
 import javax.persistence.EntityManagerFactory
 
-@Profile("deploy")
+@Profile("batch")
 @Configuration
 class RemoveUnPaidBookJob(
     private val jobBuilder: JobBuilderFactory,

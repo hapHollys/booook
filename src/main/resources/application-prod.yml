@@ -1,0 +1,22 @@
+server:
+  port: 8082
+
+spring:
+  h2:
+    console:
+      enabled: false
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1234
+    url: jdbc:mysql://13.125.243.132:3306/testdb?serverTimezone=UTC
+
+  ### JPA 설정 오버라이딩 ###
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+    hibernate:
+      ddl-auto: create

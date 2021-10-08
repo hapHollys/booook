@@ -10,6 +10,11 @@ import java.time.LocalDateTime
 class TestController(
     private val insertDataForTestService: InsertDataForTestService
 ) {
+    @GetMapping("/static")
+    fun forLoadTest(): String {
+        return "OK"
+    }
+
     @GetMapping("/test")
     fun insertForTest() {
         insertDataForTestService.testInsert()
