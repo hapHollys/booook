@@ -1,5 +1,5 @@
 FROM adoptopenjdk/openjdk11:latest
 
-COPY *.jar app.jar
+ADD *.jar app.jar
 
-CMD ["ls", "-la"]
+CMD ["java", "-jar", "-DSpring.profiles.active=prod", "app.jar"]
