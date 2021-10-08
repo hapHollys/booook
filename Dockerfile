@@ -1,5 +1,5 @@
 FROM adoptopenjdk/openjdk11:latest
 
-COPY Dockerfile /t
+COPY app.jar /app.jar
 
-CMD ["ls", "-la"]
+CMD ["java", "-jar", "-DSpring.profiles.active=prod", "app.jar"]
