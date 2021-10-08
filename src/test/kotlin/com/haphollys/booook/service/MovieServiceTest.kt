@@ -1,6 +1,5 @@
 package com.haphollys.booook.service
 
-import com.haphollys.booook.domains.movie.MovieEntity
 import com.haphollys.booook.repository.MovieRepository
 import com.haphollys.booook.service.dto.MovieDto
 import com.haphollys.booook.service.dto.MovieDto.GetMovieInfoRequest
@@ -41,7 +40,7 @@ internal class MovieServiceTest {
             mockk(relaxed = true)
         )
 
-        //when
+        // when
         movieService.getMovieList(
             request = MovieDto.GetMovieListRequest(
                 playingNow = true,

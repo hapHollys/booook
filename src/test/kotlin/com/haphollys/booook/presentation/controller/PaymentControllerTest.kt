@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.put
 internal class PaymentControllerTest {
     @Autowired
     lateinit var mvc: MockMvc
-    
+
     @Autowired
     lateinit var objectMapper: ObjectMapper
 
@@ -43,7 +43,7 @@ internal class PaymentControllerTest {
         every {
             paymentService.getPaymentList(any())
         } returns mockk(relaxed = true)
-        
+
         // when, then
         mvc.get(baseUrl)
             .andExpect {
@@ -70,7 +70,6 @@ internal class PaymentControllerTest {
         }.andExpect { status { isOk() } }
     }
 
-
     @Test
     fun `결제 취소 요청`() {
         // given
@@ -93,5 +92,4 @@ internal class PaymentControllerTest {
             status { isOk() }
         }
     }
-
 }

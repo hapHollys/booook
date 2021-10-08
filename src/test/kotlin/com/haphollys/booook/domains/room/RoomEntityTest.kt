@@ -2,8 +2,6 @@ package com.haphollys.booook.domains.room
 
 import com.haphollys.booook.domains.room.RoomEntity.RoomType.TWO_D
 import com.haphollys.booook.domains.screen.Seat.SeatType.*
-import io.mockk.every
-import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -21,7 +19,7 @@ internal class RoomEntityTest {
         // when
         val result = room1 == room2
 
-        //then
+        // then
         assertTrue(result)
     }
 

@@ -5,7 +5,6 @@ plugins {
     id("org.springframework.boot") version "2.5.4"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
 
-    id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
     kotlin("jvm") version "1.5.21"
     kotlin("plugin.spring") version "1.5.21"
     kotlin("plugin.jpa") version "1.5.21"
@@ -150,9 +149,11 @@ val testCoverage by tasks.registering {
     group = "verification"
     description = "Runs the unit tests with coverage"
 
-    dependsOn(":test",
+    dependsOn(
+        ":test",
         ":jacocoTestReport",
-        ":jacocoTestCoverageVerification")
+        ":jacocoTestCoverageVerification"
+    )
 
     tasks["jacocoTestReport"].mustRunAfter(tasks["test"])
     tasks["jacocoTestCoverageVerification"].mustRunAfter(tasks["jacocoTestReport"])

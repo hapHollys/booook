@@ -5,7 +5,6 @@ import com.haphollys.booook.domains.payment.PaymentDomainService
 import com.haphollys.booook.domains.payment.PaymentEntity
 import com.haphollys.booook.domains.room.RoomEntity.RoomType.TWO_D
 import com.haphollys.booook.domains.screen.Seat.SeatType.*
-import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.PriceList
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
@@ -16,7 +15,6 @@ import com.haphollys.booook.service.external.pg.PGService
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
-import io.mockk.spyk
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
@@ -66,7 +64,6 @@ internal class PaymentServiceTest {
             pgService = pgService,
             paymentDomainService = paymentDomainService
         )
-
     }
 
     @Test
