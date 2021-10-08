@@ -27,7 +27,7 @@ jobs:
         run: copy build/libs/*.jar ./app.jar
 
       - name: ls
-        run: ls -la
+        run: ls -la build/libs
 
       - name: Set up Docker Buildx
         id: buildx
