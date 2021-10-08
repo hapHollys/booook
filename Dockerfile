@@ -1,5 +1,5 @@
 FROM adoptopenjdk/openjdk11:latest
 
-COPY build/libs/*.jar app.jar
+COPY *.jar app.jar
 
 CMD ["ls", "-la"]
