@@ -24,7 +24,7 @@ jobs:
         run: ./gradlew bootJar
 
       - name: Copy jar
-        run: cp build/libs/*.jar ./app.jar
+        run: cp build/libs/*.jar ./t.jar
 
       - name: ls
         run: ls -la
