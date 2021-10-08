@@ -23,15 +23,6 @@ jobs:
       - name: Build jar
         run: ./gradlew bootJar
 
-      - name: Copy Jar
-        run: cp build/libs/*.jar ./app.jar
-        
-      - name: ls
-        run: ls -la
-      
-      - name: chmod
-        run: chmod 777 ./app.jar
-
       - name: Login to docker hub
         uses: docker/login-action@v1
         with:
