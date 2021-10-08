@@ -18,8 +18,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 
 @WebMvcTest(controllers = [BookController::class])
-internal class BookControllerTest(
-) {
+internal class BookControllerTest() {
     @Autowired
     lateinit var mvc: MockMvc
     @Autowired
@@ -56,9 +55,11 @@ internal class BookControllerTest(
             contentType = MediaType.APPLICATION_JSON
         }.andExpect {
             status { isOk() }
-            content { json(
-                objectMapper.writeValueAsString(Response(data = response))
-            ) }
+            content {
+                json(
+                    objectMapper.writeValueAsString(Response(data = response))
+                )
+            }
         }
     }
 }

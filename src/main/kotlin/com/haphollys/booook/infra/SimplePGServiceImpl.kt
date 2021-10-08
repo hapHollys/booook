@@ -5,7 +5,7 @@ import com.haphollys.booook.service.external.pg.PGService
 import org.springframework.stereotype.Component
 
 @Component
-class SimplePGServiceImpl : PGService{
+class SimplePGServiceImpl : PGService {
     override fun pay(pgPaymentRequest: PGDto.PaymentRequest) {
         TODO("Not yet implemented")
     }

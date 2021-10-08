@@ -12,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
-import java.lang.IllegalStateException
 
 @ExtendWith(MockKExtension::class)
 internal class BookSeatsServiceTest {

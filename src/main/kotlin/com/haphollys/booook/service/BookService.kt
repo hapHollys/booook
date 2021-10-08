@@ -1,6 +1,5 @@
 package com.haphollys.booook.service
 
-import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookSeatsService
 import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.repository.BookRepository

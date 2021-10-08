@@ -26,8 +26,7 @@ class MovieRepositoryTest {
             MovieEntity.of(
                 name = "TEST_MOVIE_1",
                 openingDate = LocalDateTime.now().minusDays(1)
-            )
-            ,
+            ),
             MovieEntity.of(
                 name = "TEST_MOVIE_1",
                 openingDate = LocalDateTime.now().minusDays(2)

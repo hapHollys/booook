@@ -4,12 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.haphollys.booook.domains.movie.MovieEntity
 import com.haphollys.booook.presentation.Response
 import com.haphollys.booook.service.MovieService
-import com.haphollys.booook.service.dto.MovieDto
 import com.haphollys.booook.service.dto.MovieDto.*
 import com.ninjasquad.springmockk.MockkBean
-import io.mockk.Runs
 import io.mockk.every
-import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -80,13 +77,18 @@ internal class MovieControllerTest {
         mvc.get(baseUrl + "/${currentPlayingMovie.id}")
             .andExpect {
                 status { isOk() }
-                content { json(objectMapper.writeValueAsString(
-                    Response(GetMovieInfoResponse(
-                        movieId = currentPlayingMovie.id!!,
-                        movieName = currentPlayingMovie.name
-                    ))
-                )) }
+                content {
+                    json(
+                        objectMapper.writeValueAsString(
+                            Response(
+                                GetMovieInfoResponse(
+                                    movieId = currentPlayingMovie.id!!,
+                                    movieName = currentPlayingMovie.name
+                                )
+                            )
+                        )
+                    )
+                }
             }
     }
-
 }
