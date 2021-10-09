@@ -23,12 +23,6 @@ jobs:
       - name: Build jar
         run: ./gradlew bootJar
 
-      - name: permission jar
-        run: chmod -R 777 build
-
-      - name: Copy jar
-        run: cp -r build /
-
       - name: ls
         run: ls -la
 
