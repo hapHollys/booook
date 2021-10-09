@@ -24,7 +24,7 @@ jobs:
         run: ./gradlew bootJar
 
       - name: copy jar
-        run: mkdir context && cp build/libs/*.jar context/app.jar
+        run: cp build/libs/*.jar ./app.jar
 
       - name: ls
         run: ls -la
@@ -42,6 +42,6 @@ jobs:
       - name: Build and push docker image
         uses: docker/build-push-action@v2
         with:
-          context: ./context
+          context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
