@@ -20,3 +20,7 @@ spring:
         format_sql: false
     hibernate:
       ddl-auto: update
+
+sentry:
+  dsn: https://4e0070bca0b14844abea6a10ef0afeea@o1034575.ingest.sentry.io/6001215
+  traces-sample-rate: 1.0
