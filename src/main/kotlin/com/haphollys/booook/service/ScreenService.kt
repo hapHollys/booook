@@ -6,6 +6,7 @@ import com.haphollys.booook.service.dto.ScreenDto.*
 import com.haphollys.booook.service.dto.SeatDto
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import javax.persistence.EntityNotFoundException
 
 @Service
 @Transactional
@@ -17,7 +18,7 @@ class ScreenService(
     ): GetBookableSeatsResponse {
         val foundScreen = screenRepository.findById(getBookableSeatsRequest.screenId)
             .orElseThrow {
-                RuntimeException("해당 스크린이 없습니다.")
+                EntityNotFoundException("해당 스크린이 없습니다.")
             }
 
         val foundSeats = foundScreen.getBookableSeats()

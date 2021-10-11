@@ -10,6 +10,7 @@ import com.haphollys.booook.service.dto.BookDto.*
 import com.haphollys.booook.service.dto.SeatDto
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import javax.persistence.EntityNotFoundException
 
 @Service
 @Transactional
@@ -24,9 +25,9 @@ class BookService(
         request: BookDto.BookRequest
     ): BookDto.BookResponse {
         val foundUser = userRepository.findById(request.userId)
-            .orElseThrow { RuntimeException("없는 유저 입니다.") }
+            .orElseThrow { EntityNotFoundException("없는 유저 입니다.") }
         val foundScreen = screenRepository.findById(request.screenId)
-            .orElseThrow { RuntimeException("없는 상영 입니다.") }
+            .orElseThrow { EntityNotFoundException("없는 상영 입니다.") }
 
         val bookEntity = bookSeatsService.bookSeats(
             user = foundUser,
@@ -73,7 +74,7 @@ class BookService(
     fun unBook(request: UnBookRequest) {
         val foundBook = bookRepository.findById(request.bookId)
             .orElseThrow {
-                IllegalArgumentException("없는 예약내역 입니다.")
+                EntityNotFoundException("없는 예약내역 입니다.")
             }
 
         bookSeatsService.unBookSeats(

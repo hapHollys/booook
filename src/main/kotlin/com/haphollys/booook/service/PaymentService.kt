@@ -9,6 +9,7 @@ import com.haphollys.booook.service.external.pg.PGDto
 import com.haphollys.booook.service.external.pg.PGService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import javax.persistence.EntityNotFoundException
 
 @Service
 @Transactional
@@ -23,7 +24,7 @@ class PaymentService(
     ): PaymentResponse {
         val book = bookRepository.findById(paymentRequest.bookId)
             .orElseThrow {
-                IllegalArgumentException("해당 예약이 없습니다.")
+                EntityNotFoundException("해당 예약이 없습니다.")
             }
 
         val payment = paymentDomainService.pay(
@@ -48,7 +49,7 @@ class PaymentService(
     ): UnPaymentResponse {
         val payment = paymentRepository.findById(unPaymentRequest.paymentId)
             .orElseThrow {
-                IllegalArgumentException("해당 결제가 없습니다.")
+                EntityNotFoundException("해당 결제가 없습니다.")
             }
 
         paymentDomainService.unPay(
