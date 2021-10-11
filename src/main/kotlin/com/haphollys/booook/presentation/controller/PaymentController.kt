@@ -1,10 +1,11 @@
 package com.haphollys.booook.presentation.controller
 
-import com.haphollys.booook.presentation.Response
+import com.haphollys.booook.presentation.ApiResponse
 import com.haphollys.booook.service.PaymentService
 import com.haphollys.booook.service.dto.PagingRequest
 import com.haphollys.booook.service.dto.PaymentDto
 import com.haphollys.booook.service.dto.PaymentDto.*
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -15,32 +16,38 @@ class PaymentController(
     @GetMapping
     fun getPayments(
         @ModelAttribute pagingRequest: PagingRequest
-    ): Response<List<PaymentDto.GetPaymentResponse>> {
+    ): ResponseEntity<ApiResponse<List<PaymentDto.GetPaymentResponse>>> {
         val request = GetPaymentRequest(
             userId = 1L,
             pagingRequest = pagingRequest
         )
 
-        return Response(
-            data = paymentService.getPaymentList(request)
+        return ResponseEntity.ok().body(
+            ApiResponse.success(
+                data = paymentService.getPaymentList(request)
+            )
         )
     }
 
     @PostMapping
     fun pay(
         @RequestBody request: PaymentRequest
-    ): Response<PaymentResponse> {
-        return Response(
-            data = paymentService.pay(request)
+    ): ResponseEntity<ApiResponse<PaymentResponse>> {
+        return ResponseEntity.ok().body(
+            ApiResponse.success(
+                data = paymentService.pay(request)
+            )
         )
     }
 
     @PutMapping
     fun unPay(
         @RequestBody request: UnPaymentRequest
-    ): Response<UnPaymentResponse> {
-        return Response(
-            data = paymentService.unPay(request)
+    ): ResponseEntity<ApiResponse<UnPaymentResponse>> {
+        return ResponseEntity.ok().body(
+            ApiResponse.success(
+                data = paymentService.unPay(request)
+            )
         )
     }
 }

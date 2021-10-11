@@ -2,12 +2,11 @@ package com.haphollys.booook.presentation.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.haphollys.booook.domains.movie.MovieEntity
-import com.haphollys.booook.presentation.Response
+import com.haphollys.booook.presentation.ApiResponse
 import com.haphollys.booook.service.MovieService
 import com.haphollys.booook.service.dto.MovieDto.*
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -55,7 +54,7 @@ internal class MovieControllerTest {
             size?.let { param("size", size.toString()) }
         }.andExpect {
             status { isOk() }
-            content { json(objectMapper.writeValueAsString(Response(listOf(getMovieListResponse)))) }
+            content { json(objectMapper.writeValueAsString(ApiResponse(listOf(getMovieListResponse)))) }
         }
     }
 
@@ -80,7 +79,7 @@ internal class MovieControllerTest {
                 content {
                     json(
                         objectMapper.writeValueAsString(
-                            Response(
+                            ApiResponse(
                                 GetMovieInfoResponse(
                                     movieId = currentPlayingMovie.id!!,
                                     movieName = currentPlayingMovie.name

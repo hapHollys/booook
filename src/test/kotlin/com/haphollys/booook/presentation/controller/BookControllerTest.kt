@@ -2,7 +2,7 @@ package com.haphollys.booook.presentation.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
-import com.haphollys.booook.presentation.Response
+import com.haphollys.booook.presentation.ApiResponse
 import com.haphollys.booook.service.BookService
 import com.haphollys.booook.service.dto.BookDto
 import com.haphollys.booook.service.dto.BookDto.BookRequest
@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
-import org.springframework.mock.http.server.reactive.MockServerHttpRequest.post
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 
@@ -57,7 +56,7 @@ internal class BookControllerTest() {
             status { isOk() }
             content {
                 json(
-                    objectMapper.writeValueAsString(Response(data = response))
+                    objectMapper.writeValueAsString(ApiResponse(data = response))
                 )
             }
         }
