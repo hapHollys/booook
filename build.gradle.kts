@@ -26,6 +26,7 @@ repositories {
 }
 
 dependencies {
+    // kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -48,6 +49,10 @@ dependencies {
     // db
     runtimeOnly("com.h2database:h2")
     runtimeOnly("mysql:mysql-connector-java")
+
+    // logging
+    implementation("io.sentry:sentry-spring-boot-starter:5.2.1")
+    implementation("io.sentry:sentry-logback:5.2.1")
 
     // test
     testImplementation("com.ninja-squad:springmockk:_")

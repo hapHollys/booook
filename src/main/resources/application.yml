@@ -22,3 +22,13 @@ spring:
   batch:
     jdbc:
       initialize-schema: ALWAYS
+
+sentry:
+  dsn: https://4e0070bca0b14844abea6a10ef0afeea@o1034575.ingest.sentry.io/6001215
+  traces-sample-rate: 1.0
+
+logging:
+  level:
+    root: "warn"
+    org.springframework.web: "debug"
+    org.hibernate: "error"
