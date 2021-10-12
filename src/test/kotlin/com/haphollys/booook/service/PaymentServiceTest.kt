@@ -21,6 +21,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.util.*
+import javax.persistence.EntityNotFoundException
 
 @ExtendWith(MockKExtension::class)
 internal class PaymentServiceTest {
@@ -80,7 +81,7 @@ internal class PaymentServiceTest {
         )
 
         assertThrows(
-            IllegalArgumentException::class.java
+            EntityNotFoundException::class.java
         ) { paymentService.pay(paymentRequest = paymentRequest) }
     }
 
