@@ -22,5 +22,5 @@ spring:
       ddl-auto: update
 
 sentry:
-  dsn: https://4e0070bca0b14844abea6a10ef0afeea@o1034575.ingest.sentry.io/6001215
+  dsn: https://924d78ead05f4630a3ab88904a2d60e4@o1034575.ingest.sentry.io/6003049
   traces-sample-rate: 1.0
