@@ -22,5 +22,11 @@ spring:
       ddl-auto: update
 
 sentry:
-  dsn: https://924d78ead05f4630a3ab88904a2d60e4@o1034575.ingest.sentry.io/6003049
+  dsn: https://163b2d7b7ce3463491dbd400cf8605cc@o1035787.ingest.sentry.io/6003077
   traces-sample-rate: 1.0
+
+logging:
+  level:
+    root: "warn"
+    org.springframework.web: "debug"
+    org.hibernate: "error"
