@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional
 import javax.persistence.EntityNotFoundException
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 class MovieService(
     private val movieRepository: MovieRepository
 ) {
