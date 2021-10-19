@@ -10,7 +10,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 1234!@#$
-    url: jdbc:mysql://10.0.0.2/testdb?serverTimezone=UTC
+    url: jdbc:mysql://10.178.0.23/testdb?serverTimezone=UTC
 
   ### JPA 설정 오버라이딩 ###
   jpa:
