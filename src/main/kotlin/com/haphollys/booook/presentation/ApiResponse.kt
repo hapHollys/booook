@@ -18,7 +18,8 @@ data class ApiResponse<T>(
             data: T,
         ): ApiResponse<T> {
             return ApiResponse(
-                data = data
+                data = data,
+                message = "OK"
             )
         }
     }
