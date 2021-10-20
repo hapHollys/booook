@@ -46,6 +46,7 @@ class BookService(
         )
     }
 
+    @Transactional(readOnly = true)
     fun getBookedList(
         request: GetBookedListRequest
     ): List<GetBookedResponse> {

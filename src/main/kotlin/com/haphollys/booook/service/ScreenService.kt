@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional
 import javax.persistence.EntityNotFoundException
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 class ScreenService(
     private val screenRepository: ScreenRepository,
 ) {
