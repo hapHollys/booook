@@ -56,7 +56,7 @@ internal class BookControllerTest() {
             status { isOk() }
             content {
                 json(
-                    objectMapper.writeValueAsString(ApiResponse(data = response))
+                    objectMapper.writeValueAsString(ApiResponse.success(data = response))
                 )
             }
         }

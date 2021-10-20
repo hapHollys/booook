@@ -54,7 +54,7 @@ internal class MovieControllerTest {
             size?.let { param("size", size.toString()) }
         }.andExpect {
             status { isOk() }
-            content { json(objectMapper.writeValueAsString(ApiResponse(listOf(getMovieListResponse)))) }
+            content { json(objectMapper.writeValueAsString(ApiResponse.success(listOf(getMovieListResponse)))) }
         }
     }
 
@@ -79,7 +79,7 @@ internal class MovieControllerTest {
                 content {
                     json(
                         objectMapper.writeValueAsString(
-                            ApiResponse(
+                            ApiResponse.success(
                                 GetMovieInfoResponse(
                                     movieId = currentPlayingMovie.id!!,
                                     movieName = currentPlayingMovie.name
