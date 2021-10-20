@@ -2,5 +2,4 @@ FROM adoptopenjdk/openjdk11:latest
 
 COPY app.jar /app.jar
 
-
-CMD ["java", "-Dcom.sun.management.jmxremote.local.only=false", "-Dcom.sun.management.jmxremote.port=1099", "-Dcom.sun.management.jmxremote.ssl=false", "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote", "-Djava.rmi.server.hostname=3.38.27.30", "-Dcom.sun.management.jmxremote.rmi.port=1099", "-DSpring.profiles.active=prod", "-jar", "app.jar"]
+CMD ["java", "-Dcom.sun.management.jmxremote.local.only=false", "-Dcom.sun.management.jmxremote.port=1099", "-Dcom.sun.management.jmxremote.ssl=false", "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote", "-Djava.rmi.server.hostname=34.64.173.121", "-Dcom.sun.management.jmxremote.rmi.port=1099", "-DSpring.profiles.active=prod", "-jar", "app.jar"]

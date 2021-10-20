@@ -13,7 +13,7 @@ class MovieController(
     private val movieService: MovieService
 ) {
     @GetMapping
-    fun getCurrentPlayingMovieList(
+    fun getMovieList(
         @RequestParam("playingNow") playingNow: Boolean?,
         @ModelAttribute pagingRequest: PagingRequest
     ): ResponseEntity<ApiResponse<List<GetMovieListResponse>>> {
