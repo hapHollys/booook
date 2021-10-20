@@ -70,6 +70,7 @@ class PaymentService(
 
     // query option들 처리 방안 고려
     // paging(& sort), where user_id and between A and B
+    @Transactional(readOnly = true)
     fun getPaymentList(
         request: GetPaymentRequest
     ): List<GetPaymentResponse> {
