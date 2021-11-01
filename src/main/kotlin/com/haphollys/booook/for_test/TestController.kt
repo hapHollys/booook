@@ -27,4 +27,10 @@ class TestController(
         println("date : $date")
         return "OK"
     }
+
+    @GetMapping("/test3")
+    fun insertTestScreens(): String {
+        insertDataForTestService.testScreenInsert()
+        return "OK"
+    }
 }
