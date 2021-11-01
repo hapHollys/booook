@@ -1,5 +1,7 @@
 package com.haphollys.booook.repository
 
+import com.haphollys.booook.domains.movie.QMovieEntity
+import com.haphollys.booook.domains.movie.QMovieEntity.*
 import com.haphollys.booook.domains.screen.QScreenEntity.screenEntity
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.service.dto.PagingRequest
@@ -18,8 +20,8 @@ class ScreenCustomRepositoryImpl(
         date: LocalDateTime,
         pagingRequest: PagingRequest
     ): List<ScreenEntity> {
-        return query.select(screenEntity)
-            .from(screenEntity)
+        return query.selectFrom(screenEntity)
+            .join(screenEntity.movie).fetchJoin()
             .where(movieIdEq(movieId), dateEq(date), cursorPosition(pagingRequest.lastId))
             .limit(pagingRequest.size)
             .fetch()
