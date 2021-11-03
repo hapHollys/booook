@@ -22,6 +22,7 @@ class ScreenCustomRepositoryImpl(
     ): List<ScreenEntity> {
         return query.selectFrom(screenEntity)
             .join(screenEntity.movie).fetchJoin()
+            .join(screenEntity.screenRoom.seats).fetchJoin()
             .where(movieIdEq(movieId), dateEq(date), cursorPosition(pagingRequest.lastId))
             .limit(pagingRequest.size)
             .fetch()
