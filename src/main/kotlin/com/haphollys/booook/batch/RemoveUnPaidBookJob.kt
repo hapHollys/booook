@@ -62,7 +62,6 @@ class RemoveUnPaidBookJob(
     fun processor(): ItemProcessor<BookEntity, BookEntity> {
         // 예약한지 5분지났는지 검증 후 CANCEL 상태로
         return ItemProcessor<BookEntity, BookEntity> {
-            println("PROCESSOR : $it")
             it.status = BookEntity.BookStatus.CANCEL
             it
         }

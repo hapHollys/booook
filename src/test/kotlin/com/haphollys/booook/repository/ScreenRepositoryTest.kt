@@ -27,6 +27,9 @@ class ScreenRepositoryTest {
     @Autowired
     lateinit var screenRepository: ScreenRepository
 
+    @Autowired
+    lateinit var roomRepository: RoomRepository
+
     lateinit var testMovie: MovieEntity
 
     @BeforeEach
@@ -88,7 +91,9 @@ class ScreenRepositoryTest {
     @Test
     fun `상영 목록 페이징`() {
         // given
-        val room = mockk<RoomEntity>(relaxed = true)
+        val room = RoomEntity.of(numRow = 3, numCol = 3, roomType = RoomEntity.RoomType.TWO_D)
+        roomRepository.save(room)
+
         val screenDateTime = LocalDateTime.of(2021, 12, 1, 1, 0)
 
         val screens = listOf(
@@ -96,7 +101,6 @@ class ScreenRepositoryTest {
             ScreenEntity.of(movie = testMovie, room = room, date = screenDateTime.plusHours(2)),
             ScreenEntity.of(movie = testMovie, room = room, date = screenDateTime.plusHours(3))
         )
-
         screenRepository.saveAll(screens)
 
         // when
