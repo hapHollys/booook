@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
+
 plugins {
     id("org.springframework.boot") version "2.5.4"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
@@ -9,12 +10,21 @@ plugins {
     kotlin("plugin.spring") version "1.5.21"
     kotlin("plugin.jpa") version "1.5.21"
 
+    // all open
+    kotlin("plugin.allopen") version "1.4.32"
+
     // query dsl
     id("com.ewerk.gradle.plugins.querydsl") version "1.0.10"
     kotlin("kapt") version "1.4.10"
 
     // jacoco
     jacoco
+}
+
+allOpen {
+    annotation("javax.persistence.Entity")
+    annotation("javax.persistence.Embeddable")
+    annotation("javax.persistence.MappedSuperclass")
 }
 
 group = "com.hapHollys"
