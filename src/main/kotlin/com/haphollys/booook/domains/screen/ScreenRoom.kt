@@ -2,10 +2,8 @@ package com.haphollys.booook.domains.screen
 
 import com.haphollys.booook.domains.room.RoomEntity.RoomType
 import com.haphollys.booook.model.SeatPosition
-import javax.persistence.ElementCollection
-import javax.persistence.Embeddable
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
+import org.hibernate.annotations.BatchSize
+import javax.persistence.*
 
 @Embeddable
 class ScreenRoom(
@@ -15,8 +13,8 @@ class ScreenRoom(
     @Enumerated(value = EnumType.STRING)
     var roomType: RoomType,
     @ElementCollection
-    // @CollectionTable(name="") TODO: 관계 테이블 이름 명시적으로 지정하기
-    var seats: List<Seat>
+    @BatchSize(size=30)
+    var seats: MutableList<Seat>
 ) {
     fun book(bookSeatPosition: SeatPosition) {
         getSeat(bookSeatPosition).book()

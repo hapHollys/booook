@@ -9,7 +9,7 @@ class BookSeatsService {
     fun bookSeats(
         user: UserEntity,
         screen: ScreenEntity,
-        bookedSeats: List<BookedSeat>,
+        bookedSeats: MutableList<BookedSeat>,
     ): BookEntity {
         val bookEntity = BookEntity.of(
             user = user,

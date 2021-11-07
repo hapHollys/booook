@@ -38,7 +38,7 @@ class BookService(
                         seatPosition = it.toSeatPosition(),
                         seatType = it.type
                     )
-                }
+                }.toMutableList()
         )
 
         return BookDto.BookResponse(

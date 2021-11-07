@@ -20,7 +20,7 @@ class BookEntity(
     var screen: ScreenEntity,
     var bookedAt: LocalDateTime = LocalDateTime.now(),
     @ElementCollection
-    var bookedSeats: List<BookedSeat>,
+    var bookedSeats: MutableList<BookedSeat>,
     @Enumerated(value = STRING)
     var status: BookStatus = BOOKED
 ) : BaseEntity() {
@@ -68,7 +68,7 @@ class BookEntity(
             id: Long? = null,
             user: UserEntity,
             screen: ScreenEntity,
-            bookedSeats: List<BookedSeat>,
+            bookedSeats: MutableList<BookedSeat>,
             status: BookStatus = BOOKED,
         ): BookEntity {
             return BookEntity(
