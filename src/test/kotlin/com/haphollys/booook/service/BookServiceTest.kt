@@ -111,7 +111,7 @@ internal class BookServiceTest {
                 id = 1L
                 date = LocalDateTime.now().plusHours(1)
             },
-            bookedSeats = listOf(
+            bookedSeats = mutableListOf(
                 BookedSeat(
                     seatPosition = SeatPosition(x = 0, y = 0),
                     seatType = FRONT

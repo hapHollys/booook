@@ -52,7 +52,7 @@ internal class BookEntityTest {
     @Test
     fun `예약 취소`() {
         // given
-        val bookedSeats = listOf(
+        val bookedSeats = mutableListOf(
             BookedSeat(
                 SeatPosition(
                     x = 0,
@@ -78,7 +78,7 @@ internal class BookEntityTest {
     @Test
     fun `이미 취소된 예약 취소 시 예외`() {
         // given
-        val bookedSeats = listOf(
+        val bookedSeats = mutableListOf(
             BookedSeat(
                 SeatPosition(
                     x = 0,
@@ -106,7 +106,7 @@ internal class BookEntityTest {
     @Test
     fun `이미 결제된 예약 취소 시 예외`() {
         // given
-        val bookedSeats = listOf(
+        val bookedSeats = mutableListOf(
             BookedSeat(
                 SeatPosition(
                     x = 0,
@@ -133,7 +133,7 @@ internal class BookEntityTest {
     @Test
     fun `결제`() {
         // given
-        val bookedSeats = listOf(
+        val bookedSeats = mutableListOf(
             BookedSeat(
                 SeatPosition(
                     x = 0,
@@ -159,7 +159,7 @@ internal class BookEntityTest {
     @Test
     fun `예약되지 않은 좌석 결제 시 예외`() {
         // given
-        val bookedSeats = listOf(
+        val bookedSeats = mutableListOf(
             BookedSeat(
                 SeatPosition(
                     x = 0,

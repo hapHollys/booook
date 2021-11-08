@@ -73,10 +73,6 @@ internal class ScreenControllerTest {
     @Test
     fun `예약 가능한 좌석 목록 요청`() {
         // given
-        val request = GetBookableSeatsRequest(
-            screenId = targetScreen.id!!
-        )
-
         val response = GetBookableSeatsResponse(
             listOf(
                 SeatDto(row = 0, col = 0, type = FRONT),

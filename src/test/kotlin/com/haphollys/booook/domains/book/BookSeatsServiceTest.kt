@@ -32,7 +32,7 @@ internal class BookSeatsServiceTest {
     @Test
     fun `좌석 예약`() {
         // given
-        val bookedSeats = listOf(
+        val bookedSeats = mutableListOf(
             BookedSeat(
                 seatPosition = SeatPosition(x = 0, y = 0),
                 seatType = FRONT

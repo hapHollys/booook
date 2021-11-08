@@ -53,7 +53,7 @@ class BookRepositoryTest {
             BookEntity.of(
                 user = testUser,
                 screen = testScreen,
-                bookedSeats = listOf(
+                bookedSeats = mutableListOf(
                     BookedSeat(
                         seatPosition = SeatPosition(x = 0, y = 0),
                         seatType = Seat.SeatType.BACK
@@ -63,7 +63,7 @@ class BookRepositoryTest {
             BookEntity.of(
                 user = testUser,
                 screen = testScreen,
-                bookedSeats = listOf(
+                bookedSeats = mutableListOf(
                     BookedSeat(
                         seatPosition = SeatPosition(x = 0, y = 1),
                         seatType = Seat.SeatType.BACK

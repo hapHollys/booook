@@ -47,7 +47,7 @@ internal class PaymentEntityTest {
         // given, when
         every {
             testBook.bookedSeats
-        } returns listOf(
+        } returns mutableListOf(
             BookedSeat(
                 seatPosition = SeatPosition(x = 0, y = 0),
                 seatType = FRONT
