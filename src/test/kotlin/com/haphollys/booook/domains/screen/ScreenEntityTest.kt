@@ -77,8 +77,6 @@ internal class ScreenEntityTest {
 
     @Test
     fun `좌석 수 조회`() {
-        // given
-
         // when
         val result = screenEntity.getSeatNum()
 

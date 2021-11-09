@@ -24,6 +24,10 @@ class ScreenRoom(
         getSeat(bookSeatPosition).unBook()
     }
 
+    fun getSeatsSize(): Int {
+        return numRow * numCol
+    }
+
     private fun getSeat(
         seatPosition: SeatPosition
     ): Seat {
