@@ -28,6 +28,10 @@ class ScreenRoom(
         return numRow * numCol
     }
 
+    fun getBookableSeats(): List<Seat> {
+        return seats.filter { it.bookable() }
+    }
+
     private fun getSeat(
         seatPosition: SeatPosition
     ): Seat {

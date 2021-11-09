@@ -52,9 +52,7 @@ class ScreenEntity(
     }
 
     fun getBookableSeats(): List<Seat> {
-        return this.screenRoom.seats.filter {
-            it.bookable()
-        }
+        return this.screenRoom.getBookableSeats()
     }
 
     fun getSeatNum(): Int {
