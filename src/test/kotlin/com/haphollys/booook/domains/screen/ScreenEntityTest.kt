@@ -78,7 +78,7 @@ internal class ScreenEntityTest {
     @Test
     fun `좌석 수 조회`() {
         // when
-        val result = screenEntity.getSeatNum()
+        val result = screenEntity.getNumSeats()
 
         // then
         val seatNum = screenEntity.screenRoom.numRow * screenEntity.screenRoom.numCol

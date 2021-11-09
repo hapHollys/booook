@@ -14,7 +14,8 @@ class ScreenRoom(
     var roomType: RoomType,
     @ElementCollection
     @BatchSize(size=30)
-    var seats: MutableList<Seat>
+    var seats: MutableList<Seat>,
+    var numSeats: Int = numRow * numCol,
 ) {
     fun book(bookSeatPosition: SeatPosition) {
         getSeat(bookSeatPosition).book()

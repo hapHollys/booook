@@ -52,7 +52,7 @@ internal class ScreenControllerTest {
         val getScreensResponse = GetScreenResponse(
             screenId = targetScreen.id!!,
             screenDateTime = targetScreen.date,
-            roomSeatNum = targetScreen.getSeatNum(),
+            roomSeatNum = targetScreen.getNumSeats(),
             remainSeatNum = targetScreen.getBookableSeats().size,
             roomType = targetScreen.screenRoom.roomType
         )

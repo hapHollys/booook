@@ -46,10 +46,11 @@ class ScreenService(
             GetScreenResponse(
                 screenId = it.id!!,
                 screenDateTime = it.date,
-                roomSeatNum = it.getSeatNum(),
+                roomSeatNum = it.getNumSeats(),
                 remainSeatNum = it.getBookableSeats().size,
                 roomType = it.screenRoom.roomType
             )
         }
     }
 }
+

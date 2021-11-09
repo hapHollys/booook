@@ -55,8 +55,8 @@ class ScreenEntity(
         return this.screenRoom.getBookableSeats()
     }
 
-    fun getSeatNum(): Int {
-        return screenRoom.getSeatsSize()
+    fun getNumSeats(): Int {
+        return screenRoom.numSeats
     }
 
     companion object {
