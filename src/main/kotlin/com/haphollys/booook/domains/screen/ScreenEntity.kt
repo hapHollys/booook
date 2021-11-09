@@ -26,29 +26,13 @@ class ScreenEntity(
     fun bookSeats(
         seatPositions: List<SeatPosition>
     ) {
-        seatPositions.forEach {
-            bookSeat(it)
-        }
-    }
-
-    private fun bookSeat(
-        seatPosition: SeatPosition
-    ) {
-        screenRoom.book(seatPosition)
+        screenRoom.book(seatPositions)
     }
 
     fun unBookSeats(
         seatPositions: List<SeatPosition>
     ) {
-        seatPositions.forEach {
-            unBookSeat(it)
-        }
-    }
-
-    private fun unBookSeat(
-        seatPosition: SeatPosition
-    ) {
-        screenRoom.unBook(seatPosition)
+        screenRoom.unBook(seatPositions)
     }
 
     fun getBookableSeats(): List<Seat> {
@@ -57,6 +41,10 @@ class ScreenEntity(
 
     fun getNumSeats(): Int {
         return screenRoom.numSeats
+    }
+
+    fun getNumRemainSeats(): Int {
+        return screenRoom.numRemainSeats
     }
 
     companion object {

@@ -4,8 +4,7 @@ import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.SeatPosition
 import io.mockk.spyk
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -21,30 +20,50 @@ internal class ScreenEntityTest {
     @Test
     fun `한 좌석 예약`() {
         // given
-        val bookPosition = SeatPosition(x = 0, y = 0)
+        val bookPositions = listOf(SeatPosition(x = 0, y = 0))
+        val numRemainSeatsBeforeBook = screenEntity.getNumRemainSeats()
 
         // when
-        screenEntity.bookSeats(listOf(bookPosition))
+        screenEntity.bookSeats(bookPositions)
 
         // then
         verify {
-            screenEntity.screenRoom.book(bookPosition)
+            screenEntity.screenRoom.book(bookPositions)
         }
+        assertTrue(screenEntity.getNumRemainSeats() == numRemainSeatsBeforeBook - bookPositions.size)
+    }
+
+    @Test
+    fun `좌석 예약`() {
+        // given
+        val bookPositions = listOf(SeatPosition(x = 0, y = 0), SeatPosition(x = 0, y = 1))
+        val numRemainSeatsBeforeBook = screenEntity.getNumRemainSeats()
+
+        // when
+        screenEntity.bookSeats(bookPositions)
+
+        // then
+        verify {
+            screenEntity.screenRoom.book(bookPositions)
+        }
+        assertTrue(screenEntity.getNumRemainSeats() == numRemainSeatsBeforeBook - bookPositions.size)
     }
 
     @Test
     fun `한 좌석 예약 취소`() {
         // given
-        val bookPosition = SeatPosition(x = 0, y = 0)
-        screenEntity.bookSeats(listOf(bookPosition))
+        val bookPositions = listOf(SeatPosition(x = 0, y = 0))
+        screenEntity.bookSeats(bookPositions)
+        val numRemainSeatsBeforeBook = screenEntity.getNumRemainSeats()
 
         // when
-        screenEntity.unBookSeats(listOf(bookPosition))
+        screenEntity.unBookSeats(bookPositions)
 
         // then
         verify {
-            screenEntity.screenRoom.unBook(bookPosition)
+            screenEntity.screenRoom.unBook(bookPositions)
         }
+        assertTrue(screenEntity.getNumRemainSeats() == numRemainSeatsBeforeBook + bookPositions.size)
     }
 
     @Test

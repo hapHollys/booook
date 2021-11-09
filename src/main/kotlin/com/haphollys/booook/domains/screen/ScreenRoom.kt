@@ -16,17 +16,22 @@ class ScreenRoom(
     @BatchSize(size=30)
     var seats: MutableList<Seat>,
     var numSeats: Int = numRow * numCol,
+    var numRemainSeats: Int = numSeats,
 ) {
-    fun book(bookSeatPosition: SeatPosition) {
-        getSeat(bookSeatPosition).book()
+    fun book(bookSeatPositions: List<SeatPosition>) {
+        bookSeatPositions.forEach {
+            getSeat(it).book()
+        }
+
+        numRemainSeats -= bookSeatPositions.size
     }
 
-    fun unBook(bookSeatPosition: SeatPosition) {
-        getSeat(bookSeatPosition).unBook()
-    }
+    fun unBook(bookSeatPositions: List<SeatPosition>) {
+        bookSeatPositions.forEach {
+            getSeat(it).unBook()
+        }
 
-    fun getSeatsSize(): Int {
-        return numRow * numCol
+        numRemainSeats += bookSeatPositions.size
     }
 
     fun getBookableSeats(): List<Seat> {
