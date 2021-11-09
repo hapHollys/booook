@@ -47,7 +47,7 @@ class ScreenService(
                 screenId = it.id!!,
                 screenDateTime = it.date,
                 roomSeatNum = it.getNumSeats(),
-                remainSeatNum = it.getBookableSeats().size,
+                remainSeatNum = it.getNumRemainSeats(),
                 roomType = it.screenRoom.roomType
             )
         }
