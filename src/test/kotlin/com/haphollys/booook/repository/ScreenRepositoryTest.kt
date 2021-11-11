@@ -3,9 +3,12 @@ package com.haphollys.booook.repository
 import com.haphollys.booook.config.TestQueryDslConfig
 import com.haphollys.booook.domains.movie.MovieEntity
 import com.haphollys.booook.domains.room.RoomEntity
+import com.haphollys.booook.domains.room.RoomEntity.RoomType.TWO_D
 import com.haphollys.booook.domains.screen.ScreenEntity
+import com.haphollys.booook.getTestPriceList
 import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.service.dto.PagingRequest
+import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
@@ -41,36 +44,32 @@ class ScreenRepositoryTest {
     }
 
     @Test
-    fun `findById 테스트`() {
-        em.persist(testMovie)
-        // given
-        val screen1 = getTestScreenEntity(movie = testMovie)
-        val screen2 = getTestScreenEntity(movie = testMovie)
-        em.persist(screen1)
-        em.persist(screen2)
-        em.clear()
-
-        // when
-        val foundScreen = screenRepository.findById(screen2.id!!).get()
-
-        // then
-        assertNotEquals(screen1.id!!, foundScreen.id)
-        assertEquals(screen2.id!!, foundScreen.id)
-    }
-
-    @Test
     fun `특정 영화 특정 날짜 Screen List 조회`() {
         // given
         val targetDate = LocalDateTime.of(2021, 12, 31, 12, 0)
+        val room = RoomEntity.of(numRow = 3, numCol = 3, roomType = TWO_D)
+        room.id = 1L
 
-        val beforeScreen = getTestScreenEntity(movie = testMovie)
-        beforeScreen.date = targetDate.minusDays(1L)
+        val beforeScreen = ScreenEntity.of(
+            movie = testMovie,
+            room = room,
+            priceTable = getTestPriceList().table,
+            date = targetDate.minusDays(1L)
+        )
 
-        val targetScreen = getTestScreenEntity(movie = testMovie)
-        targetScreen.date = targetDate
+        val targetScreen = ScreenEntity.of(
+            movie = testMovie,
+            room = room,
+            priceTable = getTestPriceList().table,
+            date = targetDate
+        )
 
-        val afterScreen = getTestScreenEntity(movie = testMovie)
-        afterScreen.date = targetDate.plusDays(1L)
+        val afterScreen = ScreenEntity.of(
+            movie = testMovie,
+            room = room,
+            priceTable = getTestPriceList().table,
+            date = targetDate.plusDays(1L)
+        )
 
         em.persist(beforeScreen)
         em.persist(targetScreen)
@@ -91,15 +90,15 @@ class ScreenRepositoryTest {
     @Test
     fun `상영 목록 페이징`() {
         // given
-        val room = RoomEntity.of(numRow = 3, numCol = 3, roomType = RoomEntity.RoomType.TWO_D)
+        val room = RoomEntity.of(numRow = 3, numCol = 3, roomType = TWO_D)
         roomRepository.save(room)
 
         val screenDateTime = LocalDateTime.of(2021, 12, 1, 1, 0)
 
         val screens = listOf(
-            ScreenEntity.of(movie = testMovie, room = room, date = screenDateTime.plusHours(1)),
-            ScreenEntity.of(movie = testMovie, room = room, date = screenDateTime.plusHours(2)),
-            ScreenEntity.of(movie = testMovie, room = room, date = screenDateTime.plusHours(3))
+            ScreenEntity.of(movie = testMovie, room = room, date = screenDateTime.plusHours(1), priceTable = getTestPriceList().table),
+            ScreenEntity.of(movie = testMovie, room = room, date = screenDateTime.plusHours(2), priceTable = getTestPriceList().table),
+            ScreenEntity.of(movie = testMovie, room = room, date = screenDateTime.plusHours(3), priceTable = getTestPriceList().table)
         )
         screenRepository.saveAll(screens)
 

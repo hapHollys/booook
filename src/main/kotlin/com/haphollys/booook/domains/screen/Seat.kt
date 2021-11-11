@@ -2,7 +2,9 @@ package com.haphollys.booook.domains.screen
 
 import com.haphollys.booook.domains.screen.Seat.SeatStatus.BOOKED
 import com.haphollys.booook.domains.screen.Seat.SeatStatus.FREE
+import com.haphollys.booook.model.Money
 import com.haphollys.booook.model.SeatPosition
+import java.math.BigDecimal
 import javax.persistence.Embeddable
 import javax.persistence.Embedded
 import javax.persistence.EnumType
@@ -16,6 +18,7 @@ class Seat(
     var seatType: SeatType,
     @Enumerated(value = EnumType.STRING)
     var status: SeatStatus = FREE,
+    var price: BigDecimal
 ) {
 
     enum class SeatStatus {

@@ -4,6 +4,7 @@ import com.haphollys.booook.domains.BaseEntity
 import com.haphollys.booook.domains.movie.MovieEntity
 import com.haphollys.booook.domains.room.RoomEntity
 import com.haphollys.booook.model.SeatPosition
+import java.math.BigDecimal
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -39,6 +40,10 @@ class ScreenEntity(
         return this.screenRoom.getBookableSeats()
     }
 
+    fun getSeat(seatPosition: SeatPosition): Seat {
+        return screenRoom.getSeat(seatPosition)
+    }
+
     fun getNumSeats(): Int {
         return screenRoom.numSeats
     }
@@ -54,13 +59,15 @@ class ScreenEntity(
             id: Long? = null,
             movie: MovieEntity,
             room: RoomEntity,
-            date: LocalDateTime = LocalDateTime.now()
+            date: LocalDateTime = LocalDateTime.now(),
+            priceTable:  Map<RoomEntity.RoomType, Map<Seat.SeatType, BigDecimal>>
         ): ScreenEntity {
             val seats = ArrayList<Seat>()
             val numRow = room.numRow
             val numCol = room.numCol
 
             for (row in 0 until numRow) {
+                val seatType = room.getSeatType(row)
                 for (col in 0 until numCol) {
                     seats.add(
                         Seat(
@@ -68,7 +75,8 @@ class ScreenEntity(
                                 x = row,
                                 y = col
                             ),
-                            seatType = room.getSeatType(row)
+                            seatType = seatType,
+                            price = priceTable[room.roomType]!![seatType]!!
                         )
                     )
                 }

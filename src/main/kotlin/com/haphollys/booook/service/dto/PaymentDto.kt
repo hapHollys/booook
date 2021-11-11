@@ -1,12 +1,14 @@
 package com.haphollys.booook.service.dto
 
 import com.haphollys.booook.domains.payment.PaymentEntity
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 class PaymentDto() {
     data class PaymentRequest(
         val userId: Long,
-        val bookId: Long,
+        val screenId: Long,
+        val seatPositions: List<SeatDto>
     )
 
     data class PaymentResponse(
@@ -33,7 +35,7 @@ class PaymentDto() {
         val movieName: String,
         val posterImageUrl: String,
         val bookedSeats: List<SeatDto>,
-        val totalAmount: Int,
+        val totalAmount: BigDecimal,
         val paymentDate: LocalDateTime,
         val status: PaymentEntity.Status
     )

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.haphollys.booook.domains.movie.MovieEntity
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
+import com.haphollys.booook.getTestPriceList
 import com.haphollys.booook.service.ScreenService
 import com.haphollys.booook.service.dto.ScreenDto.*
 import com.haphollys.booook.service.dto.SeatDto
@@ -40,7 +41,8 @@ internal class ScreenControllerTest {
     val targetScreen = ScreenEntity.of(
         movie = mockk<MovieEntity>(relaxed = true).apply { id = 1L },
         room = mockk(relaxed = true),
-        date = LocalDateTime.of(targetYear, targetMonth, targetDay, targetHour, targetMinute)
+        date = LocalDateTime.of(targetYear, targetMonth, targetDay, targetHour, targetMinute),
+        priceTable = getTestPriceList().table
     ).apply { id = 1L }
 
     @Test

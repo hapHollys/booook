@@ -33,8 +33,8 @@ internal class PaymentControllerTest {
 
     val myPayment = PaymentEntity.of(
         payerId = myId,
-        book = mockk(relaxed = true),
-        priceList = mockk(relaxed = true)
+        screen = mockk(relaxed = true),
+        bookedSeats = mockk(relaxed = true)
     ).apply { id = 1L }
 
     @Test
@@ -56,7 +56,8 @@ internal class PaymentControllerTest {
         // given
         val request = PaymentRequest(
             userId = myId,
-            bookId = 1L
+            screenId = 1L,
+            seatPositions = mutableListOf()
         )
 
         every {

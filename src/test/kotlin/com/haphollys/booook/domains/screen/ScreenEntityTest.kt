@@ -1,7 +1,11 @@
 package com.haphollys.booook.domains.screen
 
-import com.haphollys.booook.getTestScreenEntity
+import com.haphollys.booook.domains.movie.MovieEntity
+import com.haphollys.booook.domains.room.RoomEntity
+import com.haphollys.booook.getTestPriceList
 import com.haphollys.booook.model.SeatPosition
+import io.mockk.every
+import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions.*
@@ -10,10 +14,24 @@ import org.junit.jupiter.api.Test
 
 internal class ScreenEntityTest {
     lateinit var screenEntity: ScreenEntity
+    lateinit var roomEntity: RoomEntity
+    lateinit var movieEntity: MovieEntity
 
     @BeforeEach
     fun setUp() {
-        screenEntity = getTestScreenEntity()
+        roomEntity = RoomEntity.of(
+            numRow = 2,
+            numCol = 2
+        )
+        roomEntity.id = 1L
+
+        movieEntity = mockk(relaxed = true)
+
+        screenEntity = ScreenEntity.of(
+            movie = movieEntity,
+            room = roomEntity,
+            priceTable = getTestPriceList().table
+        )
         screenEntity.screenRoom = spyk(screenEntity.screenRoom)
     }
 
@@ -69,29 +87,20 @@ internal class ScreenEntityTest {
     @Test
     fun `예약 가능한 좌석만 조회`() {
         // given
-        val bookedPositions = listOf<SeatPosition>(
-            SeatPosition(0, 0),
-            SeatPosition(0, 1),
-            SeatPosition(1, 0),
-            SeatPosition(1, 1),
-        )
-
-        screenEntity.bookSeats(
-            bookedPositions
-        )
+        val bookSeatPositions = listOf(SeatPosition(0, 0))
+        screenEntity.bookSeats(bookSeatPositions)
 
         // when
-        val bookableSeats = screenEntity.getBookableSeats()
+        val bookableSeatPositions = screenEntity.getBookableSeats()
+            .map { it.seatPosition }
 
         // then
-        bookableSeats.forEach {
-            bookedPositions.forEach { bookedPosition ->
-                assertFalse(it.seatPosition == bookedPosition)
-            }
+        bookSeatPositions.forEach {
+            assertFalse(bookableSeatPositions.contains(it))
         }
 
         val roomSize = screenEntity.screenRoom.numCol * screenEntity.screenRoom.numRow
-        assertEquals(roomSize, bookedPositions.size + bookableSeats.size)
+        assertNotEquals(roomSize, bookableSeatPositions.size)
     }
 
     @Test

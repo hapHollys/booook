@@ -3,6 +3,7 @@ package com.haphollys.booook.domains.screen
 import com.haphollys.booook.domains.room.RoomEntity.RoomType
 import com.haphollys.booook.model.SeatPosition
 import org.hibernate.annotations.BatchSize
+import java.math.BigDecimal
 import javax.persistence.*
 
 @Embeddable
@@ -38,7 +39,7 @@ class ScreenRoom(
         return seats.filter { it.bookable() }
     }
 
-    private fun getSeat(
+    fun getSeat(
         seatPosition: SeatPosition
     ): Seat {
         var seat: Seat? = null

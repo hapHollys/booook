@@ -1,8 +1,8 @@
 package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.payment.PaymentDomainService
-import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository
+import com.haphollys.booook.repository.ScreenRepository
 import com.haphollys.booook.service.dto.PaymentDto.*
 import com.haphollys.booook.service.dto.SeatDto
 import com.haphollys.booook.service.external.pg.PGDto
@@ -15,21 +15,18 @@ import javax.persistence.EntityNotFoundException
 @Transactional
 class PaymentService(
     private val paymentDomainService: PaymentDomainService,
-    private val bookRepository: BookRepository,
     private val paymentRepository: PaymentRepository,
-    private val pgService: PGService
+    private val pgService: PGService,
+    private val screenRepository: ScreenRepository
 ) {
     fun pay(
         paymentRequest: PaymentRequest
     ): PaymentResponse {
-        val book = bookRepository.findById(paymentRequest.bookId)
-            .orElseThrow {
-                EntityNotFoundException("해당 예약이 없습니다.")
-            }
-
         val payment = paymentDomainService.pay(
+            screenRepository = screenRepository,
             payerId = paymentRequest.userId,
-            book = book
+            screenId = paymentRequest.screenId,
+            seatPositions = paymentRequest.seatPositions.map { it.toSeatPosition() }
         )
 
         pgService.pay(
@@ -54,9 +51,7 @@ class PaymentService(
 
         paymentDomainService.unPay(
             userId = unPaymentRequest.userId,
-            payment = payment,
-            book = payment.book,
-            screen = payment.book.screen
+            payment = payment
         )
 
         pgService.unPay(
@@ -82,10 +77,10 @@ class PaymentService(
         return paymentList.map {
             GetPaymentResponse(
                 paymentId = it.id!!,
-                screenId = it.book.screen.id!!,
-                movieName = it.book.screen.movie.name,
+                screenId = it.screen.id!!,
+                movieName = it.screen.movie.name,
                 posterImageUrl = "https://www.naver.com",
-                bookedSeats = it.book.bookedSeats.map {
+                bookedSeats = it.bookedSeats.map {
                     SeatDto(
                         row = it.seatPosition.x,
                         col = it.seatPosition.y,

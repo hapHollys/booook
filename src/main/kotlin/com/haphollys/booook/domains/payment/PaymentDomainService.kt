@@ -1,41 +1,47 @@
 package com.haphollys.booook.domains.payment
 
-import com.haphollys.booook.domains.book.BookEntity
-import com.haphollys.booook.domains.book.BookSeatsService
 import com.haphollys.booook.domains.screen.ScreenEntity
-import com.haphollys.booook.model.PriceList
+import com.haphollys.booook.model.SeatPosition
+import com.haphollys.booook.repository.ScreenRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import javax.persistence.EntityNotFoundException
 
 @Service
 @Transactional
 class PaymentDomainService(
-    private val priceList: PriceList,
-    private val bookSeatsService: BookSeatsService
 ) {
     fun pay(
+        screenRepository: ScreenRepository,
         payerId: Long,
-        book: BookEntity
+        screenId: Long,
+        seatPositions: List<SeatPosition>
     ): PaymentEntity {
-        book.pay()
+        val screen = screenRepository.findById(screenId)
+            .orElseThrow{ EntityNotFoundException("없는 상영입니다.") }
+
+        screen.bookSeats(seatPositions)
+
         return PaymentEntity.of(
             payerId = payerId,
-            book = book,
-            priceList = priceList.table
+            screen = screen,
+            bookedSeats = seatPositions.map {
+                val seat = screen.getSeat(seatPosition = it)
+
+                BookedSeat(
+                    seatPosition = it,
+                    seatType = seat.seatType,
+                    seat.price
+                )
+            }.toMutableList()
         )
     }
 
     fun unPay(
         userId: Long,
         payment: PaymentEntity,
-        book: BookEntity,
-        screen: ScreenEntity
     ) {
-        bookSeatsService.unBookSeats(
-            userId = userId,
-            book = book,
-            screen = screen
-        )
+        payment.screen.unBookSeats(payment.bookedSeats.map { it.seatPosition })
 
         payment.unPay()
     }

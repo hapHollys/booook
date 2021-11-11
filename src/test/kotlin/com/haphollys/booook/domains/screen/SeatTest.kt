@@ -4,6 +4,7 @@ import com.haphollys.booook.domains.screen.Seat.SeatStatus.BOOKED
 import com.haphollys.booook.domains.screen.Seat.SeatStatus.FREE
 import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
 import com.haphollys.booook.model.SeatPosition
+import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
@@ -17,7 +18,8 @@ internal class SeatTest {
                 x = 0,
                 y = 0,
             ),
-            seatType = FRONT
+            seatType = FRONT,
+            price = mockk()
         )
 
         // when
@@ -35,7 +37,8 @@ internal class SeatTest {
                 x = 0,
                 y = 0,
             ),
-            seatType = FRONT
+            seatType = FRONT,
+            price = mockk(),
         )
         seat.book()
 
@@ -55,7 +58,8 @@ internal class SeatTest {
                 y = 0,
             ),
             seatType = FRONT,
-            status = BOOKED
+            status = BOOKED,
+            price = mockk()
         )
 
         assertThrows(RuntimeException::class.java) {
@@ -72,7 +76,8 @@ internal class SeatTest {
                 y = 0
             ),
             seatType = FRONT,
-            status = FREE
+            status = FREE,
+            price = mockk()
         )
 
         // when, then
@@ -89,7 +94,8 @@ internal class SeatTest {
                 x = 0,
                 y = 0,
             ),
-            seatType = FRONT
+            seatType = FRONT,
+            price = mockk()
         )
 
         // when, then
@@ -104,7 +110,8 @@ internal class SeatTest {
                 x = 0,
                 y = 0,
             ),
-            seatType = FRONT
+            seatType = FRONT,
+            price = mockk()
         )
         seat.book()
 

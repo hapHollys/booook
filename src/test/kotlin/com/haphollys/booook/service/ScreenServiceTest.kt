@@ -2,14 +2,12 @@ package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
-import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.repository.ScreenRepository
 import com.haphollys.booook.service.dto.PagingRequest
 import com.haphollys.booook.service.dto.ScreenDto
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
-import io.mockk.spyk
 import io.mockk.verify
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -36,8 +34,10 @@ internal class ScreenServiceTest {
         )
 
         testUser = UserEntity(name = "TEST_USER")
-        testScreen = spyk(getTestScreenEntity())
-        testScreen.id = 1L
+        testScreen = mockk(relaxed = true)
+        every {
+            testScreen.id
+        } returns 1L
     }
 
     @Test

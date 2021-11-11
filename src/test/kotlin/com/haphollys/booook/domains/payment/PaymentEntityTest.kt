@@ -1,71 +1,44 @@
 package com.haphollys.booook.domains.payment
 
-import com.haphollys.booook.domains.book.BookEntity
-import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.payment.PaymentEntity.Status.CANCEL
-import com.haphollys.booook.domains.room.RoomEntity.RoomType.TWO_D
 import com.haphollys.booook.domains.screen.ScreenEntity
-import com.haphollys.booook.domains.screen.Seat.SeatType.*
 import com.haphollys.booook.domains.user.UserEntity
-import com.haphollys.booook.getTestScreenEntity
-import com.haphollys.booook.model.PriceList
-import com.haphollys.booook.model.SeatPosition
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
 
 internal class PaymentEntityTest {
-
     private lateinit var testUser: UserEntity
     private lateinit var testScreen: ScreenEntity
-    private lateinit var testBook: BookEntity
-
-    private lateinit var priceList: PriceList
+    private lateinit var testBookedSeats: MutableList<BookedSeat>
 
     @BeforeEach
     fun setUp() {
         testUser = UserEntity(id = 1L, name = "ME_USER")
-        testScreen = getTestScreenEntity()
-
-        testBook = mockk<BookEntity>(relaxed = true)
-
-        priceList = PriceList(
-            mapOf(
-                TWO_D to mapOf(
-                    FRONT to 1000,
-                    MIDDLE to 2000,
-                    BACK to 1000
-                ),
-            )
-        )
+        testScreen = mockk(relaxed = true)
+        testBookedSeats = mockk(relaxed = true)
     }
 
     @Test
-    fun `1명 예약 결제`() {
+    fun `1명 결제`() {
         // given, when
+        val bookedSeat = mockk<BookedSeat>()
         every {
-            testBook.bookedSeats
-        } returns mutableListOf(
-            BookedSeat(
-                seatPosition = SeatPosition(x = 0, y = 0),
-                seatType = FRONT
-            )
-        )
+            bookedSeat.price
+        } returns BigDecimal(1000)
 
-        every {
-            testBook.screen.screenRoom.roomType
-        } returns TWO_D
 
         val payment = PaymentEntity.of(
             payerId = testUser.id!!,
-            book = testBook,
-            priceList = priceList.table
+            screen = testScreen,
+            bookedSeats = mutableListOf(bookedSeat)
         )
 
         // then
-        assertEquals(payment.totalAmount, 1000)
+        assertEquals(payment.totalAmount, BigDecimal(1000))
     }
 
     @Test
@@ -73,8 +46,8 @@ internal class PaymentEntityTest {
         // given
         val payment = PaymentEntity.of(
             payerId = testUser.id!!,
-            book = testBook,
-            priceList = PriceList().table
+            screen = testScreen,
+            bookedSeats = testBookedSeats
         )
 
         // when
@@ -90,8 +63,8 @@ internal class PaymentEntityTest {
         // given
         val payment = PaymentEntity.of(
             payerId = testUser.id!!,
-            book = testBook,
-            priceList = PriceList().table
+            screen = testScreen,
+            bookedSeats = testBookedSeats
         )
         payment.unPay()
 
