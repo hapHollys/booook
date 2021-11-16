@@ -52,17 +52,18 @@ dependencies {
     annotationProcessor(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa")
 
     // spring
-    implementation("org.springframework.boot:spring-boot-starter-batch:_")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("org.springframework.boot:spring-boot-starter-validation:_")
 
     // db
     runtimeOnly("com.h2database:h2")
     runtimeOnly("mysql:mysql-connector-java")
 
     // logging
-    implementation("io.sentry:sentry-spring-boot-starter:5.2.1")
-    implementation("io.sentry:sentry-logback:5.2.1")
+    implementation("io.sentry:sentry-spring-boot-starter:_")
+    implementation("io.sentry:sentry-logback:_")
 
     // test
     testImplementation("com.ninja-squad:springmockk:_")
@@ -110,7 +111,6 @@ tasks.jacocoTestReport {
                     "**/Q*",
                     "**/dto/*",
                     "**/for_test/*",
-                    "**/batch/*",
                     "**/infra/*",
                     "**/external/*",
                 )
@@ -138,7 +138,6 @@ tasks.jacocoTestCoverageVerification {
                 "**.Q*",
                 "**.dto.*",
                 "**.for_test.*",
-                "**.batch.*",
                 "**.infra.*",
                 "**.external.*",
                 "**.Companion",

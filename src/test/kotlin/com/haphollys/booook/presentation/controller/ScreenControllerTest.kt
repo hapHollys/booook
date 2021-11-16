@@ -6,6 +6,8 @@ import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
 import com.haphollys.booook.getTestPriceList
 import com.haphollys.booook.service.ScreenService
+import com.haphollys.booook.service.SeatPreemptService
+import com.haphollys.booook.service.dto.ScreenDto
 import com.haphollys.booook.service.dto.ScreenDto.*
 import com.haphollys.booook.service.dto.SeatDto
 import com.ninjasquad.springmockk.MockkBean
@@ -14,8 +16,10 @@ import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.put
 import java.time.LocalDateTime
 
 @WebMvcTest(controllers = [ScreenController::class])
@@ -29,6 +33,9 @@ internal class ScreenControllerTest {
 
     @MockkBean
     lateinit var screenService: ScreenService
+
+    @MockkBean
+    lateinit var preemptService: SeatPreemptService
 
     val baseUrl = "/api/v1/screens"
 
@@ -88,6 +95,29 @@ internal class ScreenControllerTest {
 
         // when, then
         mvc.get(baseUrl + "/${targetScreen.id}/seats")
+            .andExpect {
+                status { isOk() }
+            }
+    }
+
+    @Test
+    fun `좌석 선점 요청`() {
+        // given
+        val request = PreemptSeatsRequest(
+            seats = listOf(
+                SeatDto(0, 0, FRONT)
+            )
+        )
+
+        every {
+            preemptService.preemptSeats(any())
+        } returns PreemptSeatsResponse(true)
+
+        // when, then
+        mvc.put(baseUrl + "/${targetScreen.id}/seats") {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(request)
+        }
             .andExpect {
                 status { isOk() }
             }

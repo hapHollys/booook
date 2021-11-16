@@ -11,7 +11,7 @@ import javax.persistence.EntityNotFoundException
 @Service
 @Transactional(readOnly = true)
 class ScreenService(
-    private val screenRepository: ScreenRepository,
+    private val screenRepository: ScreenRepository
 ) {
     fun getBookableSeats(
         getBookableSeatsRequest: GetBookableSeatsRequest
@@ -22,6 +22,7 @@ class ScreenService(
             }
 
         val foundSeats = foundScreen.getBookableSeats()
+
         return GetBookableSeatsResponse(
             seats = foundSeats.map {
                 SeatDto(

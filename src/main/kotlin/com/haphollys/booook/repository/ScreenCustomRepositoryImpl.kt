@@ -1,7 +1,5 @@
 package com.haphollys.booook.repository
 
-import com.haphollys.booook.domains.movie.QMovieEntity
-import com.haphollys.booook.domains.movie.QMovieEntity.*
 import com.haphollys.booook.domains.screen.QScreenEntity.screenEntity
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.service.dto.PagingRequest
