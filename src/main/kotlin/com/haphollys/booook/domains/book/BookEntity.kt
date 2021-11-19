@@ -21,8 +21,8 @@ class BookEntity(
     @ElementCollection
     @CollectionTable(
         name = "booked_seats",
-        // 유니크 키는, 잠금을 위해 꼭 필요
-//        uniqueConstraints = [UniqueConstraint(name = "booked_seat_unique_idx", columnNames = ["screen_id", "x", "y"])]
+        // 유일성 보장을 위해 꼭 필요
+        uniqueConstraints = [UniqueConstraint(name = "booked_seat_unique_idx", columnNames = ["screen_id", "x", "y"])]
     )
     var bookedSeats: MutableList<BookedSeat>,
     @Enumerated(value = STRING)

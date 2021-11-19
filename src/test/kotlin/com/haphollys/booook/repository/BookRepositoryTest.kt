@@ -5,7 +5,7 @@ import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.movie.MovieEntity
 import com.haphollys.booook.domains.screen.ScreenEntity
-import com.haphollys.booook.domains.screen.Seat
+import com.haphollys.booook.domains.screen.SeatEntity
 import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.SeatPosition
@@ -55,8 +55,9 @@ class BookRepositoryTest {
                 screen = testScreen,
                 bookedSeats = mutableListOf(
                     BookedSeat(
+                        screenId = testScreen.id!!,
                         seatPosition = SeatPosition(x = 0, y = 0),
-                        seatType = Seat.SeatType.BACK
+                        seatType = SeatEntity.SeatType.BACK
                     )
                 )
             ),
@@ -65,8 +66,9 @@ class BookRepositoryTest {
                 screen = testScreen,
                 bookedSeats = mutableListOf(
                     BookedSeat(
+                        screenId = testScreen.id!!,
                         seatPosition = SeatPosition(x = 0, y = 1),
-                        seatType = Seat.SeatType.BACK
+                        seatType = SeatEntity.SeatType.BACK
                     )
                 )
             )

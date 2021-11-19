@@ -35,7 +35,7 @@ class ScreenEntity(
         screenRoom.unBook(seatPositions)
     }
 
-    fun getBookableSeats(): List<Seat> {
+    fun getBookableSeats(): List<SeatEntity> {
         return this.screenRoom.getBookableSeats()
     }
 
@@ -47,6 +47,12 @@ class ScreenEntity(
         return screenRoom.numRemainSeats
     }
 
+    fun verifyBookableTime(bookedAt: LocalDateTime) {
+        val deadline = date.minusMinutes(BOOK_DEADLINE_MINUTES)
+        if (bookedAt.isAfter(deadline))
+            throw IllegalArgumentException("예매 가능한 시간이 아닙니다.")
+    }
+
     companion object {
         const val BOOK_DEADLINE_MINUTES = 10L
 
@@ -56,38 +62,22 @@ class ScreenEntity(
             room: RoomEntity,
             date: LocalDateTime = LocalDateTime.now()
         ): ScreenEntity {
-            val seats = ArrayList<Seat>()
-            val numRow = room.numRow
-            val numCol = room.numCol
-
-            for (row in 0 until numRow) {
-                for (col in 0 until numCol) {
-                    seats.add(
-                        Seat(
-                            seatPosition = SeatPosition(
-                                x = row,
-                                y = col
-                            ),
-                            seatType = room.getSeatType(row)
-                        )
-                    )
-                }
-            }
-
             val screenRoom = ScreenRoom(
                 roomId = room.id!!,
-                numRow = numRow,
-                numCol = numCol,
-                seats = seats,
+                numRow = room.numRow,
+                numCol = room.numCol,
                 roomType = room.roomType
             )
 
-            return ScreenEntity(
+            val screen = ScreenEntity(
                 id = id,
                 movie = movie,
-                screenRoom = screenRoom,
-                date = date
+                date = date,
+                screenRoom = screenRoom
             )
+            screenRoom.makeSeats(screen)
+
+            return screen
         }
     }
 }

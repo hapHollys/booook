@@ -4,7 +4,7 @@ import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.payment.PaymentDomainService
 import com.haphollys.booook.domains.payment.PaymentEntity
 import com.haphollys.booook.domains.room.RoomEntity.RoomType.TWO_D
-import com.haphollys.booook.domains.screen.Seat.SeatType.*
+import com.haphollys.booook.domains.screen.SeatEntity.SeatType.*
 import com.haphollys.booook.model.PriceList
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.PaymentRepository

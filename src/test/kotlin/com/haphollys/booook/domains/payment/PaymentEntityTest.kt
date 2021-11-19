@@ -5,7 +5,7 @@ import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.payment.PaymentEntity.Status.CANCEL
 import com.haphollys.booook.domains.room.RoomEntity.RoomType.TWO_D
 import com.haphollys.booook.domains.screen.ScreenEntity
-import com.haphollys.booook.domains.screen.Seat.SeatType.*
+import com.haphollys.booook.domains.screen.SeatEntity.SeatType.*
 import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.PriceList
@@ -49,6 +49,7 @@ internal class PaymentEntityTest {
             testBook.bookedSeats
         } returns mutableListOf(
             BookedSeat(
+                screenId = 1L,
                 seatPosition = SeatPosition(x = 0, y = 0),
                 seatType = FRONT
             )

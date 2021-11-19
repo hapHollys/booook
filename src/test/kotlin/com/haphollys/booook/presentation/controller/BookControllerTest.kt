@@ -1,7 +1,7 @@
 package com.haphollys.booook.presentation.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
+import com.haphollys.booook.domains.screen.SeatEntity.SeatType.FRONT
 import com.haphollys.booook.presentation.ApiResponse
 import com.haphollys.booook.service.BookService
 import com.haphollys.booook.service.dto.BookDto

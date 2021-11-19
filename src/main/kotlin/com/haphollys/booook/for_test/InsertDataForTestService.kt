@@ -6,7 +6,6 @@ import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.repository.*
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Service
@@ -37,7 +36,9 @@ class InsertDataForTestService(
         val screen = ScreenEntity.of(
             movie = movie!!,
             room = room!!,
+            date = LocalDateTime.now().plusDays(2)
         )
+
         screenRepository.save(screen)
     }
 
@@ -47,6 +48,7 @@ class InsertDataForTestService(
             screenRepository.save(ScreenEntity.of(
                 movie = movie!!,
                 room = room!!,
+                date = LocalDateTime.now().plusDays(2)
             ))
         }
     }

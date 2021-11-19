@@ -3,7 +3,7 @@ package com.haphollys.booook.presentation.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.haphollys.booook.domains.movie.MovieEntity
 import com.haphollys.booook.domains.screen.ScreenEntity
-import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
+import com.haphollys.booook.domains.screen.SeatEntity.SeatType.FRONT
 import com.haphollys.booook.service.ScreenService
 import com.haphollys.booook.service.dto.ScreenDto.*
 import com.haphollys.booook.service.dto.SeatDto

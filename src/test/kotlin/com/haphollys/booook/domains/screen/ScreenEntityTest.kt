@@ -2,6 +2,7 @@ package com.haphollys.booook.domains.screen
 
 import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.SeatPosition
+import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions.*
@@ -14,14 +15,13 @@ internal class ScreenEntityTest {
     @BeforeEach
     fun setUp() {
         screenEntity = getTestScreenEntity()
-        screenEntity.screenRoom = spyk(screenEntity.screenRoom)
+        screenEntity.screenRoom = mockk(relaxed = true)
     }
 
     @Test
     fun `한 좌석 예약`() {
         // given
         val bookPositions = listOf(SeatPosition(x = 0, y = 0))
-        val numRemainSeatsBeforeBook = screenEntity.getNumRemainSeats()
 
         // when
         screenEntity.bookSeats(bookPositions)
@@ -30,14 +30,12 @@ internal class ScreenEntityTest {
         verify {
             screenEntity.screenRoom.book(bookPositions)
         }
-        assertTrue(screenEntity.getNumRemainSeats() == numRemainSeatsBeforeBook - bookPositions.size)
     }
 
     @Test
     fun `좌석 예약`() {
         // given
         val bookPositions = listOf(SeatPosition(x = 0, y = 0), SeatPosition(x = 0, y = 1))
-        val numRemainSeatsBeforeBook = screenEntity.getNumRemainSeats()
 
         // when
         screenEntity.bookSeats(bookPositions)
@@ -46,7 +44,6 @@ internal class ScreenEntityTest {
         verify {
             screenEntity.screenRoom.book(bookPositions)
         }
-        assertTrue(screenEntity.getNumRemainSeats() == numRemainSeatsBeforeBook - bookPositions.size)
     }
 
     @Test
@@ -54,7 +51,6 @@ internal class ScreenEntityTest {
         // given
         val bookPositions = listOf(SeatPosition(x = 0, y = 0))
         screenEntity.bookSeats(bookPositions)
-        val numRemainSeatsBeforeBook = screenEntity.getNumRemainSeats()
 
         // when
         screenEntity.unBookSeats(bookPositions)
@@ -63,35 +59,17 @@ internal class ScreenEntityTest {
         verify {
             screenEntity.screenRoom.unBook(bookPositions)
         }
-        assertTrue(screenEntity.getNumRemainSeats() == numRemainSeatsBeforeBook + bookPositions.size)
     }
 
     @Test
     fun `예약 가능한 좌석만 조회`() {
-        // given
-        val bookedPositions = listOf<SeatPosition>(
-            SeatPosition(0, 0),
-            SeatPosition(0, 1),
-            SeatPosition(1, 0),
-            SeatPosition(1, 1),
-        )
-
-        screenEntity.bookSeats(
-            bookedPositions
-        )
-
-        // when
-        val bookableSeats = screenEntity.getBookableSeats()
+        // given, when
+        screenEntity.getBookableSeats()
 
         // then
-        bookableSeats.forEach {
-            bookedPositions.forEach { bookedPosition ->
-                assertFalse(it.seatPosition == bookedPosition)
-            }
+        verify(atLeast = 1) {
+            screenEntity.screenRoom.getBookableSeats()
         }
-
-        val roomSize = screenEntity.screenRoom.numCol * screenEntity.screenRoom.numRow
-        assertEquals(roomSize, bookedPositions.size + bookableSeats.size)
     }
 
     @Test
