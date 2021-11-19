@@ -2,23 +2,31 @@ package com.haphollys.booook.domains.book
 
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.domains.user.UserEntity
+import com.haphollys.booook.service.dto.SeatDto
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class BookSeatsService {
     fun bookSeats(
         user: UserEntity,
         screen: ScreenEntity,
-        bookedSeats: MutableList<BookedSeat>,
+        bookSeats: List<SeatDto>,
     ): BookEntity {
         val bookEntity = BookEntity.of(
             user = user,
             screen = screen,
-            bookedSeats = bookedSeats
+            bookedSeats = bookSeats.map {
+                BookedSeat(
+                    screenId = screen.id!!,
+                    seatPosition = it.toSeatPosition(),
+                    seatType = it.type
+                )
+            }.toMutableList(),
         )
 
         screen.bookSeats(
-            seatPositions = bookedSeats.map { it.seatPosition }
+            seatPositions = bookSeats.map { it.toSeatPosition() }.toMutableList()
         )
 
         return bookEntity

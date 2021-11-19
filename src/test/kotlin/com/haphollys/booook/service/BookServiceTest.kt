@@ -4,7 +4,7 @@ import com.haphollys.booook.domains.book.BookEntity
 import com.haphollys.booook.domains.book.BookSeatsService
 import com.haphollys.booook.domains.book.BookedSeat
 import com.haphollys.booook.domains.screen.ScreenEntity
-import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
+import com.haphollys.booook.domains.screen.SeatEntity.SeatType.FRONT
 import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.SeatPosition
@@ -93,7 +93,7 @@ internal class BookServiceTest {
             bookSeatsService.bookSeats(
                 user = testUser,
                 screen = testScreen,
-                bookedSeats = any()
+                bookSeats = any()
             )
         }
     }
@@ -113,6 +113,7 @@ internal class BookServiceTest {
             },
             bookedSeats = mutableListOf(
                 BookedSeat(
+                    screenId = 1L,
                     seatPosition = SeatPosition(x = 0, y = 0),
                     seatType = FRONT
                 )

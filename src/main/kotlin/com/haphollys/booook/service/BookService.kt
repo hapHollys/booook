@@ -2,6 +2,8 @@ package com.haphollys.booook.service
 
 import com.haphollys.booook.domains.book.BookSeatsService
 import com.haphollys.booook.domains.book.BookedSeat
+import com.haphollys.booook.domains.screen.SeatEntity
+import com.haphollys.booook.model.SeatPosition
 import com.haphollys.booook.repository.BookRepository
 import com.haphollys.booook.repository.ScreenRepository
 import com.haphollys.booook.repository.UserRepository
@@ -20,7 +22,6 @@ class BookService(
     private val screenRepository: ScreenRepository,
     private val userRepository: UserRepository,
 ) {
-
     fun book(
         request: BookDto.BookRequest
     ): BookDto.BookResponse {
@@ -32,13 +33,7 @@ class BookService(
         val bookEntity = bookSeatsService.bookSeats(
             user = foundUser,
             screen = foundScreen,
-            bookedSeats = request.seats
-                .map {
-                    BookedSeat(
-                        seatPosition = it.toSeatPosition(),
-                        seatType = it.type
-                    )
-                }.toMutableList()
+            bookSeats = request.seats
         )
 
         return BookDto.BookResponse(

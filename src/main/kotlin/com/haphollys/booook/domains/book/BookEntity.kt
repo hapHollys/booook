@@ -18,16 +18,16 @@ class BookEntity(
     var user: UserEntity,
     @OneToOne
     var screen: ScreenEntity,
-    var bookedAt: LocalDateTime = LocalDateTime.now(),
     @ElementCollection
+    @CollectionTable(
+        name = "booked_seats",
+        // 유니크 키는, 잠금을 위해 꼭 필요
+//        uniqueConstraints = [UniqueConstraint(name = "booked_seat_unique_idx", columnNames = ["screen_id", "x", "y"])]
+    )
     var bookedSeats: MutableList<BookedSeat>,
     @Enumerated(value = STRING)
     var status: BookStatus = BOOKED
 ) : BaseEntity() {
-    init {
-        verifyBook()
-    }
-
     fun unBook() {
         verifyUnBookableStatus()
 
@@ -43,15 +43,6 @@ class BookEntity(
     private fun verifyUnBookableStatus() {
         if (this.status != BOOKED)
             throw IllegalStateException("예약 취소 가능한 상태가 아닙니다.")
-    }
-
-    private fun verifyBook() {
-        verifyAvailableDate()
-    }
-
-    private fun verifyAvailableDate() {
-        if (bookedAt.isAfter(screen.getDeadline()))
-            throw RuntimeException("예약 가능한 시간이 지났습니다.")
     }
 
     private fun verifyPayableStatus() {
@@ -71,6 +62,8 @@ class BookEntity(
             bookedSeats: MutableList<BookedSeat>,
             status: BookStatus = BOOKED,
         ): BookEntity {
+           screen.verifyBookableTime(LocalDateTime.now())
+
             return BookEntity(
                 id = id,
                 user = user,

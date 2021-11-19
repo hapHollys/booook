@@ -3,7 +3,7 @@ package com.haphollys.booook.domains.book
 import com.haphollys.booook.domains.book.BookEntity.BookStatus.CANCEL
 import com.haphollys.booook.domains.book.BookEntity.BookStatus.PAID
 import com.haphollys.booook.domains.screen.ScreenEntity
-import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
+import com.haphollys.booook.domains.screen.SeatEntity.SeatType.FRONT
 import com.haphollys.booook.domains.user.UserEntity
 import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.model.SeatPosition
@@ -54,7 +54,8 @@ internal class BookEntityTest {
         // given
         val bookedSeats = mutableListOf(
             BookedSeat(
-                SeatPosition(
+                screenId = 1L,
+                seatPosition = SeatPosition(
                     x = 0,
                     y = 0
                 ),
@@ -80,7 +81,8 @@ internal class BookEntityTest {
         // given
         val bookedSeats = mutableListOf(
             BookedSeat(
-                SeatPosition(
+                screenId = 1L,
+                seatPosition = SeatPosition(
                     x = 0,
                     y = 0
                 ),
@@ -108,7 +110,8 @@ internal class BookEntityTest {
         // given
         val bookedSeats = mutableListOf(
             BookedSeat(
-                SeatPosition(
+                screenId = 1L,
+                seatPosition = SeatPosition(
                     x = 0,
                     y = 0
                 ),
@@ -135,7 +138,8 @@ internal class BookEntityTest {
         // given
         val bookedSeats = mutableListOf(
             BookedSeat(
-                SeatPosition(
+                screenId = 1L,
+                seatPosition = SeatPosition(
                     x = 0,
                     y = 0
                 ),
@@ -161,7 +165,8 @@ internal class BookEntityTest {
         // given
         val bookedSeats = mutableListOf(
             BookedSeat(
-                SeatPosition(
+                screenId = 1L,
+                seatPosition = SeatPosition(
                     x = 0,
                     y = 0
                 ),
