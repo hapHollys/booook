@@ -6,7 +6,7 @@ import com.haphollys.booook.model.SeatPosition
 import javax.persistence.*
 
 @Entity
-@Table(name = "screen_seat")
+@Table(name = "screen_seats")
 class SeatEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
