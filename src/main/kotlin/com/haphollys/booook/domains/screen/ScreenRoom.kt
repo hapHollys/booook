@@ -3,6 +3,7 @@ package com.haphollys.booook.domains.screen
 import com.haphollys.booook.domains.room.RoomEntity.RoomType
 import com.haphollys.booook.model.SeatPosition
 import org.hibernate.annotations.BatchSize
+import java.lang.IllegalArgumentException
 import javax.persistence.*
 
 @Embeddable
@@ -12,8 +13,8 @@ class ScreenRoom(
     var numCol: Int,
     @Enumerated(value = EnumType.STRING)
     var roomType: RoomType,
-    @OneToMany(mappedBy = "id", cascade = [CascadeType.ALL])
-    @BatchSize(size=30)
+    @OneToMany(mappedBy = "screen", cascade = [CascadeType.ALL])
+    @BatchSize(size=100)
     var seats: MutableList<SeatEntity> = mutableListOf(),
     var numSeats: Int = numRow * numCol,
     var numRemainSeats: Int = numSeats,
@@ -52,18 +53,12 @@ class ScreenRoom(
     }
 
     fun getBookableSeats(): List<SeatEntity> {
-        return seats!!.filter { it.bookable() }
+        return seats.filter { it.bookable() }
     }
 
     private fun getSeat(
         seatPosition: SeatPosition
     ): SeatEntity {
-        var seatEntity: SeatEntity? = null
-        seats!!.forEach {
-            if (it.seatPosition == seatPosition) {
-                seatEntity = it
-            }
-        }
-        return seatEntity!!
+        return seats.find { it.seatPosition == seatPosition }?: throw IllegalArgumentException("없는 좌석 입니다.")
     }
 }
