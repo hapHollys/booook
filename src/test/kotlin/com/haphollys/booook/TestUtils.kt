@@ -3,7 +3,7 @@ package com.haphollys.booook
 import com.haphollys.booook.domains.movie.MovieEntity
 import com.haphollys.booook.domains.room.RoomEntity
 import com.haphollys.booook.domains.screen.ScreenEntity
-import com.haphollys.booook.domains.screen.Seat
+import com.haphollys.booook.domains.screen.SeatEntity
 import com.haphollys.booook.model.PriceList
 import java.math.BigDecimal
 import java.time.LocalDateTime
@@ -21,7 +21,7 @@ fun getTestScreenEntity(
         movie = movie,
         room = room,
         date = LocalDateTime.now().plusHours(10),
-        priceTable = priceList.table
+        priceMap = priceList.table
     )
 }
 
@@ -36,9 +36,9 @@ fun getTestPriceList(): PriceList {
     return PriceList(
         mapOf(
             RoomEntity.RoomType.TWO_D to mapOf(
-                Seat.SeatType.FRONT to BigDecimal(1000),
-                Seat.SeatType.MIDDLE to BigDecimal(2000),
-                Seat.SeatType.BACK to BigDecimal(1000)
+                SeatEntity.SeatType.FRONT to BigDecimal(1000),
+                SeatEntity.SeatType.MIDDLE to BigDecimal(2000),
+                SeatEntity.SeatType.BACK to BigDecimal(1000)
             )
         )
     )

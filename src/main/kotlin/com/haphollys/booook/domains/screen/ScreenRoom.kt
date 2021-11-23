@@ -1,8 +1,9 @@
 package com.haphollys.booook.domains.screen
 
-import com.haphollys.booook.domains.room.RoomEntity.RoomType
+import com.haphollys.booook.domains.room.RoomEntity
+import com.haphollys.booook.domains.room.RoomEntity.*
+import com.haphollys.booook.model.PriceList
 import com.haphollys.booook.model.SeatPosition
-import org.hibernate.annotations.BatchSize
 import java.math.BigDecimal
 import javax.persistence.*
 
@@ -13,12 +14,32 @@ class ScreenRoom(
     var numCol: Int,
     @Enumerated(value = EnumType.STRING)
     var roomType: RoomType,
-    @ElementCollection
-    @BatchSize(size=30)
-    var seats: MutableList<Seat>,
+    @OneToMany(mappedBy = "screen", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var seats: MutableList<SeatEntity> = mutableListOf(),
     var numSeats: Int = numRow * numCol,
     var numRemainSeats: Int = numSeats,
 ) {
+    fun makeSeats(
+        screen: ScreenEntity,
+        priceMap: Map<RoomType, Map<SeatEntity.SeatType, BigDecimal>>
+    ) {
+        for (row in 0 until numRow) {
+            for (col in 0 until numCol) {
+                seats.add(
+                    SeatEntity(
+                        screen = screen,
+                        seatPosition = SeatPosition(
+                            x = row,
+                            y = col
+                        ),
+                        seatType = SeatEntity.SeatType.FRONT,
+                        price = priceMap[roomType]!![SeatEntity.SeatType.FRONT]!!
+                    )
+                )
+            }
+        }
+    }
+
     fun book(bookSeatPositions: List<SeatPosition>) {
         bookSeatPositions.forEach {
             getSeat(it).book()
@@ -35,19 +56,19 @@ class ScreenRoom(
         numRemainSeats += bookSeatPositions.size
     }
 
-    fun getBookableSeats(): List<Seat> {
+    fun getBookableSeats(): List<SeatEntity> {
         return seats.filter { it.bookable() }
     }
 
     fun getSeat(
         seatPosition: SeatPosition
-    ): Seat {
-        var seat: Seat? = null
+    ): SeatEntity {
+        var seatEntity: SeatEntity? = null
         seats.forEach {
             if (it.seatPosition == seatPosition) {
-                seat = it
+                seatEntity = it
             }
         }
-        return seat!!
+        return seatEntity!!
     }
 }

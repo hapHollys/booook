@@ -36,11 +36,11 @@ class ScreenEntity(
         screenRoom.unBook(seatPositions)
     }
 
-    fun getBookableSeats(): List<Seat> {
+    fun getBookableSeats(): List<SeatEntity> {
         return this.screenRoom.getBookableSeats()
     }
 
-    fun getSeat(seatPosition: SeatPosition): Seat {
+    fun getSeat(seatPosition: SeatPosition): SeatEntity {
         return screenRoom.getSeat(seatPosition)
     }
 
@@ -60,42 +60,28 @@ class ScreenEntity(
             movie: MovieEntity,
             room: RoomEntity,
             date: LocalDateTime = LocalDateTime.now(),
-            priceTable:  Map<RoomEntity.RoomType, Map<Seat.SeatType, BigDecimal>>
+            priceMap: Map<RoomEntity.RoomType, Map<SeatEntity.SeatType, BigDecimal>>
         ): ScreenEntity {
-            val seats = ArrayList<Seat>()
-            val numRow = room.numRow
-            val numCol = room.numCol
-
-            for (row in 0 until numRow) {
-                val seatType = room.getSeatType(row)
-                for (col in 0 until numCol) {
-                    seats.add(
-                        Seat(
-                            seatPosition = SeatPosition(
-                                x = row,
-                                y = col
-                            ),
-                            seatType = seatType,
-                            price = priceTable[room.roomType]!![seatType]!!
-                        )
-                    )
-                }
-            }
-
             val screenRoom = ScreenRoom(
                 roomId = room.id!!,
-                numRow = numRow,
-                numCol = numCol,
-                seats = seats,
+                numRow = room.numRow,
+                numCol = room.numCol,
                 roomType = room.roomType
             )
 
-            return ScreenEntity(
+            val screen = ScreenEntity(
                 id = id,
                 movie = movie,
                 screenRoom = screenRoom,
                 date = date
             )
+
+            screen.screenRoom.makeSeats(
+                screen = screen,
+                priceMap = priceMap
+            )
+
+            return screen
         }
     }
 }

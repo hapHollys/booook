@@ -1,7 +1,7 @@
 package com.haphollys.booook.domains.room
 
 import com.haphollys.booook.domains.room.RoomEntity.RoomType.TWO_D
-import com.haphollys.booook.domains.screen.Seat.SeatType.*
+import com.haphollys.booook.domains.screen.SeatEntity.SeatType.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test

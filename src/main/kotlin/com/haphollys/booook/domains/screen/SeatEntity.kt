@@ -1,17 +1,19 @@
 package com.haphollys.booook.domains.screen
 
-import com.haphollys.booook.domains.screen.Seat.SeatStatus.BOOKED
-import com.haphollys.booook.domains.screen.Seat.SeatStatus.FREE
-import com.haphollys.booook.model.Money
+import com.haphollys.booook.domains.screen.SeatEntity.SeatStatus.BOOKED
+import com.haphollys.booook.domains.screen.SeatEntity.SeatStatus.FREE
 import com.haphollys.booook.model.SeatPosition
 import java.math.BigDecimal
-import javax.persistence.Embeddable
-import javax.persistence.Embedded
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
+import javax.persistence.*
 
-@Embeddable
-class Seat(
+@Entity
+@Table(name = "seats")
+class SeatEntity(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null,
+    @ManyToOne
+    var screen: ScreenEntity,
     @Embedded
     var seatPosition: SeatPosition,
     @Enumerated(value = EnumType.STRING)
@@ -31,7 +33,7 @@ class Seat(
 
     // TODO: ScreenRoom 비교?
     override fun equals(other: Any?): Boolean {
-        other as Seat
+        other as SeatEntity
         return seatPosition == other.seatPosition
     }
 

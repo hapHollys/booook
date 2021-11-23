@@ -1,6 +1,6 @@
 package com.haphollys.booook.service
 
-import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
+import com.haphollys.booook.domains.screen.SeatEntity.SeatType.FRONT
 import com.haphollys.booook.service.dto.ScreenDto
 import com.haphollys.booook.service.dto.SeatDto
 import io.mockk.*

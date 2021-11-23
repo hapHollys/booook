@@ -3,11 +3,10 @@ package com.haphollys.booook.presentation.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.haphollys.booook.domains.movie.MovieEntity
 import com.haphollys.booook.domains.screen.ScreenEntity
-import com.haphollys.booook.domains.screen.Seat.SeatType.FRONT
+import com.haphollys.booook.domains.screen.SeatEntity.SeatType.FRONT
 import com.haphollys.booook.getTestPriceList
 import com.haphollys.booook.service.ScreenService
 import com.haphollys.booook.service.SeatPreemptService
-import com.haphollys.booook.service.dto.ScreenDto
 import com.haphollys.booook.service.dto.ScreenDto.*
 import com.haphollys.booook.service.dto.SeatDto
 import com.ninjasquad.springmockk.MockkBean
@@ -49,7 +48,7 @@ internal class ScreenControllerTest {
         movie = mockk<MovieEntity>(relaxed = true).apply { id = 1L },
         room = mockk(relaxed = true),
         date = LocalDateTime.of(targetYear, targetMonth, targetDay, targetHour, targetMinute),
-        priceTable = getTestPriceList().table
+        priceMap = getTestPriceList().table
     ).apply { id = 1L }
 
     @Test

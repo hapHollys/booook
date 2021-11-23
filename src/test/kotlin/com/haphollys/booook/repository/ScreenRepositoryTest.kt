@@ -6,12 +6,8 @@ import com.haphollys.booook.domains.room.RoomEntity
 import com.haphollys.booook.domains.room.RoomEntity.RoomType.TWO_D
 import com.haphollys.booook.domains.screen.ScreenEntity
 import com.haphollys.booook.getTestPriceList
-import com.haphollys.booook.getTestScreenEntity
 import com.haphollys.booook.service.dto.PagingRequest
-import io.mockk.every
-import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -53,21 +49,21 @@ class ScreenRepositoryTest {
         val beforeScreen = ScreenEntity.of(
             movie = testMovie,
             room = room,
-            priceTable = getTestPriceList().table,
+            priceMap = getTestPriceList().table,
             date = targetDate.minusDays(1L)
         )
 
         val targetScreen = ScreenEntity.of(
             movie = testMovie,
             room = room,
-            priceTable = getTestPriceList().table,
+            priceMap = getTestPriceList().table,
             date = targetDate
         )
 
         val afterScreen = ScreenEntity.of(
             movie = testMovie,
             room = room,
-            priceTable = getTestPriceList().table,
+            priceMap = getTestPriceList().table,
             date = targetDate.plusDays(1L)
         )
 
@@ -96,9 +92,9 @@ class ScreenRepositoryTest {
         val screenDateTime = LocalDateTime.of(2021, 12, 1, 1, 0)
 
         val screens = listOf(
-            ScreenEntity.of(movie = testMovie, room = room, date = screenDateTime.plusHours(1), priceTable = getTestPriceList().table),
-            ScreenEntity.of(movie = testMovie, room = room, date = screenDateTime.plusHours(2), priceTable = getTestPriceList().table),
-            ScreenEntity.of(movie = testMovie, room = room, date = screenDateTime.plusHours(3), priceTable = getTestPriceList().table)
+            ScreenEntity.of(movie = testMovie, room = room, date = screenDateTime.plusHours(1), priceMap = getTestPriceList().table),
+            ScreenEntity.of(movie = testMovie, room = room, date = screenDateTime.plusHours(2), priceMap = getTestPriceList().table),
+            ScreenEntity.of(movie = testMovie, room = room, date = screenDateTime.plusHours(3), priceMap = getTestPriceList().table)
         )
         screenRepository.saveAll(screens)
 

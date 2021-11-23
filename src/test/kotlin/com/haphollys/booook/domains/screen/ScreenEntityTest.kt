@@ -4,7 +4,6 @@ import com.haphollys.booook.domains.movie.MovieEntity
 import com.haphollys.booook.domains.room.RoomEntity
 import com.haphollys.booook.getTestPriceList
 import com.haphollys.booook.model.SeatPosition
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
@@ -30,7 +29,7 @@ internal class ScreenEntityTest {
         screenEntity = ScreenEntity.of(
             movie = movieEntity,
             room = roomEntity,
-            priceTable = getTestPriceList().table
+            priceMap = getTestPriceList().table
         )
         screenEntity.screenRoom = spyk(screenEntity.screenRoom)
     }
