@@ -10,9 +10,13 @@
 
 ## Design
 ![Untitled](https://user-images.githubusercontent.com/31367330/145522818-ebaed750-2af5-4c14-8327-c5327f3f4c39.png)
+<br>
 모델 설계 1 - https://www.notion.so/1-2386f1ad64dc422dbfe400acf4fa50b5
+<br>
 모델 설계 2 - https://www.notion.so/2-594637a8c6cd454680a988fc7763c71f
+<br>
 도메인 주도 설계에 대한 이해 과정 - https://www.notion.so/DDD-9bd318a29b1140e481dda2ced80edca1
+<br>
 <br><br>
 
 ## 
